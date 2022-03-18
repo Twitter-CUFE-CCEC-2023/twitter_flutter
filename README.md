@@ -2,6 +2,7 @@
 
 This is for features in production
 
+<pre>
 Directory structure:<br>
     blocs:<br>
         - folder for cubits (it listens for actions on the screen and performs the logic accordingly as updating UI components) <br>
@@ -15,3 +16,4 @@ Directory structure:<br>
         - folder for creating functions that will used multiple times in different classes or pages<br>
     widgets:<br>
         - folder for storing custom-made widgets<br>
+</pre>
