@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:twitter_flutter/screens/firstscreen.dart';
 import 'package:twitter_flutter/screens/secondscreen.dart';
 import 'package:twitter_flutter/screens/startingpage.dart';
 
 void main() {
+  // To set the status bar to be transparent and text in status bar to be dark
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+    ),
+  );
   runApp(
     MaterialApp(
       title: 'Named Routes Demo',
