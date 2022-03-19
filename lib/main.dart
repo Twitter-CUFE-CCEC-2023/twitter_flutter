@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:twitter_flutter/screens/firstscreen.dart';
@@ -13,8 +14,11 @@ void main() {
       statusBarColor: Colors.transparent,
     ),
   );
-  runApp(
-    MaterialApp(
+  runApp(DevicePreview(
+    enabled: true,
+    tools: const [...DevicePreview.defaultTools],
+    builder: (context) => MaterialApp(
+      useInheritedMediaQuery: true,
       title: 'Named Routes Demo',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
@@ -28,5 +32,5 @@ void main() {
         SecondScreen.route: (context) => const SecondScreen(),
       },
     ),
-  );
+  ));
 }
