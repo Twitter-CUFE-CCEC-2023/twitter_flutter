@@ -15,31 +15,32 @@ class _LoginUsernameState extends State<LoginUsername> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = TextEditingController();
-    bool nextActive = controller.text.isNotEmpty;
-    setState(() {
-      nextActive = this.nextActive;
+    controller.addListener(() {
+      final bool nextActive = controller.text.isNotEmpty;
+      setState(() {
+        this.nextActive = nextActive;
+      });
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: generalAppBar,
-        body: Column(
-          children: [
-           const Padding(
-              padding: EdgeInsets.only(left:20.0,right: 30,top:30.0,bottom: 10.0),
-              child: Text(
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 30.0, top: 30.0, bottom: 10.0),
+          child: Column(
+            children: [
+              const Text(
                 "To get started, first enter your phone, email address or @username",
                 style: TextStyle(
                   fontSize: 32,
@@ -48,52 +49,63 @@ class _LoginUsernameState extends State<LoginUsername> {
                 ),
                 textAlign: TextAlign.left,
               ),
-            ),
-            TextField(
-              showCursor: true,
-              textAlign: TextAlign.left,
-              controller: controller,
-              decoration:const InputDecoration(
-                labelText: "Phone, email address, or username",
-                contentPadding: EdgeInsets.all(0.0),
+              const SizedBox(
+                height: 22.0,
               ),
-            )
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Divider(
-                color: Color(0xffD9DCDD),
-                thickness: 1.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 8.0, right: 8.0, bottom: 12.0, top: 4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () {
-                        //TODO:Forget Password Button
-                      },
-                      child: const Text("Forget Password?"),
-                      style: outlinedButtonsStyle,
-                    ),
-                    ElevatedButton(
-                      onPressed: nextActive? () {
-                        //TODO:Next Button
-                      }:null,
-                      child: const Text("Next"),
-                      style: elevatedButtonsStyle,
-                    )
-                  ],
+              TextField(
+                showCursor: true,
+                cursorHeight: 25.0,
+                textAlign: TextAlign.left,
+                controller: controller,
+                decoration: const InputDecoration(
+                  hintText: "Phone, email address, or username",
+                  hintStyle: TextStyle(fontSize: 18.0),
+                  isDense: true,
+                  contentPadding: EdgeInsets.only(bottom: 6.0),
                 ),
-              ),
+              )
             ],
+          ),
+        ),
+        bottomNavigationBar: Transform.translate(
+          offset: Offset(0.0,-1 * MediaQuery.of(context).viewInsets.bottom),
+          child: BottomAppBar(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(
+                  color: Color(0xffD9DCDD),
+                  thickness: 1.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 8.0, right: 8.0, bottom: 12.0, top: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {
+                          //TODO:Forget Password Button
+                        },
+                        child: const Text("Forget Password?"),
+                        style: outlinedButtonsStyle,
+                      ),
+                      ElevatedButton(
+                        onPressed: nextActive
+                            ? () {
+                                //TODO:Next Button
+                              }
+                            : null,
+                        child: const Text("Next"),
+                        style: elevatedButtonsStyle,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
