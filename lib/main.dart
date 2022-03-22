@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_flutter/constants.dart';
-import 'package:twitter_flutter/screens/login.dart';
+import 'package:twitter_flutter/screens/authentication/loginPassword.dart';
+import 'package:twitter_flutter/screens/authentication/loginUsername.dart';
 
 void main() {
   runApp(
     MaterialApp(
       theme: generalTheme,
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginUsername.route,
+      initialRoute: LoginUsername.ROUTE,
       routes: {
-        LoginUsername.route : (context) => const LoginUsername(),
+        LoginUsername.ROUTE : (context) => const LoginUsername(),
+        LoginPassword.ROUTE : (context) => const LoginPassword(),
       }
     ),
   );

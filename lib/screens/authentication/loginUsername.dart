@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_flutter/constants.dart';
+import 'loginPassword.dart';
 
 class LoginUsername extends StatefulWidget {
   const LoginUsername({Key? key}) : super(key: key);
-  static const String route = "LoginUsername";
+  static const String ROUTE = "LoginUsername";
 
   @override
   State<LoginUsername> createState() => _LoginUsernameState();
@@ -37,20 +38,17 @@ class _LoginUsernameState extends State<LoginUsername> {
       child: Scaffold(
         appBar: generalAppBar,
         body: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 30.0, top: 30.0, bottom: 10.0),
+          padding: const EdgeInsets.only(
+              left: 20.0, right: 30.0, top: 20.0, bottom: 10.0),
           child: Column(
             children: [
               const Text(
                 "To get started, first enter your phone, email address or @username",
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: dispTextStyle,
                 textAlign: TextAlign.left,
               ),
               const SizedBox(
-                height: 22.0,
+                height: 35.0,
               ),
               TextField(
                 showCursor: true,
@@ -68,7 +66,7 @@ class _LoginUsernameState extends State<LoginUsername> {
           ),
         ),
         bottomNavigationBar: Transform.translate(
-          offset: Offset(0.0,-1 * MediaQuery.of(context).viewInsets.bottom),
+          offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
           child: BottomAppBar(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -95,8 +93,8 @@ class _LoginUsernameState extends State<LoginUsername> {
                       ElevatedButton(
                         onPressed: nextActive
                             ? () {
-                                //TODO:Next Button
-                              }
+                          Navigator.pushNamed(context, LoginPassword.ROUTE,arguments: controller.text);
+                        }
                             : null,
                         child: const Text("Next"),
                         style: elevatedButtonsStyle,

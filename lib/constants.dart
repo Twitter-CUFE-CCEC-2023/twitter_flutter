@@ -70,3 +70,10 @@ ButtonStyle elevatedButtonsStyle = ButtonStyle(
   ),
 );
 
+//Authentication Display Text Style
+
+const TextStyle dispTextStyle = TextStyle(
+  fontSize: 32,
+  color: Colors.black,
+  fontWeight: FontWeight.w700,
+);
