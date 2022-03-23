@@ -13,6 +13,10 @@ class _LoginPasswordState extends State<LoginPassword> {
   bool logActive = false;
   TextEditingController controller = TextEditingController();
   String? username;
+  bool showPassword = false;
+  Icon passwordVisibilityStyle = const Icon(Icons.visibility_outlined, color: Color(0xffCED7DC), size: 25.0);
+  Icon passwordCheckSuffix = const Icon(null);
+
   @override
   void initState() {
     super.initState();
@@ -20,6 +24,7 @@ class _LoginPasswordState extends State<LoginPassword> {
       final bool logActive = controller.text.isNotEmpty;
       setState(() {
         this.logActive = logActive;
+        passwordCheckSuffix = logActive ? const Icon(Icons.check_circle_outline_sharp,size:25.0,color: Color(0xFF2DB169),) : const Icon(null);
       });
     });
   }
@@ -28,6 +33,21 @@ class _LoginPasswordState extends State<LoginPassword> {
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  void changePasswordVisibilityIcon(bool isShown)
+  {
+    setState(() {
+      showPassword = !showPassword;
+      if(isShown)
+      {
+        passwordVisibilityStyle = const Icon(Icons.visibility_rounded, color: Color(0xffCED7DC), size: 25.0);
+      }
+      else
+      {
+        passwordVisibilityStyle = const Icon(Icons.visibility_rounded, color: Color(0XFF3993D0), size: 25.0);
+      }
+    });
   }
 
   @override
@@ -58,7 +78,7 @@ class _LoginPasswordState extends State<LoginPassword> {
               textAlign: TextAlign.left,
               decoration: InputDecoration(
                 hintText: "$username",
-                hintStyle: const TextStyle(fontSize: 18.0,color: Colors.black),
+                hintStyle: const TextStyle(fontSize: 18.0, color: Colors.black),
                 isDense: true,
                 contentPadding: const EdgeInsets.only(bottom: 6.0),
               ),
@@ -71,22 +91,27 @@ class _LoginPasswordState extends State<LoginPassword> {
               cursorHeight: 25.0,
               textAlign: TextAlign.left,
               controller: controller,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "Password",
-                hintStyle: TextStyle(fontSize: 18.0),
+                hintStyle: const TextStyle(fontSize: 18.0),
                 isDense: true,
-                contentPadding: EdgeInsets.only(bottom: 6.0),
-                suffix: IconButton(
-                  icon: Icon(Icons.visibility_outlined,color: Color(0xffCED7DC),size: 25.0,),
-                  onPressed: null,
-                  padding: EdgeInsets.all(0),
-                  constraints: BoxConstraints(maxHeight: 0),
-                ),
+                contentPadding: const EdgeInsets.only(bottom: 6.0),
+                suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      child: passwordVisibilityStyle,
+                      onTap: () => changePasswordVisibilityIcon(showPassword),
+                    ),
+                    if(passwordCheckSuffix.icon != null) passwordCheckSuffix, // check that the icon suffix is not set to null
+                  ],
+                )
               ),
-              obscureText: true,
+              obscureText: !showPassword,
               autocorrect: false,
               enableSuggestions: false,
-
             ),
           ],
         ),
@@ -119,7 +144,8 @@ class _LoginPasswordState extends State<LoginPassword> {
                     ElevatedButton(
                       onPressed: logActive
                           ? () {
-                              //TODO:Next Button
+
+                              //TODO:
                             }
                           : null,
                       child: const Text("Log in"),
@@ -135,3 +161,4 @@ class _LoginPasswordState extends State<LoginPassword> {
     ));
   }
 }
+

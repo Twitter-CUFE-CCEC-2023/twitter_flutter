@@ -41,6 +41,7 @@ class _LoginUsernameState extends State<LoginUsername> {
           padding: const EdgeInsets.only(
               left: 20.0, right: 30.0, top: 20.0, bottom: 10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "To get started, first enter your phone, email address or @username",
