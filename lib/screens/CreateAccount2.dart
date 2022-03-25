@@ -13,8 +13,7 @@ class CreateAccount2 extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Image.asset(
-          // IMPORTANT: Fix assets issue
-          'assets/twitter_logo.png',
+          'assets/images/twitter_logo.png',
           fit: BoxFit.cover,
           width: 50,
         ),
