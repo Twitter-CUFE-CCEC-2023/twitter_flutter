@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_flutter/screens/authentication/loginUsername.dart';
 
 class StartingPage extends StatelessWidget {
   const StartingPage({Key? key}) : super(key: key);
@@ -207,7 +208,10 @@ class StartingPage extends StatelessWidget {
     );
   }
 
-  Widget logIn({required TextStyle buttons, required TextStyle text}) {
+  Widget logIn(
+      {required TextStyle buttons,
+      required TextStyle text,
+      required BuildContext context}) {
     return AutoSizeText.rich(
       TextSpan(
         text: 'Have an account already ? ',
@@ -215,7 +219,9 @@ class StartingPage extends StatelessWidget {
         children: [
           TextSpan(
             text: 'Log in',
-            recognizer: TapGestureRecognizer()..onTap = () => {print('hello')},
+            recognizer: TapGestureRecognizer()
+              ..onTap =
+                  () => {Navigator.pushNamed(context, LoginUsername.route)},
             style: buttons,
           ),
         ],
@@ -269,6 +275,7 @@ class StartingPage extends StatelessWidget {
                 child: logIn(
                   buttons: buttonStyle(16),
                   text: textStyle(16),
+                  context: context,
                 ),
               ),
             ],
