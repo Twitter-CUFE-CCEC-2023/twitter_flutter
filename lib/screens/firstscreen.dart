@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FirstScreen extends StatelessWidget {
   const FirstScreen({Key? key}) : super(key: key);
 
-  static String route = '/hi';
+  static String route = '/FirstScreen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +15,7 @@ class FirstScreen extends StatelessWidget {
           // Within the `FirstScreen` widget
           onPressed: () {
             // Navigate to the second screen using a named route.
-            Navigator.pushNamed(context, '/second');
+            Navigator.pushNamed(context, '/');
           },
           child: const Text('Launch screen'),
         ),
