@@ -80,9 +80,11 @@ class StartingPage extends StatelessWidget {
   }
 
   // Create account through twitter button
-  Widget createButton() {
+  Widget createButton(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, "/CreateAccount1");
+      },
       borderRadius: BorderRadius.circular(30),
       splashColor: Colors.black26,
       child: Ink(
@@ -156,7 +158,7 @@ class StartingPage extends StatelessWidget {
           height: 8,
           width: MediaQuery.of(context).size.width,
         ),
-        createButton(),
+        createButton(context),
       ],
     );
   }
