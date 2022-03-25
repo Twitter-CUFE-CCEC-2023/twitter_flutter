@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class EditProfile extends StatelessWidget {
   const EditProfile({Key? key}) : super(key: key);
 
-  static String route = '/';
+  static String route = '/EditProfile';
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;

@@ -7,6 +7,7 @@ class MainPage extends StatefulWidget{
 
 class changepassword extends State<MainPage>{
 //  const changepassword({Key? key}) : super(key: key);
+  static String route = '/ChangePassword';
 bool isButtonActive = true;
 late TextEditingController controller;
 
@@ -26,7 +27,6 @@ void dispose(){
   super.dispose();
 }
 
-  static String route = '/';
 
   @override
   Widget build(BuildContext context) {
