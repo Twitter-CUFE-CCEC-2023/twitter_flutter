@@ -76,42 +76,41 @@ class createaccount3 extends State<CreateAccount3> {
                         fontSize: 16,
                       )),
                 ),
-                Text.rich(
+                const Text.rich(
                   TextSpan(
                       text: 'By continuing, you agree to our ',
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'terms',
+                          text: 'Terms',
                           style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.blue.shade300,
-                            decoration: TextDecoration.underline,
+                            fontSize: 15,
+                            color: Colors.lightBlue,
                           ),
                         ),
-                        const TextSpan(
+                        TextSpan(
                             text: ', Privacy Policy and ',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                            style: TextStyle(fontSize: 15, color: Colors.grey),
                             children: <TextSpan>[
                               TextSpan(
                                 text: 'Cookie Use',
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blueAccent,
-                                    decoration: TextDecoration.underline),
+                                    fontSize: 15,
+                                    color: Colors.lightBlue,
+                                    ),
                               ),
                             ]),
-                        const TextSpan(
+                        TextSpan(
                             text:
-                                '.Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy.',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                                '.Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy. ',
+                            style: TextStyle(fontSize: 15, color: Colors.grey),
                             children: <TextSpan>[
                               TextSpan(
                                 text: 'Learn more',
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blueAccent,
-                                    decoration: TextDecoration.underline),
+                                    fontSize: 15,
+                                    color: Colors.lightBlue,
+                                ),
                               ),
                             ])
                       ]),
@@ -128,8 +127,7 @@ class createaccount3 extends State<CreateAccount3> {
               height: 45,
               child: RaisedButton(
                 color: Colors.black,
-                disabledColor: Colors.lightBlueAccent,
-                disabledElevation: 54,
+
                 onPressed: () {},
                 child: const Text(
                   'Next',
