@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_flutter/constants.dart';
+import '../../widgets/authentication/appBar.dart';
 import 'loginPassword.dart';
 
 class LoginUsername extends StatefulWidget {

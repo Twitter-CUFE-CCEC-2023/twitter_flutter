@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_flutter/constants.dart';
+import 'package:twitter_flutter/models/authentication/user_authentication_model.dart';
+import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
+
+import '../../widgets/authentication/appBar.dart';
 
 class LoginPassword extends StatefulWidget {
   static const String route = "LoginPassword";
@@ -12,7 +16,7 @@ class LoginPassword extends StatefulWidget {
 class _LoginPasswordState extends State<LoginPassword> {
   bool logActive = false;
   TextEditingController controller = TextEditingController();
-  String? username;
+  late String username;
   bool showPassword = false;
   Icon passwordVisibilityStyle = const Icon(Icons.visibility_outlined,
       color: Color(0xffCED7DC), size: 25.0);
@@ -153,8 +157,18 @@ class _LoginPasswordState extends State<LoginPassword> {
                       ),
                       ElevatedButton(
                         onPressed: logActive
-                            ? () {
-                                //TODO:
+                            ? () async {
+                                UserLoginRequest req = UserLoginRequest(
+                                    email_or_username: username,
+                                    password: controller.text,
+                                    remember_me: false);
+                                try {
+                                  UserAuthenticationModel mod =
+                                      await req.Login();
+                                  print(mod.access_token);
+                                } catch (e) {
+                                  //TODO:handle Error on login failure
+                                }
                               }
                             : null,
                         child: const Text("Log in"),

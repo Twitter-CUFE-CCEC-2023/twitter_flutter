@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_flutter/screens/startingpage.dart';
 
 //Variation of the light theme to suite the general them of Twitter application
 ThemeData generalTheme = ThemeData.light().copyWith(
@@ -15,24 +14,6 @@ ThemeData generalTheme = ThemeData.light().copyWith(
       elevation: 0,
       color: Colors.white,
     ));
-
-//Custom appBar common between multiple pages
-
-AppBar generalAppBar(BuildContext context) {
-  return AppBar(
-    leading: GestureDetector(
-      onTap: () {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
-      },
-      child: const Icon(
-        Icons.close,
-        color: Color(0xff2798E4),
-        size: 28,
-      ),
-    ),
-    title: Image.asset('assets/images/bluetwitterlogo64.png'),
-  );
-}
 
 //outlined authentication Button Style
 ButtonStyle outlinedButtonsStyle = ButtonStyle(

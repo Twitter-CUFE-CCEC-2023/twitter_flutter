@@ -1,7 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/screens/authentication/loginUsername.dart';
+import '../blocs/InternetStates/internetCubit.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class StartingPage extends StatelessWidget {
   const StartingPage({Key? key}) : super(key: key);
@@ -233,57 +237,86 @@ class StartingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: logoAppBar(),
-          backgroundColor: Colors.white,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 165,
-                width: MediaQuery.of(context).size.width,
+    return BlocProvider<InternetCubit>(
+      create: (context) => InternetCubit(Connectivity()),
+      child:
+          BlocBuilder<InternetCubit, InternetState>(builder: (context, state) {
+        if (state is InternetDisconnected) {
+          return Container(
+              color: Colors.white,
+              child: SafeArea(
+                  child: Scaffold(
+                      appBar: logoAppBar(),
+                      backgroundColor: Colors.white,
+                      body: Center(
+                        child: Text("Try Connecting to the Nertwork",
+                          style: TextStyle(fontSize: 40.0),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                  )
+              )
+          );
+        } else if( state is InternetLoading)
+          {
+            return SpinKitFadingCircle(
+              color: Colors.white,
+              size: 50.0
+            );
+          }
+        return Container(
+          color: Colors.white,
+          child: SafeArea(
+            child: Scaffold(
+              appBar: logoAppBar(),
+              backgroundColor: Colors.white,
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  welcomeMessage(
+                    message: 'See what’s happening in the world right now. ',
+                    fontSize: 30,
+                    weight: FontWeight.bold,
+                    family: 'IBMPlexSans',
+                  ),
+                  SizedBox(
+                    height: 142,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  buttons(context),
+                  SizedBox(
+                    height: 20,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  Container(
+                    width: 330,
+                    child: termConditions(
+                      buttons: buttonStyle(14),
+                      text: textStyle(14),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 95, 0),
+                    child: logIn(
+                      buttons: buttonStyle(16),
+                      text: textStyle(16),
+                      context: context,
+                    ),
+                  ),
+                ],
               ),
-              welcomeMessage(
-                message: 'See what’s happening in the world right now. ',
-                fontSize: 30,
-                weight: FontWeight.bold,
-                family: 'IBMPlexSans',
-              ),
-              SizedBox(
-                height: 142,
-                width: MediaQuery.of(context).size.width,
-              ),
-              buttons(context),
-              SizedBox(
-                height: 20,
-                width: MediaQuery.of(context).size.width,
-              ),
-              Container(
-                width: 330,
-                child: termConditions(
-                  buttons: buttonStyle(14),
-                  text: textStyle(14),
-                ),
-              ),
-              SizedBox(
-                height: 45,
-                width: MediaQuery.of(context).size.width,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 95, 0),
-                child: logIn(
-                  buttons: buttonStyle(16),
-                  text: textStyle(16),
-                  context: context,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
     //);
   }
