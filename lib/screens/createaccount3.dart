@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+
 
 class CreateAccount3 extends StatefulWidget {
   createaccount3 createState() => createaccount3();
@@ -12,27 +14,125 @@ class createaccount3 extends State<CreateAccount3> {
 
   static String route = '/CreateAccount3';
 
+
+  AppBar logoAppBar({required double height, required double imageMultiplier}) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.blue,
+          ),
+          onPressed: () => Navigator.pop(context, false)),
+      title: Image.asset(
+        'assets/images/bluetwitterlogo64.png',
+        width: 0.083 * imageMultiplier * height, // 65
+        height: 0.083 * imageMultiplier * height, // 65
+        cacheHeight: 70,
+      ),
+
+      //systemOverlayStyle: SystemUiOverlayStyle.dark,
+    );
+
+
+  }
+  Widget Message(
+      {required String message,
+        required double fontSize,
+        required FontWeight weight,
+        required Color colors}) {
+    return  AutoSizeText(
+        message,
+        style: TextStyle(
+            fontSize: fontSize, fontWeight: weight,color: colors),
+
+    );
+  }
+
+  Widget termConditions({required TextStyle buttons, required TextStyle text}) {
+    return Text.rich(
+      TextSpan(
+          text: 'By signing up, you agree to our ',
+          style: text,
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Terms',
+              style: buttons
+            ),
+            TextSpan(
+                text: ', Privacy Policy and ',
+                style: text,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Cookie Use',
+                    style: buttons
+                  ),
+                ]),
+            TextSpan(
+                text:
+                '.Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy. ',
+                style: text,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Learn more',
+                    style: buttons
+                  ),
+                ])
+          ]),
+    );
+  }
+  TextStyle buttonStyle(double size) {
+    return TextStyle(color: Colors.lightBlue, fontSize: size);
+  }
+
+  TextStyle textStyle(double size) {
+    return TextStyle(color: Colors.black54, fontSize: size);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.blue,
-            ),
-            onPressed: () => Navigator.pop(context, false)),
-        title: Image.asset(
-          'assets/images/bluetwitterlogo64.png',
-          cacheHeight: 70,
-        ),
+    final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
+    final List<double> imageMultiplier = [1, 1];
+    final double screenHeight = MediaQuery.of(context).size.height;
+    double borderRadiusMultiplier = 1;
+    final List<double> fontSizeMultiplier = [1, 1, 1, 1];
+    return OrientationBuilder(builder: (context, orientation) {
+      print(MediaQuery.of(context).size.width);
+      print(MediaQuery.of(context).size.height);
 
-        //systemOverlayStyle: SystemUiOverlayStyle.dark,
-      ),
+      if (orientation == Orientation.portrait) {
+        sizedBoxHeightMultiplier[0] = 1;
+        sizedBoxHeightMultiplier[1] = 1;
+        sizedBoxHeightMultiplier[2] = 1;
+        imageMultiplier[0] = 1;
+        imageMultiplier[1] = 1;
+        borderRadiusMultiplier = 1;
+        fontSizeMultiplier[0] = 1;
+        fontSizeMultiplier[1] = 1;
+        fontSizeMultiplier[2] = 1;
+        fontSizeMultiplier[3] = 1;
+      } else {
+        sizedBoxHeightMultiplier[0] = .1;
+        sizedBoxHeightMultiplier[1] = .33;
+        sizedBoxHeightMultiplier[2] = 1;
+        sizedBoxHeightMultiplier[3] = 1.8;
+        imageMultiplier[0] = 1.8;
+        imageMultiplier[1] = 1.8;
+        borderRadiusMultiplier = 1.4;
+        fontSizeMultiplier[0] = 2;
+        fontSizeMultiplier[1] = 2;
+        fontSizeMultiplier[2] = 2;
+        fontSizeMultiplier[3] = 2;
+       // double screenHeight = MediaQuery.of(context).size.height;
+       // double screenWidth = MediaQuery.of(context).size.width;
+      }
+
+    return SafeArea(
+          child:Scaffold(
+      appBar: logoAppBar(
+          height: screenHeight, imageMultiplier: imageMultiplier[0]),
       //),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -42,78 +142,46 @@ class createaccount3 extends State<CreateAccount3> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  'Customise your experience',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
+                Message(
+                  message: 'Customise your experience',
+                  fontSize: 0.038 * fontSizeMultiplier[0] * screenHeight, // 30
+                  weight: FontWeight.bold,
+                  colors: Colors.black
+                  // family: 'IBMPlexSans',
                 ),
                 Container(
                   height: 30,
                 ),
-                const Text(
-                  'Track where you see Twitter content across the web',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Message(
+                  message: 'Track where you see Twitter content across the web',
+                  fontSize: 0.028 * fontSizeMultiplier[0] * screenHeight, // 30
+                  weight: FontWeight.bold,
+                    colors: Colors.black
+                 // family: 'IBMPlexSans',
                 ),
+
                 CheckboxListTile(
                   contentPadding: const EdgeInsets.only(
-                      left: 0.0, right: 28.0, top: 20.0, bottom: 20.0),
+                      left: 0.0, right: 28.0, top: 10.0, bottom: 00.0),
                   activeColor: Colors.blue,
                   value: value,
                   onChanged: (value) => setState(() => this.value = value!),
-                  title: const Text(
-                      'Twitter uses this data to personlise your experience. This web browsing history will never be stored with your name, email, or phone number.',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 16,
-                      )),
+                  title: Message(
+                    message: 'Twitter uses this data to personlise your experience. This web browsing history will never be stored with your name, email, or phone number.',
+                    fontSize: 0.021 * fontSizeMultiplier[0] * screenHeight, // 30
+                    weight: FontWeight.normal,
+                      colors: Colors.black54
+                    // family: 'IBMPlexSans',
+                  ),
                 ),
-                const Text.rich(
-                  TextSpan(
-                      text: 'By continuing, you agree to our ',
-                      style: TextStyle(fontSize: 15, color: Colors.grey),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Terms',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.lightBlue,
-                          ),
-                        ),
-                        TextSpan(
-                            text: ', Privacy Policy and ',
-                            style: TextStyle(fontSize: 15, color: Colors.grey),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Cookie Use',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.lightBlue,
-                                    ),
-                              ),
-                            ]),
-                        TextSpan(
-                            text:
-                                '.Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy. ',
-                            style: TextStyle(fontSize: 15, color: Colors.grey),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Learn more',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.lightBlue,
-                                ),
-                              ),
-                            ])
-                      ]),
+                Padding(
+                  padding: EdgeInsets.only(left: 0.0, right: 28.0, top: 10.0, bottom: 20.0),
+                child:
+                termConditions(buttons: buttonStyle(
+                      0.0188 * screenHeight * fontSizeMultiplier[0]), // 11
+                  text: textStyle(
+                      0.0188 * screenHeight * fontSizeMultiplier[2]), // 11
+                ),
                 ),
               ]),
         ),
@@ -141,7 +209,7 @@ class createaccount3 extends State<CreateAccount3> {
           ),
         ],
       ),
-    );
+    ));
     //);
-  }
-}
+  });
+}}
