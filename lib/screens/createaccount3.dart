@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/gestures.dart';
 
 
 class CreateAccount3 extends StatefulWidget {
@@ -58,7 +59,12 @@ class createaccount3 extends State<CreateAccount3> {
           children: <TextSpan>[
             TextSpan(
               text: 'Terms',
-              style: buttons
+              style: buttons,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => {
+                  print('hello')
+                  //TODO: CALL COOKIE USE PAGE
+                },
             ),
             TextSpan(
                 text: ', Privacy Policy and ',
@@ -66,7 +72,12 @@ class createaccount3 extends State<CreateAccount3> {
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Cookie Use',
-                    style: buttons
+                    style: buttons,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => {
+                        print('hello')
+                        //TODO: CALL COOKIE USE PAGE
+                      },
                   ),
                 ]),
             TextSpan(
@@ -76,7 +87,12 @@ class createaccount3 extends State<CreateAccount3> {
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Learn more',
-                    style: buttons
+                    style: buttons,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => {
+                        print('hello')
+                        //TODO: CALL COOKIE USE PAGE
+                      },
                   ),
                 ])
           ]),

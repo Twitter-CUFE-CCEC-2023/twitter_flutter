@@ -7,9 +7,6 @@ import 'package:twitter_flutter/screens/authentication/Icons.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-//  const CreateAccount3({Key? key}) : super(key: key);
-  bool value = false;
-
   static String route = '/HomePage';
 
   BottomNavigationBar Bottom(
@@ -49,7 +46,7 @@ class HomePage extends StatelessWidget {
               color: Colors.black,
             ),
             backgroundColor: Colors.black,
-            label: 'Chat'),
+            label: 'Messages'),
       ],
     );
   }
@@ -61,7 +58,7 @@ class HomePage extends StatelessWidget {
         IconButton(
           icon: Icon(
             Icons.star_border,
-            size: 0.033 * imageMultiplier * height,
+            size: 0.038 * imageMultiplier * height,
           ),
           onPressed: () => {},
         )
@@ -71,7 +68,7 @@ class HomePage extends StatelessWidget {
         icon: Icon(
           Icons.circle,
           color: Colors.blue,
-          size: 0.033 * imageMultiplier * height,
+          size: 0.038 * imageMultiplier * height,
         ),
       ),
       backgroundColor: Colors.white,
@@ -108,9 +105,6 @@ class HomePage extends StatelessWidget {
       print(MediaQuery.of(context).size.height);
 
       if (orientation == Orientation.portrait) {
-        sizedBoxHeightMultiplier[0] = 1;
-        sizedBoxHeightMultiplier[1] = 1;
-        sizedBoxHeightMultiplier[2] = 1;
         imageMultiplier[0] = 1;
         imageMultiplier[1] = 1;
         borderRadiusMultiplier = 1;
@@ -119,10 +113,6 @@ class HomePage extends StatelessWidget {
         fontSizeMultiplier[2] = 1;
         fontSizeMultiplier[3] = 1;
       } else {
-        sizedBoxHeightMultiplier[0] = .1;
-        sizedBoxHeightMultiplier[1] = .33;
-        sizedBoxHeightMultiplier[2] = 1;
-        sizedBoxHeightMultiplier[3] = 1.8;
         imageMultiplier[0] = 1.8;
         imageMultiplier[1] = 1.8;
         borderRadiusMultiplier = 1.4;
@@ -135,8 +125,11 @@ class HomePage extends StatelessWidget {
         child: Scaffold(
           appBar: logoAppBar(
               height: screenHeight, imageMultiplier: imageMultiplier[0]),
-          //),
           backgroundColor: Colors.white,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.add),
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -144,7 +137,10 @@ class HomePage extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Message(message: 'In progress...',colors: Colors.black,fontSize: 0.038 * fontSizeMultiplier[0] * screenHeight)
+                    Message(
+                        message: 'In progress...',
+                        colors: Colors.black,
+                        fontSize: 0.038 * fontSizeMultiplier[0] * screenHeight)
                   ]),
             ),
           ),
