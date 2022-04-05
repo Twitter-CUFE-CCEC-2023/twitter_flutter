@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_flutter/screens/startingpage.dart';
 
 //Variation of the light theme to suite the general them of Twitter application
 ThemeData generalTheme = ThemeData.light().copyWith(
@@ -84,3 +83,9 @@ const TextStyle dispTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.w700,
 );
+
+class WebViewArgs {
+  final String url;
+
+  WebViewArgs(this.url);
+}
