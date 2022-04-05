@@ -1,15 +1,22 @@
 import 'package:twitter_flutter/models/objects/user.dart';
 
 class UserAuthenticationModel {
-  String? message;
-  String? access_token;
-  DateTime? token_expiration_date;
-  UserModel? user;
+  late String message;
+  late String access_token;
+  late DateTime token_expiration_date;
+  late UserModel user;
 
   UserAuthenticationModel.fromJson(Map<String, dynamic> json) {
-    message = json["message"];
+    //TODO:To be uncommented upon deployment
+    /*message = json["message"];
     access_token = json["access_token"];
-    token_expiration_date = DateTime.parse(json["token_expiration_date"]);
+    token_expiration_date = DateTime.parse(json["token_expiration_date"])*/;
+
+    //TODO:Josn Server Response format to be deleted upon deployment
+    message=" ";
+    access_token = json["accessToken"];
+    token_expiration_date = DateTime(0);
+
     user = UserModel.fromJson(json["user"]);
   }
 }
