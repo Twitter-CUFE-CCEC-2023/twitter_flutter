@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:twitter_flutter/screens/authentication/loginUsername.dart';
-import '../blocs/InternetStates/internetCubit.dart';
+import 'package:twitter_flutter/screens/authentication/login_username.dart';
+import '../blocs/InternetStates/internet_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -249,7 +249,7 @@ class StartingPage extends StatelessWidget {
                       appBar: logoAppBar(),
                       backgroundColor: Colors.white,
                       body: Center(
-                        child: Text("Try Connecting to the Nertwork",
+                        child: Text("Try Connecting to a Network",
                           style: TextStyle(fontSize: 40.0),
                           textAlign: TextAlign.center,
                         ),
@@ -259,7 +259,7 @@ class StartingPage extends StatelessWidget {
           );
         } else if( state is InternetLoading)
           {
-            return SpinKitFadingCircle(
+            return SpinKitWanderingCubes(
               color: Colors.white,
               size: 50.0
             );

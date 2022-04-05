@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_flutter/constants.dart';
+import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import '../../widgets/authentication/appBar.dart';
-import 'loginPassword.dart';
+import 'login_password.dart';
 
 class LoginUsername extends StatefulWidget {
   const LoginUsername({Key? key}) : super(key: key);
