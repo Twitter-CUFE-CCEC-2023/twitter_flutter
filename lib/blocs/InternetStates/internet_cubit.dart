@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
-part 'internetState.dart';
+import 'internet_cubit.dart';
+
+part 'internet_state.dart';
 
 class InternetCubit extends Cubit<InternetState> {
-  StreamSubscription? connectivityStreamSubscription;
+  late StreamSubscription connectivityStreamSubscription;
   final Connectivity connectivity;
   InternetCubit(this.connectivity) : super(InternetLoading()) {
     connectivityStreamSubscription =
@@ -31,7 +34,7 @@ class InternetCubit extends Cubit<InternetState> {
 
   @override
   Future<void> close() {
-    connectivityStreamSubscription?.cancel();
+    connectivityStreamSubscription.cancel();
     return super.close();
   }
 }
