@@ -5,7 +5,7 @@ import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import 'package:twitter_flutter/screens/HomePage.dart';
+import 'package:twitter_flutter/screens/profile/home_page.dart';
 import '../../widgets/authentication/appBar.dart';
 
 class LoginPassword extends StatefulWidget {

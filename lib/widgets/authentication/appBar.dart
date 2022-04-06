@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../screens/startingpage.dart';
+import '../../screens/starting_page.dart';
 
 
 //Custom appBar common between multiple pages

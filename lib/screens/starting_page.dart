@@ -6,7 +6,7 @@ import 'package:twitter_flutter/screens/authentication/login_username.dart';
 import '../blocs/InternetStates/internet_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:twitter_flutter/screens/termsOfService.dart';
+import 'package:twitter_flutter/screens/profile_management/terms_of_service.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 
 class StartingPage extends StatelessWidget {

@@ -4,16 +4,16 @@ import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import 'package:twitter_flutter/screens/termsOfService.dart';
+import 'package:twitter_flutter/screens/profile_management/terms_of_service.dart';
 
-class CreateAccount3 extends StatefulWidget {
-  static String route = '/CreateAccount3';
+class CreateAccount2 extends StatefulWidget {
+  static String route = '/CreateAccount2';
 
-  const CreateAccount3({Key? key}) : super(key: key);
-  createaccount3 createState() => createaccount3();
+  const CreateAccount2({Key? key}) : super(key: key);
+  createaccount2 createState() => createaccount2();
 }
 
-class createaccount3 extends State<CreateAccount3> {
+class createaccount2 extends State<CreateAccount2> {
 //  const CreateAccount3({Key? key}) : super(key: key);
   bool value = false;
 
@@ -224,7 +224,7 @@ class createaccount3 extends State<CreateAccount3> {
                 child: RaisedButton(
                   color: Colors.black,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/CreateAccount2', arguments: {
+                    Navigator.pushNamed(context, '/CreateAccount3', arguments: {
                       'name': data['name'],
                       'email': data['email'],
                       'date': data['date'],

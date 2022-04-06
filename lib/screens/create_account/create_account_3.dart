@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import 'package:twitter_flutter/screens/termsOfService.dart';
+import 'package:twitter_flutter/screens/profile_management/terms_of_service.dart';
 
-class CreateAccount2 extends StatefulWidget {
-  const CreateAccount2({Key? key}) : super(key: key);
+class CreateAccount3 extends StatefulWidget {
+  const CreateAccount3({Key? key}) : super(key: key);
 
-  static String route = '/CreateAccount2';
+  static String route = '/CreateAccount3';
 
   @override
-  State<CreateAccount2> createState() => _CreateAccount2State();
+  State<CreateAccount3> createState() => _CreateAccount3State();
 }
 
-class _CreateAccount2State extends State<CreateAccount2> {
+class _CreateAccount3State extends State<CreateAccount3> {
   Widget termConditions({required TextStyle buttons, required TextStyle text}) {
     return AutoSizeText.rich(
       TextSpan(

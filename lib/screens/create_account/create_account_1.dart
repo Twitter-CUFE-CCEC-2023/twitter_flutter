@@ -197,7 +197,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                     child: ElevatedButton(
                         onPressed: nextActive
                             ? () {
-                                Navigator.pushNamed(context, '/CreateAccount3',
+                                Navigator.pushNamed(context, '/CreateAccount2',
                                     arguments: {
                                       'name': _namefield.text,
                                       'email': _emailfield.text,

@@ -2,20 +2,20 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import 'package:twitter_flutter/screens/startingpage.dart';
+import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/screens/authentication/login_password.dart';
 import 'package:twitter_flutter/screens/authentication/login_username.dart';
-import 'package:twitter_flutter/screens/CreateAccount1.dart';
-import 'package:twitter_flutter/screens/CreateAccount2.dart';
-import 'package:twitter_flutter/screens/createaccount3.dart';
-import 'package:twitter_flutter/screens/CreateAccount4.dart';
-import 'package:twitter_flutter/screens/termsOfService.dart';
-import 'package:twitter_flutter/screens/Settings&Privacy.dart';
-import 'package:twitter_flutter/screens/YourAccount.dart';
-import 'package:twitter_flutter/screens/profile.dart';
-import 'package:twitter_flutter/screens/EditProfile.dart';
-import 'package:twitter_flutter/screens/changepassword.dart';
-import 'package:twitter_flutter/screens/HomePage.dart';
+import 'package:twitter_flutter/screens/create_account/create_account_1.dart';
+import 'package:twitter_flutter/screens/create_account/create_account_3.dart';
+import 'package:twitter_flutter/screens/create_account/create_account_2.dart';
+import 'package:twitter_flutter/screens/create_account/create_account_4.dart';
+import 'package:twitter_flutter/screens/profile_management/terms_of_service.dart';
+import 'package:twitter_flutter/screens/profile_management/settings_and_privacy.dart';
+import 'package:twitter_flutter/screens/profile_management/your_account.dart';
+import 'package:twitter_flutter/screens/profile/profile.dart';
+import 'package:twitter_flutter/screens/profile/edit_profile.dart';
+import 'package:twitter_flutter/screens/profile_management/change_password.dart';
+import 'package:twitter_flutter/screens/profile/home_page.dart';
 
 void main() {
   // To set the status bar to be transparent and text in status bar to be dark
