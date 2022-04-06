@@ -35,11 +35,13 @@ Widget textfield(
 }
 
 class ChangePassword extends StatefulWidget {
+  static String route = '/ChangePassword';
+
+  const ChangePassword({Key? key}) : super(key: key);
   changepassword createState() => changepassword();
 }
 
 class changepassword extends State<ChangePassword> {
-  static String route = '/ChangePassword';
   bool isButtonActive = true;
   late TextEditingController controller;
 
@@ -119,7 +121,10 @@ class changepassword extends State<ChangePassword> {
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   '@username ',
-                  style: TextStyle(color: Colors.black54, fontSize: 0.023 * fontSizeMultiplier[0] * screenHeight,),
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 0.023 * fontSizeMultiplier[0] * screenHeight,
+                  ),
                 ),
               ),
             ]),

@@ -81,8 +81,6 @@ class _CreateAccount1State extends State<CreateAccount1> {
     double nextButtomSize = 0.8;
     String CreateAccountStr = "Create your \naccount";
     return OrientationBuilder(builder: (context, orientation) {
-      print(MediaQuery.of(context).size.height); //782
-
       if (orientation == Orientation.portrait) {
         CreateAccountStr = "Create your \naccount";
         topGap = 1;
@@ -199,7 +197,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                     child: ElevatedButton(
                         onPressed: nextActive
                             ? () {
-                                Navigator.pushNamed(context, '/CreateAccount2',
+                                Navigator.pushNamed(context, '/CreateAccount3',
                                     arguments: {
                                       'name': _namefield.text,
                                       'email': _emailfield.text,

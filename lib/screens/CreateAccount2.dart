@@ -89,20 +89,19 @@ class _CreateAccount2State extends State<CreateAccount2> {
     return TextStyle(color: Colors.black54, fontSize: size);
   }
 
-  late Map<String, String> data;
+  late Map<String, String?> data;
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     String createAccountStr = "Create your \naccount";
+    data = ModalRoute.of(context)?.settings.arguments as Map<String, String?>;
     return OrientationBuilder(builder: (context, orientation) {
-      print(MediaQuery.of(context).size.height); //782
-
       if (orientation == Orientation.portrait) {
         createAccountStr = "Create your \naccount";
       } else {
         createAccountStr = "Create your account";
       }
-      data = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+
       return Container(
         color: Colors.white,
         child: SafeArea(

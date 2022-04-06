@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   static String route = '/HomePage';
 
@@ -121,31 +121,35 @@ class HomePage extends StatelessWidget {
         fontSizeMultiplier[2] = 2;
         fontSizeMultiplier[3] = 2;
       }
-      return SafeArea(
-        child: Scaffold(
-          appBar: logoAppBar(
-              height: screenHeight, imageMultiplier: imageMultiplier[0]),
-          backgroundColor: Colors.white,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.add),
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 35.0, right: 30.0, top: 20.0, bottom: 10.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Message(
-                        message: 'In progress...',
-                        colors: Colors.black,
-                        fontSize: 0.038 * fontSizeMultiplier[0] * screenHeight)
-                  ]),
+      return Container(
+        color: Colors.white,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: logoAppBar(
+                height: screenHeight, imageMultiplier: imageMultiplier[0]),
+            backgroundColor: Colors.white,
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.add),
             ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 35.0, right: 30.0, top: 20.0, bottom: 10.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Message(
+                          message: 'In progress...',
+                          colors: Colors.black,
+                          fontSize:
+                              0.038 * fontSizeMultiplier[0] * screenHeight)
+                    ]),
+              ),
+            ),
+            bottomNavigationBar: Bottom(
+                height: screenHeight, imageMultiplier: imageMultiplier[0]),
           ),
-          bottomNavigationBar:
-              Bottom(height: screenHeight, imageMultiplier: imageMultiplier[0]),
         ),
       );
     });

@@ -5,8 +5,7 @@ import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import 'package:twitter_flutter/screens/profile.dart';
-
+import 'package:twitter_flutter/screens/HomePage.dart';
 import '../../widgets/authentication/appBar.dart';
 
 class LoginPassword extends StatefulWidget {
@@ -74,8 +73,8 @@ class _LoginPasswordState extends State<LoginPassword> {
           listener: (context, state) {
             if (state is LoginSuccessState) {
               try {
-                Navigator.pushNamedAndRemoveUntil(context, UserProfile.route,
-                    (Route<dynamic> route) => false);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.route, (Route<dynamic> route) => false);
               } on Exception catch (e) {
                 context.read<LoginBloc>().add(StartEvent());
               }

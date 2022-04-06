@@ -124,7 +124,10 @@ class _CreateAccount4State extends State<CreateAccount4> {
                         onPressed: nextActive
                             ? () {
                                 // TODO: Add route
-                                Navigator.pushNamed(context, '');
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/HomePage',
+                                    (Route<dynamic> route) => false);
                               }
                             : null,
                         child: const Text("next"),
