@@ -15,24 +15,6 @@ ThemeData generalTheme = ThemeData.light().copyWith(
       color: Colors.white,
     ));
 
-//Custom appBar common between multiple pages
-
-AppBar generalAppBar(BuildContext context) {
-  return AppBar(
-    leading: GestureDetector(
-      onTap: () {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
-      },
-      child: const Icon(
-        Icons.close,
-        color: Color(0xff2798E4),
-        size: 28,
-      ),
-    ),
-    title: Image.asset('assets/images/bluetwitterlogo64.png'),
-  );
-}
-
 //outlined authentication Button Style
 ButtonStyle outlinedButtonsStyle = ButtonStyle(
   backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
