@@ -24,10 +24,10 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-      /*DevicePreview(
+     DevicePreview(
     enabled: true,
     tools: const [...DevicePreview.defaultTools],
-    builder: (context) => */
+    builder: (context) =>
       MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: generalTheme,
@@ -35,10 +35,10 @@ void main() {
     title: 'Named Routes Demo',
     // Start the app with the "/" named route. In this case, the app starts
     // on the FirstScreen widget.
-    initialRoute: StartingPage.route,
+    initialRoute: changepassword.route,
     routes: {
       // When navigating to the starting page
-      StartingPage.route: (context) => const StartingPage(),
+      changepassword.route: (context) => ChangePassword(),
       LoginUsername.route: (context) => const LoginUsername(),
       LoginPassword.route: (context) => const LoginPassword(),
       CreateAccount1.route: (context) => const CreateAccount1(),
@@ -49,6 +49,6 @@ void main() {
       CreateAccount4.route: (context) => const CreateAccount4(),
       UserProfile.route: (context) => const UserProfile(),
     },
-    //),
+    ),
   ));
 }
