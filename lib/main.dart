@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:twitter_flutter/constants.dart';
+import 'package:twitter_flutter/screens/changepassword.dart';
 import 'package:twitter_flutter/screens/startingpage.dart';
 import 'package:twitter_flutter/screens/authentication/loginPassword.dart';
 import 'package:twitter_flutter/screens/authentication/loginUsername.dart';
@@ -28,10 +29,10 @@ void main() {
     title: 'Named Routes Demo',
     // Start the app with the "/" named route. In this case, the app starts
     // on the FirstScreen widget.
-    initialRoute: HomePage.route,
+    initialRoute: changepassword.route,
     routes: {
       // When navigating to the starting page
-      HomePage.route: (context) => HomePage(),
+      changepassword.route: (context) => ChangePassword(),
       LoginUsername.route: (context) => const LoginUsername(),
       LoginPassword.route: (context) => const LoginPassword(),
     },
