@@ -26,7 +26,7 @@ class _TermsOfServiceState extends State<TermsOfService> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
+              Navigator.pop(context);
             },
           ),
         ],
