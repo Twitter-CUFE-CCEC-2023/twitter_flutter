@@ -6,17 +6,17 @@ import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginStates> {
-  late AuthRepository authRepository;
-  late StreamSubscription streamSubscription;
-  LoginBloc() : super(LoginInitState()) {
-    streamSubscription = stream.listen((event) {
-      if(event is LoginLoadingState)
-        {
-          Future.delayed(Duration(seconds: 10)).then((_) => {
-            emit(LoginInitState())
-          });
-        }
-    });
+  AuthRepository authRepository;
+  //late StreamSubscription streamSubscription;
+  LoginBloc({required this.authRepository}) : super(LoginInitState()) {
+    // streamSubscription = stream.listen((event) {
+    //   if(event is LoginLoadingState)
+    //     {
+    //       Future.delayed(const Duration(seconds: 10)).then((_) => {
+    //         emit(LoginInitState())
+    //       });
+    //     }
+    // });
     on<StartEvent>((event, emit) => emit(LoginInitState()));
     on<LoginButtonPressed>(_onLoginButtonPressed);
   }
@@ -26,9 +26,9 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       LoginButtonPressed event, Emitter<LoginStates> emit) async {
     emit(LoginLoadingState());
     var pref= await SharedPreferences.getInstance();
-    authRepository = AuthRepository(event.username, event.password);
+    // authRepository = AuthRepository(loginReq:UserLoginRequest(event.username, event.password));
     try {
-      var data = await authRepository.login();
+      var data = await authRepository.login(username:event.username,password:event.password);
       pref.setString("access_token",data.access_token);
       pref.setString("token_expiration_date", data.token_expiration_date.toIso8601String());
       emit(LoginSuccessState(data.user));
@@ -39,7 +39,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
 
   @override
   Future<void> close() {
-    streamSubscription.cancel();
+    //streamSubscription.cancel();
     return super.close();
   }
 }

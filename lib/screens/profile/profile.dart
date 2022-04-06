@@ -78,7 +78,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
         _buildBarIcon(
             top: 14,
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            left: 13,callback: ()=>print("Back Pressed")),
+            left: 13,callback: ()=>Navigator.pop(context)),
         _buildAppbarText(
             //username
             username: "Huda El-Mufti",

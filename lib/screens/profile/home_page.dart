@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
+import 'package:twitter_flutter/screens/profile/profile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  AppBar logoAppBar({required double height, required double imageMultiplier}) {
+  AppBar logoAppBar({required double height, required double imageMultiplier,required BuildContext context}) {
     return AppBar(
       elevation: 1,
       actions: [
@@ -63,14 +64,21 @@ class HomePage extends StatelessWidget {
           onPressed: () => {},
         )
       ],
-      leading: IconButton(
-        onPressed: () => {},
-        icon: Icon(
-          Icons.circle,
-          color: Colors.blue,
-          size: 0.038 * imageMultiplier * height,
-        ),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: GestureDetector(
+          onTap: ()=>Navigator.pushNamed(context,UserProfile.route),
+            child: CircleAvatar(backgroundImage: NetworkImage("https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg"))),
       ),
+      //IconButton(
+      //   onPressed: () => {},
+      //  
+      //   icon: Icon(
+      //     Icons.circle,
+      //     color: Colors.blue,
+      //     size: 0.038 * imageMultiplier * height,
+      //   ),
+      // ),
       backgroundColor: Colors.white,
       title: Image.asset(
         'assets/images/bluetwitterlogo64.png',
@@ -101,9 +109,6 @@ class HomePage extends StatelessWidget {
     double borderRadiusMultiplier = 1;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
-      print(MediaQuery.of(context).size.width);
-      print(MediaQuery.of(context).size.height);
-
       if (orientation == Orientation.portrait) {
         imageMultiplier[0] = 1;
         imageMultiplier[1] = 1;
@@ -126,7 +131,7 @@ class HomePage extends StatelessWidget {
         child: SafeArea(
           child: Scaffold(
             appBar: logoAppBar(
-                height: screenHeight, imageMultiplier: imageMultiplier[0]),
+                height: screenHeight, imageMultiplier: imageMultiplier[0],context: context),
             backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
               onPressed: () {},

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:twitter_flutter/models/objects/user.dart';
 
 class UserAuthenticationModel {

@@ -4,18 +4,13 @@ import 'package:twitter_flutter/models/authentication/user_authentication_model.
 import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
 
 class AuthRepository {
-  String username;
-  String password;
   late UserLoginRequest loginReq;
 
-  AuthRepository(this.username,this.password)
-  {
-    loginReq = UserLoginRequest(username,password);
-  }
+  AuthRepository({required this.loginReq});
 
-  Future<UserAuthenticationModel> login() async {
+  Future<UserAuthenticationModel> login({username,password}) async {
     try {
-      String loginData = await loginReq.Login();
+      String loginData = await loginReq.Login(username:username,password:password);
       return UserAuthenticationModel.fromJson(jsonDecode(loginData));
     } on Exception catch (e) {
       throw Exception(e);

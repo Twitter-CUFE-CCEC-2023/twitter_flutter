@@ -36,10 +36,9 @@ void main() {
       debugShowCheckedModeBanner: false,
       theme: generalTheme,
       useInheritedMediaQuery: true,
-      title: 'Named Routes Demo',
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
-      initialRoute: StartingPage.route,
+      initialRoute: "/",
       routes: {
         // When navigating to the starting page
         StartingPage.route: (context) => const StartingPage(),

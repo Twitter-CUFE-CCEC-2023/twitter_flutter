@@ -4,6 +4,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
+import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
+import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import '../../widgets/authentication/appBar.dart';
@@ -66,7 +68,7 @@ class _LoginPasswordState extends State<LoginPassword> {
   Widget build(BuildContext context) {
     username = ModalRoute.of(context)!.settings.arguments as String;
     return BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(),
+      create: (context) => LoginBloc(authRepository:AuthRepository(loginReq: UserLoginRequest("",""))),
       child: BlocConsumer<LoginBloc, LoginStates>(
           buildWhen: (context, state) => state is! LoginSuccessState,
           listenWhen: (context, state) => state is LoginSuccessState,
@@ -207,12 +209,10 @@ class _LoginPasswordState extends State<LoginPassword> {
                   size: 50.0,
                 ),
               );
-            } else if (state is LoginSuccessState) {
-              return Text(state.userdata.username);
             } else if (state is LoginFailureState) {
-              return Text(state.errorMessage);
+              return Container(color: Colors.white,child: Center(child: Text(state.errorMessage,style: TextStyle(color: Colors.black),)));
             } else {
-              return Text("data");
+              return const Text("Never");
             }
           }),
     );
