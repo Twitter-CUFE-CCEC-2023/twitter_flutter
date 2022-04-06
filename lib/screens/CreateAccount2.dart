@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:twitter_flutter/constants.dart';
+import 'package:twitter_flutter/screens/termsOfService.dart';
 
 class CreateAccount2 extends StatefulWidget {
   const CreateAccount2({Key? key}) : super(key: key);
@@ -23,7 +25,8 @@ class _CreateAccount2State extends State<CreateAccount2> {
             text: 'Terms of Service',
             recognizer: TapGestureRecognizer()
               ..onTap = () => {
-                    //TODO: CALL TERMS AND CONDITIONS PAGE
+                    Navigator.pushNamed(context, TermsOfService.route,
+                        arguments: WebViewArgs('https://twitter.com/en/tos')),
                   },
             style: buttons,
           ),
@@ -36,7 +39,9 @@ class _CreateAccount2State extends State<CreateAccount2> {
             style: buttons,
             recognizer: TapGestureRecognizer()
               ..onTap = () => {
-                    //TODO: CALL PRIVACY POLICY PAGE
+                    Navigator.pushNamed(context, TermsOfService.route,
+                        arguments: WebViewArgs(
+                            'https://help.twitter.com/en/rules-and-policies/twitter-cookies')),
                   },
           ),
           TextSpan(
@@ -49,7 +54,9 @@ class _CreateAccount2State extends State<CreateAccount2> {
             style: buttons,
             recognizer: TapGestureRecognizer()
               ..onTap = () => {
-                    //TODO: CALL COOKIE USE PAGE
+                    Navigator.pushNamed(context, TermsOfService.route,
+                        arguments:
+                            WebViewArgs('https://twitter.com/en/privacy/')),
                   },
           ),
           TextSpan(

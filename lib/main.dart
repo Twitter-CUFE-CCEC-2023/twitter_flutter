@@ -7,6 +7,8 @@ import 'package:twitter_flutter/screens/authentication/loginPassword.dart';
 import 'package:twitter_flutter/screens/authentication/loginUsername.dart';
 import 'package:twitter_flutter/screens/CreateAccount1.dart';
 import 'package:twitter_flutter/screens/CreateAccount2.dart';
+import 'package:twitter_flutter/screens/CreateAccount4.dart';
+import 'package:twitter_flutter/screens/termsOfService.dart';
 import 'package:twitter_flutter/screens/Settings&Privacy.dart';
 import 'package:twitter_flutter/screens/YourAccount.dart';
 import 'package:twitter_flutter/screens/firstscreen.dart';
@@ -41,7 +43,9 @@ void main() {
       CreateAccount1.route: (context) => const CreateAccount1(),
       CreateAccount2.route: (context) => const CreateAccount2(),
       YourAccount.route: (context) => const YourAccount(),
-      Settings.route: (context) => const Settings()
+      Settings.route: (context) => const Settings(),
+      TermsOfService.route: (context) => const TermsOfService(),
+      CreateAccount4.route: (context) => const CreateAccount4(),
     },
     //),
   ));
