@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:twitter_flutter/constants.dart';
+import 'package:twitter_flutter/widgets/authentication/constants.dart';
 
 class TermsOfService extends StatefulWidget {
   const TermsOfService({Key? key}) : super(key: key);

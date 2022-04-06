@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:twitter_flutter/constants.dart';
+import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/termsOfService.dart';
 
 class CreateAccount2 extends StatefulWidget {

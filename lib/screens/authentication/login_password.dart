@@ -69,12 +69,13 @@ class _LoginPasswordState extends State<LoginPassword> {
     return BlocProvider<LoginBloc>(
       create: (context) => LoginBloc(),
       child: BlocConsumer<LoginBloc, LoginStates>(
-          buildWhen: (context,state)=> state is! LoginSuccessState,
-          listenWhen: (context,state)=> state is LoginSuccessState,
+          buildWhen: (context, state) => state is! LoginSuccessState,
+          listenWhen: (context, state) => state is LoginSuccessState,
           listener: (context, state) {
-            if(state is LoginSuccessState){
+            if (state is LoginSuccessState) {
               try {
-                Navigator.pushNamedAndRemoveUntil(context,UserProfile.route,(Route<dynamic> route)=>false);
+                Navigator.pushNamedAndRemoveUntil(context, UserProfile.route,
+                    (Route<dynamic> route) => false);
               } on Exception catch (e) {
                 context.read<LoginBloc>().add(StartEvent());
               }
@@ -200,8 +201,13 @@ class _LoginPasswordState extends State<LoginPassword> {
                 )),
               );
             } else if (state is LoginLoadingState) {
-              return const SpinKitWave(
-                  color: Colors.white, size: 50.0);
+              return Container(
+                color: Colors.white,
+                child: const SpinKitWave(
+                  color: Colors.black,
+                  size: 50.0,
+                ),
+              );
             } else if (state is LoginSuccessState) {
               return Text(state.userdata.username);
             } else if (state is LoginFailureState) {
