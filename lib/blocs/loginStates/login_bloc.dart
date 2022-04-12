@@ -7,16 +7,16 @@ import 'package:twitter_flutter/repositories/authentication/auth_repository.dart
 
 class LoginBloc extends Bloc<LoginEvents, LoginStates> {
   AuthRepository authRepository;
-  //late StreamSubscription streamSubscription;
+  late StreamSubscription streamSubscription;
   LoginBloc({required this.authRepository}) : super(LoginInitState()) {
-    // streamSubscription = stream.listen((event) {
-    //   if(event is LoginLoadingState)
-    //     {
-    //       Future.delayed(const Duration(seconds: 10)).then((_) => {
-    //         emit(LoginInitState())
-    //       });
-    //     }
-    // });
+    streamSubscription = stream.listen((event) {
+      if(event is LoginLoadingState)
+        {
+          Future.delayed(const Duration(seconds: 10)).then((_) => {
+            emit(LoginInitState())
+          });
+        }
+    });
     on<StartEvent>((event, emit) => emit(LoginInitState()));
     on<LoginButtonPressed>(_onLoginButtonPressed);
   }
@@ -39,7 +39,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
 
   @override
   Future<void> close() {
-    //streamSubscription.cancel();
+    streamSubscription.cancel();
     return super.close();
   }
 }
