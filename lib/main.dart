@@ -1,6 +1,12 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
+import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
+import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/screens/authentication/login_password.dart';
@@ -28,35 +34,80 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-    /*DevicePreview(
+      /*DevicePreview(
     enabled: true,
     tools: const [...DevicePreview.defaultTools],
     builder: (context) =>*/
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: generalTheme,
-      useInheritedMediaQuery: true,
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
-      initialRoute: "/",
-      routes: {
-        // When navigating to the starting page
-        StartingPage.route: (context) => const StartingPage(),
-        ChangePassword.route: (context) => const ChangePassword(),
-        LoginUsername.route: (context) => const LoginUsername(),
-        LoginPassword.route: (context) => const LoginPassword(),
-        CreateAccount1.route: (context) => const CreateAccount1(),
-        CreateAccount2.route: (context) => const CreateAccount2(),
-        CreateAccount3.route: (context) => const CreateAccount3(),
-        YourAccount.route: (context) => const YourAccount(),
-        Settings.route: (context) => const Settings(),
-        TermsOfService.route: (context) => const TermsOfService(),
-        CreateAccount4.route: (context) => const CreateAccount4(),
-        UserProfile.route: (context) => const UserProfile(),
-        EditProfile.route: (context) => const EditProfile(),
-        HomePage.route: (context) => const HomePage(),
-      },
-    ),
-    //),
-  );
+      Twitter()
+      //),
+      );
+}
+
+class Twitter extends StatefulWidget {
+  Twitter({Key? key}) : super(key: key);
+
+  @override
+  State<Twitter> createState() => _TwitterState();
+}
+
+class _TwitterState extends State<Twitter> {
+  final InternetCubit internetCubit = InternetCubit(Connectivity());
+  final LoginBloc loginBloc = LoginBloc(
+      authRepository: AuthRepository(loginReq: UserLoginRequest("", "")));
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: loginBloc),
+        BlocProvider.value(value: internetCubit)
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: generalTheme,
+        useInheritedMediaQuery: true,
+        // Start the app with the "/" named route. In this case, the app starts
+        // on the FirstScreen widget.
+        initialRoute: "/",
+        routes: {
+          // When navigating to the starting page
+          StartingPage.route: (context) => const StartingPage(),
+
+          LoginUsername.route: (context) => const LoginUsername(),
+
+          LoginPassword.route: (context) => const LoginPassword(),
+
+          HomePage.route: (context) => const HomePage(),
+
+          CreateAccount1.route: (context) => const CreateAccount1(),
+
+          CreateAccount2.route: (context) => const CreateAccount2(),
+
+          CreateAccount3.route: (context) => const CreateAccount3(),
+
+          CreateAccount4.route: (context) => const CreateAccount4(),
+
+          YourAccount.route: (context) => const YourAccount(),
+
+          Settings.route: (context) => const Settings(),
+
+          TermsOfService.route: (context) => const TermsOfService(),
+
+          UserProfile.route: (context) => const UserProfile(),
+
+          EditProfile.route: (context) => const EditProfile(),
+
+          ChangePassword.route: (context) => const ChangePassword(),
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    internetCubit.close();
+    loginBloc.close();
+    super.dispose();
+  }
 }
