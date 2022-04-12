@@ -293,138 +293,139 @@ class StartingPage extends StatelessWidget {
     double borderRadiusMultiplier = 1;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
 
-    return BlocProvider<InternetCubit>(
-      create: (context) => InternetCubit(Connectivity()),
-      child:
-          BlocBuilder<InternetCubit, InternetState>(builder: (context, state) {
-        if (state is InternetDisconnected) {
-          return Container(
+    return BlocBuilder<InternetCubit, InternetState>(
+        //bloc: BlocProvider.of<InternetCubit>(context),
+        builder: (context, state) {
+          if (state is InternetDisconnected) {
+            return Container(
+                color: Colors.white,
+                child: SafeArea(
+                    child: Scaffold(
+                        appBar: logoAppBar(
+                            height: screenHeight,
+                            imageMultiplier: imageMultiplier[0]),
+                        backgroundColor: Colors.white,
+                        body: const Center(
+                          child: Text(
+                            "Try Connecting to a Network",
+                            style: TextStyle(fontSize: 40.0),
+                            textAlign: TextAlign.center,
+                          ),
+                        ))));
+          } else if (state is InternetLoading) {
+            return Container(
+                color: Colors.white,
+                child: const SpinKitWanderingCubes(color: Colors.black, size: 50.0));
+          }
+          return OrientationBuilder(builder: (context, orientation) {
+            if (orientation == Orientation.portrait) {
+              sizedBoxHeightMultiplier[0] = 1;
+              sizedBoxHeightMultiplier[1] = 1;
+              sizedBoxHeightMultiplier[2] = 1;
+              imageMultiplier[0] = 1;
+              imageMultiplier[1] = 1;
+              borderRadiusMultiplier = 1;
+              fontSizeMultiplier[0] = 1;
+              fontSizeMultiplier[1] = 1;
+              fontSizeMultiplier[2] = 1;
+              fontSizeMultiplier[3] = 1;
+            } else {
+              sizedBoxHeightMultiplier[0] = .1;
+              sizedBoxHeightMultiplier[1] = .33;
+              sizedBoxHeightMultiplier[2] = 1;
+              sizedBoxHeightMultiplier[3] = 1.8;
+              imageMultiplier[0] = 1.8;
+              imageMultiplier[1] = 1.8;
+              borderRadiusMultiplier = 1.4;
+              fontSizeMultiplier[0] = 2;
+              fontSizeMultiplier[1] = 2;
+              fontSizeMultiplier[2] = 2;
+              fontSizeMultiplier[3] = 2;
+            }
+            return Container(
               color: Colors.white,
               child: SafeArea(
-                  child: Scaffold(
-                      appBar: logoAppBar(
-                          height: screenHeight,
-                          imageMultiplier: imageMultiplier[0]),
-                      backgroundColor: Colors.white,
-                      body: const Center(
-                        child: Text(
-                          "Try Connecting to a Network",
-                          style: TextStyle(fontSize: 40.0),
-                          textAlign: TextAlign.center,
+                child: Scaffold(
+                  appBar: logoAppBar(
+                      height: screenHeight,
+                      imageMultiplier: imageMultiplier[0]),
+                  backgroundColor: Colors.white,
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 0.211 *
+                              sizedBoxHeightMultiplier[0] *
+                              screenHeight, // 165
+                          width: MediaQuery.of(context).size.width,
                         ),
-                      ))));
-        } else if (state is InternetLoading) {
-          return Container(
-              color: Colors.white,
-              child: SpinKitWanderingCubes(color: Colors.black, size: 50.0));
-        }
-        return OrientationBuilder(builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            sizedBoxHeightMultiplier[0] = 1;
-            sizedBoxHeightMultiplier[1] = 1;
-            sizedBoxHeightMultiplier[2] = 1;
-            imageMultiplier[0] = 1;
-            imageMultiplier[1] = 1;
-            borderRadiusMultiplier = 1;
-            fontSizeMultiplier[0] = 1;
-            fontSizeMultiplier[1] = 1;
-            fontSizeMultiplier[2] = 1;
-            fontSizeMultiplier[3] = 1;
-          } else {
-            sizedBoxHeightMultiplier[0] = .1;
-            sizedBoxHeightMultiplier[1] = .33;
-            sizedBoxHeightMultiplier[2] = 1;
-            sizedBoxHeightMultiplier[3] = 1.8;
-            imageMultiplier[0] = 1.8;
-            imageMultiplier[1] = 1.8;
-            borderRadiusMultiplier = 1.4;
-            fontSizeMultiplier[0] = 2;
-            fontSizeMultiplier[1] = 2;
-            fontSizeMultiplier[2] = 2;
-            fontSizeMultiplier[3] = 2;
-          }
-          return Container(
-            color: Colors.white,
-            child: SafeArea(
-              child: Scaffold(
-                appBar: logoAppBar(
-                    height: screenHeight, imageMultiplier: imageMultiplier[0]),
-                backgroundColor: Colors.white,
-                body: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 0.211 *
-                            sizedBoxHeightMultiplier[0] *
-                            screenHeight, // 165
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                      welcomeMessage(
-                        message:
-                            'See what’s happening in the world right now. ',
-                        fontSize:
-                            0.038 * fontSizeMultiplier[0] * screenHeight, // 30
-                        weight: FontWeight.bold,
-                        family: 'IBMPlexSans',
-                      ),
-                      SizedBox(
-                        height: 0.25 *
-                            sizedBoxHeightMultiplier[1] *
-                            screenHeight, // 195
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                      buttons(
-                          context: context,
-                          height: screenHeight,
-                          imageMultiplier: imageMultiplier[1],
-                          borderRadiusMultiplier: borderRadiusMultiplier,
-                          fontMultiplier: fontSizeMultiplier[1]),
-                      SizedBox(
-                        height: 0.0282 *
-                            sizedBoxHeightMultiplier[2] *
-                            screenHeight, // 20
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(35, 0, 50, 0),
-                        child: termConditions(
-                            buttons: buttonStyle(0.0141 *
+                        welcomeMessage(
+                          message:
+                              'See what’s happening in the world right now. ',
+                          fontSize: 0.038 *
+                              fontSizeMultiplier[0] *
+                              screenHeight, // 30
+                          weight: FontWeight.bold,
+                          family: 'IBMPlexSans',
+                        ),
+                        SizedBox(
+                          height: 0.25 *
+                              sizedBoxHeightMultiplier[1] *
+                              screenHeight, // 195
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                        buttons(
+                            context: context,
+                            height: screenHeight,
+                            imageMultiplier: imageMultiplier[1],
+                            borderRadiusMultiplier: borderRadiusMultiplier,
+                            fontMultiplier: fontSizeMultiplier[1]),
+                        SizedBox(
+                          height: 0.0282 *
+                              sizedBoxHeightMultiplier[2] *
+                              screenHeight, // 20
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(35, 0, 50, 0),
+                          child: termConditions(
+                              buttons: buttonStyle(0.0141 *
+                                  screenHeight *
+                                  fontSizeMultiplier[2]), // 11
+                              text: textStyle(0.0141 *
+                                  screenHeight *
+                                  fontSizeMultiplier[2]),
+                              context: context // 11
+                              ),
+                        ),
+                        SizedBox(
+                          height: 0.055 *
+                              sizedBoxHeightMultiplier[3] *
+                              screenHeight, // 45
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 35), // 35
+                          child: logIn(
+                            buttons: buttonStyle(0.0192 *
                                 screenHeight *
-                                fontSizeMultiplier[2]), // 11
-                            text: textStyle(
-                                0.0141 * screenHeight * fontSizeMultiplier[2]),
-                            context: context // 11
-                            ),
-                      ),
-                      SizedBox(
-                        height: 0.055 *
-                            sizedBoxHeightMultiplier[3] *
-                            screenHeight, // 45
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 35), // 35
-                        child: logIn(
-                          buttons: buttonStyle(0.0192 *
-                              screenHeight *
-                              fontSizeMultiplier[3]), // 15
-                          text: textStyle(0.0192 *
-                              screenHeight *
-                              fontSizeMultiplier[3]), // 15
-                          context: context,
+                                fontSizeMultiplier[3]), // 15
+                            text: textStyle(0.0192 *
+                                screenHeight *
+                                fontSizeMultiplier[3]), // 15
+                            context: context,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
+            );
+          });
         });
-      }),
-    );
     //);
   }
 }

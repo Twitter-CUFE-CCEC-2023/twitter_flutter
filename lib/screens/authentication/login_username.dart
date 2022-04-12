@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import '../../widgets/authentication/appBar.dart';
 import 'login_password.dart';
@@ -94,16 +96,27 @@ class _LoginUsernameState extends State<LoginUsername> {
                           child: const Text("Forget Password?"),
                           style: outlinedButtonsStyle,
                         ),
-                        ElevatedButton(
-                          onPressed: nextActive
-                              ? () {
-                                  Navigator.pushNamed(
-                                      context, LoginPassword.route,
-                                      arguments: controller.text);
-                                }
-                              : null,
-                          child: const Text("Next"),
-                          style: elevatedButtonsStyle,
+                        BlocListener<InternetCubit,InternetState>(
+                          listenWhen: (previousState,currentState)=> previousState != currentState,
+                          listener: (context, state) {
+                            if(state is InternetDisconnected){
+                              Scaffold.of(context).showSnackBar(SnackBar(content: Text("Internet Disconnected"),duration: Duration(seconds: 3),));
+                            }else
+                              {
+                                Scaffold.of(context).showSnackBar(SnackBar(content: Text("Internet Connected"),duration: Duration(seconds: 3),));
+                              }
+                          },
+                          child: ElevatedButton(
+                            onPressed: nextActive
+                                ? () {
+                                    Navigator.pushNamed(
+                                        context, LoginPassword.route,
+                                        arguments: controller.text);
+                                  }
+                                : null,
+                            child: const Text("Next"),
+                            style: elevatedButtonsStyle,
+                          ),
                         )
                       ],
                     ),
