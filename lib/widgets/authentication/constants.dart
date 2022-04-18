@@ -71,3 +71,4 @@ class WebViewArgs {
 
   WebViewArgs(this.url);
 }
+

@@ -98,6 +98,7 @@ class _TwitterState extends State<Twitter> {
           EditProfile.route: (context) => const EditProfile(),
 
           ChangePassword.route: (context) => const ChangePassword(),
+
         },
       ),
     );
