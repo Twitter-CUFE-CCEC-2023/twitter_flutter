@@ -1,25 +1,25 @@
 import 'package:flutter/cupertino.dart';
 
 class UserModel {
-  String? name;
-  String? username;
-  String? email;
-  String? phone;
-  String? profile_image_url;
-  String? cover_image_url;
-  String? bio;
-  String? website;
-  String? location;
-  DateTime? created_at;
-  bool? isVerified;
-  String? role;
-  int? followers_count;
-  int? following_count;
-  int? tweets_count;
-  int? likes_count;
+  late String name;
+  late String username;
+  late String email;
+  late String phone;
+  late String profile_image_url;
+  late String cover_image_url;
+  late String bio;
+  late String website;
+  late String location;
+  late DateTime created_at;
+  late bool isVerified;
+  late String role;
+  late int followers_count;
+  late int following_count;
+  late int tweets_count;
+  late int likes_count;
   late bool isBanned;
-  DateTime? banDuration;
-  bool? permanentBan;
+  late DateTime banDuration;
+  late bool permanentBan;
 
   /*UserModel({
     this.name,
