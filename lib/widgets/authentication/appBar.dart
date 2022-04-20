@@ -3,7 +3,8 @@ import '../../screens/starting_page.dart';
 
 
 //Custom appBar common between multiple pages
-AppBar generalAppBar(BuildContext context) {
+AppBar generalAppBar(BuildContext context,double imageMultiplier) {
+  double height = MediaQuery.of(context).size.height;
   return AppBar(
     leading: GestureDetector(
       onTap: () {
@@ -15,6 +16,9 @@ AppBar generalAppBar(BuildContext context) {
         size: 28,
       ),
     ),
-    title: Image.asset('assets/images/bluetwitterlogo64.png'),
+    title: Image.asset('assets/images/bluetwitterlogo64.png',
+      width: 0.083 * imageMultiplier * height, // 65
+      height: 0.083 * imageMultiplier * height,  // 65
+    ),
   );
 }

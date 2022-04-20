@@ -68,168 +68,173 @@ class _LoginPasswordState extends State<LoginPassword> {
 
   @override
   Widget build(BuildContext context) {
+    double imageMultiplier;
     username = ModalRoute.of(context)!.settings.arguments as String;
-    return GestureDetector(//to dismiss the snackbar on touch
+    return GestureDetector(
+      //to dismiss the snackbar on touch
       onTap: () {
         setState(() {
           bottomSheet = null;
         });
       },
-      child: Container(
-        color: Colors.white,
-        child: SafeArea(
-            child: Scaffold(
-              appBar: generalAppBar(context),
-          bottomSheet: bottomSheet,
-          body: BlocListener<InternetCubit, InternetState>(
-            listenWhen: (previousState, currentState) =>
-                previousState != currentState,
-            listener: (context, state) => networkListner(context, state),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 20.0, right: 20.0, top: 15.0, bottom: 10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Enter your password",
-                    style: dispTextStyle,
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  TextField(
-                    enabled: false,
-                    showCursor: true,
-                    cursorHeight: 25.0,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      hintText: username,
-                      hintStyle:
-                          const TextStyle(fontSize: 18.0, color: Colors.black),
-                      isDense: true,
-                      contentPadding: const EdgeInsets.only(bottom: 6.0),
+      child: OrientationBuilder(builder: (context, orientation) {
+        if (orientation == Orientation.portrait) {
+          imageMultiplier = 1;
+        } else {
+          imageMultiplier = 1.8;
+        }
+        return Container(
+          color: Colors.white,
+          child: SafeArea(
+              child: Scaffold(
+            appBar: generalAppBar(context,imageMultiplier),
+            bottomSheet: bottomSheet,
+            body: BlocListener<InternetCubit, InternetState>(
+              listenWhen: (previousState, currentState) =>
+                  previousState != currentState,
+              listener: (context, state) => networkListner(context, state),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, top: 15.0, bottom: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Enter your password",
+                      style: dispTextStyle,
+                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 32.0,
-                  ),
-                  TextField(
-                    showCursor: true,
-                    cursorHeight: 25.0,
-                    textAlign: TextAlign.left,
-                    controller: controller,
-                    decoration: InputDecoration(
-                        hintText: "Password",
-                        hintStyle: const TextStyle(fontSize: 18.0),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    TextField(
+                      enabled: false,
+                      showCursor: true,
+                      cursorHeight: 25.0,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        hintText: username,
+                        hintStyle: const TextStyle(
+                            fontSize: 18.0, color: Colors.black),
                         isDense: true,
                         contentPadding: const EdgeInsets.only(bottom: 6.0),
-                        suffixIconConstraints:
-                            const BoxConstraints(minWidth: 0, minHeight: 0),
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              child: passwordVisibilityStyle,
-                              onTap: () =>
-                                  changePasswordVisibilityIcon(showPassword),
-                            ),
-                            if (passwordCheckSuffix.icon != null)
-                              passwordCheckSuffix, // check that the icon suffix is not set to null
-                          ],
-                        )),
-                    obscureText: !showPassword,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          bottomNavigationBar: Transform.translate(
-            offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
-            child: BottomAppBar(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Divider(
-                    color: Color(0xffD9DCDD),
-                    thickness: 1.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0, right: 8.0, bottom: 12.0, top: 4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {
-                            //TODO:Forget Password Button
-                          },
-                          child: const Text("Forget Password?"),
-                          style: outlinedButtonsStyle,
-                        ),
-                        BlocListener<LoginBloc, LoginStates>(
-                          listenWhen: (prevState, currentState) =>
-                              currentState is LoginSuccessState ||
-                              currentState is LoginFailureState,
-                          listener: (context, state) {
-                            if (state is LoginSuccessState) {
-                              try {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    HomePage.route,
-                                    (Route<dynamic> route) => false);
-                              } on Exception catch (e) {
-                                context.read<LoginBloc>().add(StartEvent());
-                              }
-                            } else if (state is LoginFailureState) {
-                              setState(() {
-                                bottomSheet = _buildBottomSheet(context, state);
-                              });
-                            }
-                          },
-                          child: ElevatedButton(
-                            onPressed: logActive
-                                ? () {
-                                    String password = controller.text;
-                                    context.read<LoginBloc>().add(
-                                        LoginButtonPressed(
-                                            username: username,
-                                            password: password));
-                                  }
-                                : null,
-                            child: const Text("Log in"),
-                            style: elevatedButtonsStyle,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    TextField(
+                      showCursor: true,
+                      cursorHeight: 25.0,
+                      textAlign: TextAlign.left,
+                      controller: controller,
+                      decoration: InputDecoration(
+                          hintText: "Password",
+                          hintStyle: const TextStyle(fontSize: 18.0),
+                          isDense: true,
+                          contentPadding: const EdgeInsets.only(bottom: 6.0),
+                          suffixIconConstraints:
+                              const BoxConstraints(minWidth: 0, minHeight: 0),
+                          suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                child: passwordVisibilityStyle,
+                                onTap: () =>
+                                    changePasswordVisibilityIcon(showPassword),
+                              ),
+                              if (passwordCheckSuffix.icon != null)
+                                passwordCheckSuffix, // check that the icon suffix is not set to null
+                            ],
+                          )),
+                      obscureText: !showPassword,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        )),
-      ),
+            bottomNavigationBar: Transform.translate(
+              offset:
+                  Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
+              child: BottomAppBar(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Divider(
+                      color: Color(0xffD9DCDD),
+                      thickness: 1.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, bottom: 12.0, top: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              //TODO:Forget Password Button
+                            },
+                            child: const Text("Forget Password?"),
+                            style: outlinedButtonsStyle,
+                          ),
+                          BlocListener<LoginBloc, LoginStates>(
+                            listenWhen: (prevState, currentState) =>
+                                currentState is LoginSuccessState ||
+                                currentState is LoginFailureState,
+                            listener: (context, state) {
+                              if (state is LoginSuccessState) {
+                                try {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      HomePage.route,
+                                      (Route<dynamic> route) => false);
+                                } on Exception catch (e) {
+                                  context.read<LoginBloc>().add(StartEvent());
+                                }
+                              } else if (state is LoginFailureState) {
+                                setState(() {
+                                  bottomSheet =
+                                      _buildBottomSheet(context, state);
+                                });
+                              }
+                            },
+                            child: ElevatedButton(
+                              onPressed: logActive
+                                  ? () {
+                                      String password = controller.text;
+                                      context.read<LoginBloc>().add(
+                                          LoginButtonPressed(
+                                              username: username,
+                                              password: password));
+                                    }
+                                  : null,
+                              child: const Text("Log in"),
+                              style: elevatedButtonsStyle,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )),
+        );
+      }),
     );
   }
 }
 
-Widget _buildBottomSheet(context,state){
+Widget _buildBottomSheet(context, state) {
   return Transform.translate(
-    offset: Offset(
-        0.0,
-        -1 *
-            MediaQuery.of(context)
-                .viewInsets
-                .bottom /
-            3),
+    offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom / 3),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,8 +245,7 @@ Widget _buildBottomSheet(context,state){
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.black12,
-                borderRadius:
-                BorderRadius.circular(10.0)),
+                borderRadius: BorderRadius.circular(10.0)),
             child: Text(
               state.errorMessage,
               textAlign: TextAlign.center,
