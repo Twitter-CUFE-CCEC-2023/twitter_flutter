@@ -6,8 +6,6 @@ import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
-import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
-import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import '../../utils/common_listners/network_listner.dart';
@@ -81,6 +79,7 @@ class _LoginPasswordState extends State<LoginPassword> {
         color: Colors.white,
         child: SafeArea(
             child: Scaffold(
+              appBar: generalAppBar(context),
           bottomSheet: bottomSheet,
           body: BlocListener<InternetCubit, InternetState>(
             listenWhen: (previousState, currentState) =>
