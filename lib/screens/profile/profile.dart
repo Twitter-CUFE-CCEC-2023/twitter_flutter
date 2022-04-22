@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
@@ -8,12 +9,12 @@ import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/media.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/tweets.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/tweets_and_replies.dart';
+import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-
 import '../../blocs/loginStates/login_bloc.dart';
 import '../utility_screens/opened_image.dart';
-
+import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
   static const route = "/userProfile";
@@ -33,15 +34,16 @@ class _UserProfileState extends State<UserProfile> {
     if (state is LoginSuccessState) {
       userData = state.userdata;
     } else {
-      Navigator.pushNamedAndRemoveUntil(context, StartingPage.route, (route) => false);
-      //TODO:Log the user out in case of the state is not login success
+      Navigator.pushNamedAndRemoveUntil(
+          context, StartingPage.route, (route) => false);
+      //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
     var orientation = MediaQuery.of(context).orientation;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
-      child: Material(
-        child: CustomScrollView(
+      child: Scaffold(
+        body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate: MySliverAppBar(
@@ -123,12 +125,6 @@ class _UserProfileState extends State<UserProfile> {
                       )),
                     ],
                   ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(Icons.add),
-                    elevation: 5,
-                    backgroundColor: Colors.lightBlue,
-                  ),
                   body: TabBarView(
                     children: [Tweets(), TweetsAndReplies(), Media(), Likes()],
                   ),
@@ -136,6 +132,26 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              builder: (context) {
+                return GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                        height: 0.97 * MediaQuery.of(context).size.height,
+                        color: Color(0xDFFFFFFF),
+                        child: FABActions(),
+                    ));
+              },
+              context: context,
+              backgroundColor: Colors.white24,
+              isDismissible: true,
+              isScrollControlled: true,
+            );
+          },
+          child: Icon(Icons.add),
         ),
       ),
     );
@@ -410,6 +426,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                 child: CircleAvatar(
                   radius: profileImageSize(context, 7.5, shrinkOffset, 35),
                   backgroundImage: NetworkImage(imageUrl),
+                  onBackgroundImageError: (obj, stackTrace) => CircleAvatar(
+                    radius: profileImageSize(context, 7.5, shrinkOffset, 35),
+                    backgroundColor: Colors.lightBlue,
+                  ),
                 ),
               ),
             ),
@@ -427,6 +447,24 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       opacity: 1 - shrinkOffset / expandedHeight,
       child: Image.network(
         imageUrl,
+        loadingBuilder: (context, image, loadingProgress) {
+          if (loadingProgress == null) {
+            return image;
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.lightBlue,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          }
+        },
+        errorBuilder: (context, object, stackTrace) => Container(
+          color: Colors.lightBlue,
+        ),
         fit: BoxFit.cover,
       ),
     );

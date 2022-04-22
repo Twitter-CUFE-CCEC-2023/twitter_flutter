@@ -53,6 +53,7 @@ dependencies:
   mockito: ^5.1.0
   build_runner: ^2.1.8
   font_awesome_flutter: ^10.1.0
+  get: ^4.6.1
 
 flutter_native_splash:
   color: "#00acee"
