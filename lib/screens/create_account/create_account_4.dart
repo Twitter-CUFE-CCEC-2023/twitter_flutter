@@ -19,6 +19,12 @@ class _CreateAccount4State extends State<CreateAccount4> {
     _passwordfield = TextEditingController();
   }
 
+  bool IsPhone() {
+    String p = "";
+    RegExp regPhone = RegExp(r"^01[0-2,5]{1}[0-9]{8}$");
+    return regPhone.hasMatch(p);
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
