@@ -34,12 +34,12 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-      /*DevicePreview(
+      DevicePreview(
     enabled: true,
     tools: const [...DevicePreview.defaultTools],
-    builder: (context) =>*/
+    builder: (context) =>
       Twitter()
-      //),
+      ),
       );
 }
 
@@ -71,7 +71,7 @@ class _TwitterState extends State<Twitter> {
         initialRoute: "/",
         routes: {
           // When navigating to the starting page
-          StartingPage.route: (context) => const StartingPage(),
+          StartingPage.route: (context) => const EditProfile(),
 
           LoginUsername.route: (context) => const LoginUsername(),
 
