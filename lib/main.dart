@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
-import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
+import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/screens/authentication/login_password.dart';
@@ -53,7 +53,7 @@ class Twitter extends StatefulWidget {
 class _TwitterState extends State<Twitter> {
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
-      authRepository: AuthRepository(loginReq: UserLoginRequest("", "")));
+      authRepository: AuthRepository(loginReq: AuthenticationRequests()));
 
   @override
   Widget build(BuildContext context) {

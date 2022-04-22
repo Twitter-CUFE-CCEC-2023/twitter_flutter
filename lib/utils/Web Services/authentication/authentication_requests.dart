@@ -1,14 +1,15 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
-class UserLoginRequest {
+class AuthenticationRequests {
   late final String _email_or_username;
   late final String _password;
+  late final String _accessToken;
   late final bool _remember_me = true;
 
-  UserLoginRequest(this._email_or_username, this._password);
+  AuthenticationRequests();
 
   Future<String> Login({username, password}) async {
     var headers = {'Content-Type': 'application/json'};
@@ -41,5 +42,10 @@ class UserLoginRequest {
     } else {
       throw Exception("Undefined Error");
     }
+  }
+
+  Future<String> signUp()
+  {
+    throw Exception("Not Implemented");
   }
 }
