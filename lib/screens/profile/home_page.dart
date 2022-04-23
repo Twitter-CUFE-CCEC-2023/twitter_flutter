@@ -185,11 +185,180 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget tweetImage(String imageUrl) {
-    return Container(
-      child: Image.network(
-        imageUrl,
+  Widget tweetImage(int count) {
+    if (count == 0) {
+      return Container();
+    } else if (count == 1) {
+      return oneImage(
+          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
+          12,
+          12,
+          12,
+          12);
+    } else if (count == 2) {
+      return Container(
+        width: 400,
+        height: 160,
+        child: Row(
+          children: <Widget>[
+            oneImage(
+                "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
+                12,
+                0,
+                12,
+                0,
+                imageWidth: 140,
+                imageHeight: 160),
+            SizedBox(
+              width: 3,
+            ),
+            oneImage(
+                "https://see.news/wp-content/uploads/2022/02/Huda-El-Mufti-1.jpg",
+                0,
+                12,
+                0,
+                12,
+                imageWidth: 140,
+                imageHeight: 160),
+          ],
+        ),
+      );
+    } else if (count == 3) {
+      return Container(
+        width: 400,
+        height: 160,
+        child: Row(
+          children: <Widget>[
+            oneImage(
+                "https://see.news/wp-content/uploads/2022/02/Huda-El-Mufti-1.jpg",
+                12,
+                0,
+                12,
+                0,
+                imageWidth: 150,
+                imageHeight: 160),
+            SizedBox(
+              width: 3,
+            ),
+            Container(
+              width: 128,
+              height: 160,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  oneImage(
+                      "https://see.news/wp-content/uploads/2022/02/Huda-El-Mufti-1.jpg",
+                      0,
+                      12,
+                      0,
+                      0,
+                      imageWidth: 128,
+                      imageHeight: 78),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  oneImage(
+                      "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
+                      0,
+                      0,
+                      0,
+                      12,
+                      imageWidth: 128,
+                      imageHeight: 78),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        width: 400,
+        height: 160,
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 140,
+              height: 160,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  oneImage(
+                      "https://see.news/wp-content/uploads/2022/02/Huda-El-Mufti-1.jpg",
+                      12,
+                      0,
+                      0,
+                      0,
+                      imageWidth: 140,
+                      imageHeight: 78),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  oneImage(
+                      "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
+                      0,
+                      0,
+                      12,
+                      0,
+                      imageWidth: 140,
+                      imageHeight: 78),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 3,
+            ),
+            Container(
+              width: 140,
+              height: 160,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  oneImage(
+                      "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
+                      0,
+                      12,
+                      0,
+                      0,
+                      imageWidth: 140,
+                      imageHeight: 78),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  oneImage(
+                      "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
+                      0,
+                      0,
+                      0,
+                      12,
+                      imageWidth: 140,
+                      imageHeight: 78),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget oneImage(String imageUrl, double topLeftClip, double topRightClip,
+      double bottomLeftClip, double bottomRightClip,
+      {double? imageWidth, double? imageHeight}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(topLeftClip),
+        topRight: Radius.circular(topRightClip),
+        bottomLeft: Radius.circular(bottomLeftClip),
+        bottomRight: Radius.circular(bottomRightClip),
+      ),
+      child: Image(
+        image: NetworkImage(
+          imageUrl,
+        ),
         fit: BoxFit.cover,
+        width: imageWidth,
+        height: imageHeight,
       ),
     );
   }
@@ -221,8 +390,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 15, 0),
-                      child: tweetImage(
-                          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg"),
+                      child: tweetImage(2),
                     ),
                     tweetButtons(),
                   ],
