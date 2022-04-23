@@ -224,11 +224,8 @@ class createaccount2 extends State<CreateAccount2> {
                 child: RaisedButton(
                   color: Colors.black,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/CreateAccount3', arguments: {
-                      'name': data['name'],
-                      'email': data['email'],
-                      'date': data['date'],
-                    });
+                    Navigator.pushNamed(context, '/CreateAccount3',
+                        arguments: data);
                   },
                   child: const Text(
                     'Next',

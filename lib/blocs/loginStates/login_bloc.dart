@@ -19,21 +19,44 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     });
     on<StartEvent>((event, emit) => emit(LoginInitState()));
     on<LoginButtonPressed>(_onLoginButtonPressed);
+    on<SignupButtonPressed>(_onSignUpButtonPressed);
   }
-
 
   void _onLoginButtonPressed(
       LoginButtonPressed event, Emitter<LoginStates> emit) async {
     emit(LoginLoadingState());
     // authRepository = AuthRepository(loginReq:UserLoginRequest(event.username, event.password));
     try {
-      var data = await authRepository.login(username:event.username,password:event.password);
-      var pref= await SharedPreferences.getInstance();
-      pref.setString("access_token",data.access_token);
-      pref.setString("token_expiration_date", data.token_expiration_date.toIso8601String());
+      var data = await authRepository.login(
+          username: event.username, password: event.password);
+      var pref = await SharedPreferences.getInstance();
+      pref.setString("access_token", data.access_token);
+      pref.setString("token_expiration_date",
+          data.token_expiration_date.toIso8601String());
       emit(LoginSuccessState(data.user));
     } on Exception catch (e) {
-      emit(LoginFailureState(errorMessage: e.toString().replaceAll("Exception:", "")));
+      emit(LoginFailureState(
+          errorMessage: e.toString().replaceAll("Exception:", "")));
+    }
+  }
+
+  void _onSignUpButtonPressed(
+      SignupButtonPressed event, Emitter<LoginStates> emit) async {
+    emit(LoginLoadingState());
+    try {
+      var data = await authRepository.signUp(
+          username: event.name,
+          email: event.email,
+          password: event.password,
+          date_of_birth: event.date);
+      var pref = await SharedPreferences.getInstance();
+      pref.setString("access_token", data.access_token);
+      pref.setString("token_expiration_date",
+          data.token_expiration_date.toIso8601String());
+      emit(LoginSuccessState(data.user));
+    } on Exception catch (e) {
+      emit(LoginFailureState(
+          errorMessage: e.toString().replaceAll("Exception:", "")));
     }
   }
 

@@ -42,7 +42,7 @@ class AuthenticationRequests {
   }
 
   Future<String> signUp(
-      {name, email, phone_number, password, date_of_birth}) async {
+      {name, email, username, gender, password, date_of_birth}) async {
     var headers = {'Content-Type': 'application/json'};
     //TODO:Correct post request body to be used upon deployment
     /*var body = jsonEncode(<String,dynamic>{
@@ -53,13 +53,12 @@ class AuthenticationRequests {
 
     //TODO:Josn-Server-auth request body format to be deleted upon deployment
     var body = jsonEncode(<String, String>{
-      "email": email ?? "",
-      "username": '',
+      "email": email,
+      "username": username,
       "password": password,
       "name": name,
-      "gender": '',
+      "gender": gender,
       "birth_date": date_of_birth,
-      "phone_number": phone_number ?? "",
     });
     http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/signup"),
         body: body, headers: headers);

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, file_names, non_constant_identifier_names
 import 'dart:developer';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import '../../utils/common_listners/network_listner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -13,11 +15,16 @@ class CreateAccount1 extends StatefulWidget {
 }
 
 class _CreateAccount1State extends State<CreateAccount1> {
-  late TextEditingController _namefield, _emailfield, _datefield;
+  late TextEditingController _namefield,
+      _emailfield,
+      _datefield,
+      _usernamefield;
   late double screenHeight, topGap, nextButtomSize;
-
+  List<String> gender = ['Male', 'Female', 'Others'];
+  String? selected_gender = 'Male';
   late String CreateAccountStr;
   bool nextActive = false;
+  late String mydate;
   final _formkey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -25,6 +32,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
     _namefield = TextEditingController();
     _emailfield = TextEditingController();
     _datefield = TextEditingController();
+    _usernamefield = TextEditingController();
     _emailfield.addListener(() {
       setState(() {
         nextActive = DisableButton();
@@ -36,6 +44,11 @@ class _CreateAccount1State extends State<CreateAccount1> {
       });
     });
     _namefield.addListener(() {
+      setState(() {
+        nextActive = DisableButton();
+      });
+    });
+    _usernamefield.addListener(() {
       setState(() {
         nextActive = DisableButton();
       });
@@ -53,7 +66,8 @@ class _CreateAccount1State extends State<CreateAccount1> {
   bool DisableButton() {
     if (_namefield.text.isEmpty ||
         _emailfield.text.isEmpty ||
-        _datefield.text.isEmpty) {
+        _datefield.text.isEmpty ||
+        _usernamefield.text.isEmpty) {
       return false;
     } else {
       return true;
@@ -98,7 +112,9 @@ class _CreateAccount1State extends State<CreateAccount1> {
                     children: <Widget>[
                       CreateAccountText(),
                       NameField(),
+                      usernameField(),
                       EmailField(),
+                      genderField(),
                       DateWidget(),
                       Padding(
                           padding: EdgeInsets.only(
@@ -114,6 +130,24 @@ class _CreateAccount1State extends State<CreateAccount1> {
     });
   }
 
+  Widget genderField() => Padding(
+        padding: EdgeInsets.fromLTRB(35, 5, 30, 10),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: DropdownButton<String>(
+              value: selected_gender,
+              isExpanded: true,
+              items: gender.map(BuildMenuItem).toList(),
+              onChanged: (value) => setState(() {
+                    selected_gender = value;
+                  })),
+        ),
+      );
+  DropdownMenuItem<String> BuildMenuItem(String item) => DropdownMenuItem(
+      value: item,
+      child: Text(item,
+          style:
+              TextStyle(fontSize: 20, color: Color.fromARGB(255, 88, 85, 85))));
   PreferredSizeWidget MyAppBar() => AppBar(
         centerTitle: true,
         title: Image.asset(
@@ -151,6 +185,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                     minTime: DateTime(1950, 1, 1),
                     maxTime: DateTime.now(),
                     currentTime: DateTime.now(), onConfirm: (date) {
+                  mydate = date.toIso8601String();
                   _datefield.text = '${date.year}-${date.month}-${date.day}';
                 }, locale: LocaleType.en);
               },
@@ -161,16 +196,14 @@ class _CreateAccount1State extends State<CreateAccount1> {
             )),
       );
   Widget EmailField() => Padding(
-        padding: EdgeInsets.fromLTRB(35, 0, 30, 0),
+        padding: EdgeInsets.fromLTRB(35, 5, 30, 10),
         child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               validator: (Value) {
                 if (ValidateEmailOrPhone()) {
-                  log("success");
                   return null;
                 } else {
-                  log("fail");
                   return "Enter Valid Email or Phone";
                 }
               },
@@ -195,6 +228,18 @@ class _CreateAccount1State extends State<CreateAccount1> {
                       fontSize: 20, color: Color.fromARGB(255, 88, 85, 85))),
             )),
       );
+  Widget usernameField() => Padding(
+        padding: EdgeInsets.fromLTRB(35, 0, 30, 10), //35, 100, 30, 0
+        child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: TextField(
+              controller: _usernamefield,
+              decoration: InputDecoration(
+                  hintText: "Username",
+                  hintStyle: TextStyle(
+                      fontSize: 20, color: Color.fromARGB(255, 88, 85, 85))),
+            )),
+      );
   Widget ButtomBar() => Transform.translate(
         offset: Offset(0, -1 * MediaQuery.of(context).viewInsets.bottom),
         child: BottomAppBar(
@@ -203,24 +248,32 @@ class _CreateAccount1State extends State<CreateAccount1> {
                 left: MediaQuery.of(context).size.width * nextButtomSize),
             child: Transform.translate(
               offset: Offset(-15, -5),
-              child: ElevatedButton(
-                  onPressed: nextActive
-                      ? () {
-                          if (_formkey.currentState!.validate()) {
-                            Navigator.pushNamed(context, '/CreateAccount2',
-                                arguments: {
-                                  'name': _namefield.text,
-                                  'email': _emailfield.text,
-                                  'date': _datefield.text
-                                });
+              child: BlocListener<InternetCubit, InternetState>(
+                listenWhen: (previous, current) => previous != current,
+                listener: (context, state) => networkListner(context, state),
+                child: ElevatedButton(
+                    onPressed: nextActive
+                        ? () {
+                            if (_formkey.currentState!.validate()) {
+                              Navigator.pushNamed(context, '/CreateAccount2',
+                                  arguments: {
+                                    'name': _namefield.text,
+                                    'email': _emailfield.text,
+                                    'date': mydate,
+                                    'username': _usernamefield.text,
+                                    'gender': selected_gender,
+                                  });
+                            }
                           }
-                        }
-                      : null,
-                  child: const Text("next"),
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0))))),
+                        : null,
+                    child: const Text("next"),
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(18.0))))),
+              ),
             ),
           ),
         ),
