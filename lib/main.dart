@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
+import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
 import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
@@ -22,6 +24,10 @@ import 'package:twitter_flutter/screens/profile/profile.dart';
 import 'package:twitter_flutter/screens/profile/edit_profile.dart';
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
+import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
+import 'package:twitter_flutter/utils/Web Services/authentication/authentication_requests.dart';
+
+import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 
 void main() {
   // To set the status bar to be transparent and text in status bar to be dark
@@ -34,13 +40,11 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-      /*DevicePreview(
-    enabled: true,
-    tools: const [...DevicePreview.defaultTools],
-    builder: (context) =>*/
-      Twitter()
-      //),
-      );
+    DevicePreview(
+        enabled: true,
+        tools: const [...DevicePreview.defaultTools],
+        builder: (context) => Twitter()),
+  );
 }
 
 class Twitter extends StatefulWidget {
@@ -54,12 +58,15 @@ class _TwitterState extends State<Twitter> {
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(loginReq: AuthenticationRequests()));
+  //final UpdatePasswordBloc updatepasswordBloc = UpdatePasswordBloc(
+     // authRepository: AuthRepository(updatepasswordReq: AuthenticationRequests()));
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: loginBloc),
+   //     BlocProvider.value(value: UpdatePasswordBloc),
         BlocProvider.value(value: internetCubit)
       ],
       child: MaterialApp(
@@ -98,7 +105,6 @@ class _TwitterState extends State<Twitter> {
           EditProfile.route: (context) => const EditProfile(),
 
           ChangePassword.route: (context) => const ChangePassword(),
-
         },
       ),
     );

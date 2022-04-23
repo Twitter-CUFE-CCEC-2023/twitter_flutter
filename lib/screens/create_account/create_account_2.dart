@@ -129,24 +129,15 @@ class createaccount2 extends State<CreateAccount2> {
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
-        sizedBoxHeightMultiplier[0] = 1;
-        sizedBoxHeightMultiplier[1] = 1;
-        sizedBoxHeightMultiplier[2] = 1;
         imageMultiplier[0] = 1;
         imageMultiplier[1] = 1;
-        borderRadiusMultiplier = 1;
         fontSizeMultiplier[0] = 1;
         fontSizeMultiplier[1] = 1;
         fontSizeMultiplier[2] = 1;
         fontSizeMultiplier[3] = 1;
       } else {
-        sizedBoxHeightMultiplier[0] = .1;
-        sizedBoxHeightMultiplier[1] = .33;
-        sizedBoxHeightMultiplier[2] = 1;
-        sizedBoxHeightMultiplier[3] = 1.8;
         imageMultiplier[0] = 1.8;
         imageMultiplier[1] = 1.8;
-        borderRadiusMultiplier = 1.4;
         fontSizeMultiplier[0] = 2;
         fontSizeMultiplier[1] = 2;
         fontSizeMultiplier[2] = 2;

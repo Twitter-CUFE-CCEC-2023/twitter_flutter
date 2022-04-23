@@ -2,6 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
+import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_events.dart';
+import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_states.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:twitter_flutter/widgets/authentication/constants.dart';
+import 'package:twitter_flutter/screens/profile/home_page.dart';
 
 Widget Message(
     {required String message,
@@ -20,12 +27,17 @@ Widget Message(
 Widget textfield(
     {required String message,
     required String message2,
-    required double width}) {
+    required double width,
+    required TextEditingController controller,
+    required validator}) {
   return Padding(
     padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
     child: SizedBox(
         width: width,
-        child: TextField(
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.text,
+          validator: validator,
           decoration: InputDecoration(
             labelText: message,
             hintText: message2,
@@ -42,59 +54,92 @@ class ChangePassword extends StatefulWidget {
 }
 
 class changepassword extends State<ChangePassword> {
-  bool isButtonActive = true;
+  bool isButtonEnabled = true;
   late TextEditingController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController();
-    controller.addListener(() {
-      final isButtonActive = controller.text.isNotEmpty;
-      setState(() => this.isButtonActive = isButtonActive);
-    });
-  }
+  late TextEditingController password;
+  late TextEditingController confirmpassword;
+  late TextEditingController pass;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  bool nextActive = false;
+  bool validpassword = false;
 
   @override
   void dispose() {
+    confirmpassword.dispose();
+    password.dispose();
+    pass.dispose();
     controller.dispose();
     super.dispose();
   }
 
   @override
+  void initState() {
+    super.initState();
+    pass = TextEditingController();
+    password = TextEditingController();
+    confirmpassword = TextEditingController();
+    confirmpassword.addListener(() {
+      setState(() {
+        nextActive = DisableButton();
+      });
+    });
+    password.addListener(() {
+      setState(() {
+        nextActive = DisableButton();
+      });
+    });
+    pass.addListener(() {
+      setState(() {
+        nextActive = DisableButton();
+      });
+    });
+  }
+
+  String? ValidateConfirmpassword(String? value) {
+    if (value == null) {
+      return 'Please re-enter password';
+    }
+    print(password.text);
+    print(confirmpassword.text);
+    if (password.text != confirmpassword.text) {
+      return "Password does not match";
+    }
+    return null;
+  }
+
+  String? Validatepassword(String? value) {
+    if (value == null) {
+      return 'Please Enter password';
+    } else if (value.length < 8) {
+      return 'Username must be at least 8 characters long.';
+    }
+    return null;
+  }
+
+  bool DisableButton() {
+    if (pass.text.isEmpty ||
+        password.text.isEmpty ||
+        confirmpassword.text.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
-    final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     double borderRadiusMultiplier = 1;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
-        sizedBoxHeightMultiplier[0] = 1;
-        sizedBoxHeightMultiplier[1] = 1;
-        sizedBoxHeightMultiplier[2] = 1;
-        imageMultiplier[0] = 1;
-        imageMultiplier[1] = 1;
-        borderRadiusMultiplier = 1;
         fontSizeMultiplier[0] = 1;
-        fontSizeMultiplier[1] = 1;
-        fontSizeMultiplier[2] = 1;
-        fontSizeMultiplier[3] = 1;
       } else {
-        sizedBoxHeightMultiplier[0] = .1;
-        sizedBoxHeightMultiplier[1] = .33;
-        sizedBoxHeightMultiplier[2] = 1;
-        sizedBoxHeightMultiplier[3] = 1.8;
-        imageMultiplier[0] = 1.8;
-        imageMultiplier[1] = 1.8;
-        borderRadiusMultiplier = 1.4;
         fontSizeMultiplier[0] = 2;
-        fontSizeMultiplier[1] = 2;
-        fontSizeMultiplier[2] = 2;
-        fontSizeMultiplier[3] = 2;
       }
       double screenHeight = MediaQuery.of(context).size.height;
       double screenWidth = MediaQuery.of(context).size.width;
+
       return Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -132,78 +177,113 @@ class changepassword extends State<ChangePassword> {
         ),
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Positioned(
-                top: 0,
-                child: Column(
-                  children: <Widget>[
-                    //    ),
-                    textfield(
-                        message: 'Current Password',
-                        message2: '',
-                        width: screenWidth - 50),
-
-                    Container(
-                      height: 10,
-                    ),
-                    textfield(
-                        message: 'New Password',
-                        message2: 'At least 8 characters',
-                        width: screenWidth - 50),
-
-                    Container(
-                      height: 10,
-                    ),
-                    textfield(
-                        message: 'Confirm Password',
-                        message2: 'At least 8 characters',
-                        width: screenWidth - 50),
-
-                    Container(
-                      height: 20,
-                    ),
-
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5000),
-                      child: SizedBox(
-                        width: screenWidth / 2,
-                        height: 45,
-                        child: RaisedButton(
-                          color: Colors.blueAccent,
-                          disabledColor: Colors.lightBlueAccent,
-                          disabledElevation: 54,
-                          onPressed: isButtonActive
-                              ? () {
-                                  setState(() => isButtonActive = false);
+          child: Column(children: <Widget>[
+            Form(
+              key: _formkey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Positioned(
+                    top: 0,
+                    child: Column(
+                      children: <Widget>[
+                        textfield(
+                            message: 'Current Password',
+                            message2: '',
+                            width: screenWidth - 50,
+                            controller: pass,
+                            validator: Validatepassword),
+                        Container(
+                          height: 10,
+                        ),
+                        textfield(
+                            message: 'New Password',
+                            message2: 'At least 8 characters',
+                            width: screenWidth - 50,
+                            controller: password,
+                            validator: Validatepassword),
+                        Container(
+                          height: 10,
+                        ),
+                        textfield(
+                          message: 'Confirm Password',
+                          message2: 'At least 8 characters',
+                          width: screenWidth - 50,
+                          controller: confirmpassword,
+                          validator: ValidateConfirmpassword,
+                        ),
+                        Container(
+                          height: 20,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(5000),
+                          child: SizedBox(
+                            width: screenWidth / 2,
+                            height: 45,
+                            child: BlocListener<UpdatePasswordBloc, UpdatePasswordStates>(
+                              listener: (context, state) {
+                                if (state is UpdatePasswordSuccessState) {
+                                  try {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        HomePage.route,
+                                            (Route<dynamic> route) => false);
+                                  } on Exception catch (e) {
+                                    context.read<UpdatePasswordBloc>().add(StartEvent());
+                                  }
+                                } else if (state is UpdatePasswordFailureState) {
+                                  setState(() {
+                                  });
                                 }
-                              : null,
-                          child: const Text(
-                            'Update password',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                              },
+                              child: RaisedButton(
+                              color: Colors.blueAccent,
+                              disabledColor: Colors.lightBlueAccent,
+                              disabledElevation: 54,
+                              child: const Text(
+                                'Update password',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              onPressed: nextActive
+                                  ? () {
+                                      if (_formkey.currentState!.validate()) {
+                                        print("successful");
+                                        String oldpassword = pass.text;
+                                        String newpassword = confirmpassword.text;
+                                        context.read<UpdatePasswordBloc>().add(
+                                            UpdatePasswordButtonPressed(
+                                                oldpassword: oldpassword,
+                                                newpassword: newpassword));
+                                      } else {
+                                        print("UnSuccessfull");
+                                      }
+                                    }
+                                  : null,
                             ),
                           ),
                         ),
-                      ),
+                        ),
+                        Container(height: 10),
+                        SizedBox(
+                            width: screenWidth,
+                            height: 20,
+                            child: Center(
+                              child: Message(
+                                  fontSize: 15,
+                                  message: 'Forgotten your password?',
+                                  colors: Colors.black54),
+                            )),
+                      ],
                     ),
-                    Container(height: 10),
-                    SizedBox(
-                        width: screenWidth,
-                        height: 20,
-                        child: Center(
-                          child: Message(
-                              fontSize: 15,
-                              message: 'Forgotten your password?',
-                              colors: Colors.black54),
-                        )),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ]),
         ),
       );
       //);
