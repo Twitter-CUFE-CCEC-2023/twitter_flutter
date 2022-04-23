@@ -19,13 +19,15 @@ class AuthRepository {
   }
 
   Future<UserAuthenticationModel> signUp(
-      {username, password, email, phone_number, date_of_birth}) async {
+      {name, password, email, phone_number, date_of_birth,gender,username}) async {
     try {
       String signupData = await loginReq.signUp(
-          name: username,
+          name: name,
           password: password,
           email: email,
-          date_of_birth: date_of_birth);
+          date_of_birth: date_of_birth,
+          gender: gender,
+          username: username);
       return UserAuthenticationModel.fromJson(jsonDecode(signupData));
     } on Exception catch (e) {
       throw Exception(e);
