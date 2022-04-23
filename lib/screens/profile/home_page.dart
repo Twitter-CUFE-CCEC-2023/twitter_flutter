@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/screens/profile/profile.dart';
+import 'package:like_button/like_button.dart';
+import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static String route = '/HomePage';
+  static const String username =
+      "Ahmedhgjghjgfhjfghjfghjfghjfghjgfhjgfhjfghjgffghfdghdfghdzkjcflhgbnlkdsjfhglkjdsfhglkdfhgkdljfh";
 
+  static const String tweetTexts =
+      "This is a tweetfgklh jdfklg;h jflk;gjh;flk gjhlfkdgjhlfgh jflgkhl kfjgh;sdlkhf jdsfg;hsdklf;gj dsflk jhgsdklf ghdsjlkf hgdfjslk hgdsjklf ghdfjskl hdsjlfk ghsdjklf ghsdjklf ghjdsklf ghsdjlkfg hsdjlkf ghdsjklf jhgsdljkf gljkdf gjhkld;f gjds;lk gdlfjkgh;slk djhdf;klghd l;kfjhg;lsda hfdfl;kjg hsd;fgh;d flkg";
   BottomNavigationBar Bottom(
       {required double height, required double imageMultiplier}) {
     return BottomNavigationBar(
@@ -52,7 +58,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  AppBar logoAppBar({required double height, required double imageMultiplier,required BuildContext context}) {
+  AppBar logoAppBar(
+      {required double height,
+      required double imageMultiplier,
+      required BuildContext context}) {
     return AppBar(
       elevation: 1,
       actions: [
@@ -67,12 +76,14 @@ class HomePage extends StatelessWidget {
       leading: Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: GestureDetector(
-          onTap: ()=>Navigator.pushNamed(context,UserProfile.route),
-            child: CircleAvatar(backgroundImage: NetworkImage("https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg"))),
+            onTap: () => Navigator.pushNamed(context, UserProfile.route),
+            child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg"))),
       ),
       //IconButton(
       //   onPressed: () => {},
-      //  
+      //
       //   icon: Icon(
       //     Icons.circle,
       //     color: Colors.blue,
@@ -86,8 +97,6 @@ class HomePage extends StatelessWidget {
         height: 0.083 * imageMultiplier * height, // 65
         cacheHeight: 70,
       ),
-
-      //systemOverlayStyle: SystemUiOverlayStyle.dark,
     );
   }
 
@@ -98,6 +107,135 @@ class HomePage extends StatelessWidget {
     return AutoSizeText(
       message,
       style: TextStyle(fontSize: fontSize, color: colors),
+    );
+  }
+
+  Widget userName(String username) {
+    return Text(
+      username,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 20,
+      ),
+    );
+  }
+
+  Widget tweetText(String tweetText) {
+    return Text(
+      tweetText,
+      style: TextStyle(fontSize: 15, color: Colors.black),
+    );
+  }
+
+  Widget tweetButtons() {
+    return Row(
+      children: <Widget>[
+        LikeButton(
+          animationDuration: const Duration(milliseconds: 0),
+          likeCount: 0,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.comment,
+              color: Colors.grey,
+              size: 20,
+            );
+          },
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        LikeButton(
+          animationDuration: const Duration(milliseconds: 0),
+          likeCount: 0,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.retweet,
+              color: isLiked ? Colors.green : Colors.grey,
+              size: 20,
+            );
+          },
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        LikeButton(
+          likeCount: 0,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.solidHeart,
+              color: isLiked ? Colors.red : Colors.grey,
+              size: 20,
+            );
+          },
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        LikeButton(
+          animationDuration: const Duration(milliseconds: 0),
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.arrowUpFromBracket,
+              color: Colors.grey,
+              size: 20,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget tweetImage(String imageUrl) {
+    return Container(
+      child: Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget tweet() {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+              child: CircleAvatar(
+                radius: 28,
+                backgroundImage: NetworkImage(
+                    "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg"),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    userName(username),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 15, 0),
+                      child: tweetText(tweetTexts),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 15, 0),
+                      child: tweetImage(
+                          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg"),
+                    ),
+                    tweetButtons(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const Divider(
+          color: Colors.black26,
+          thickness: 0.8,
+        ),
+      ],
     );
   }
 
@@ -131,27 +269,15 @@ class HomePage extends StatelessWidget {
         child: SafeArea(
           child: Scaffold(
             appBar: logoAppBar(
-                height: screenHeight, imageMultiplier: imageMultiplier[0],context: context),
+                height: screenHeight,
+                imageMultiplier: imageMultiplier[0],
+                context: context),
             backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
               onPressed: () {},
               child: Icon(Icons.add),
             ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 35.0, right: 30.0, top: 20.0, bottom: 10.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Message(
-                          message: 'In progress...',
-                          colors: Colors.black,
-                          fontSize:
-                              0.038 * fontSizeMultiplier[0] * screenHeight)
-                    ]),
-              ),
-            ),
+            body: tweet(),
             bottomNavigationBar: Bottom(
                 height: screenHeight, imageMultiplier: imageMultiplier[0]),
           ),
