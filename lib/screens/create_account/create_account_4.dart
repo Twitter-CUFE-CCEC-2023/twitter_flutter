@@ -7,7 +7,6 @@ import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import '../../utils/common_listners/network_listner.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CreateAccount4 extends StatefulWidget {
   const CreateAccount4({Key? key}) : super(key: key);
@@ -18,6 +17,7 @@ class CreateAccount4 extends StatefulWidget {
 
 class _CreateAccount4State extends State<CreateAccount4> {
   bool nextActive = false, _passwordVisible = false;
+  Icon passwordCheckSuffix = const Icon(null);
 
   late double screenHeight, nextButtomSize;
   late TextEditingController _passwordfield;
@@ -32,9 +32,22 @@ class _CreateAccount4State extends State<CreateAccount4> {
 
     _passwordfield.addListener(() {
       setState(() {
+        passwordCheckSuffix = _passwordfield.text.length >= 8
+            ? const Icon(
+                Icons.check_circle_outline_sharp,
+                size: 25.0,
+                color: Color(0xFF2DB169),
+              )
+            : const Icon(null);
         nextActive = _passwordfield.text.isEmpty ? false : true;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _passwordfield.dispose();
+    super.dispose();
   }
 
   @override
@@ -126,18 +139,27 @@ class _CreateAccount4State extends State<CreateAccount4> {
           obscureText: !_passwordVisible,
           decoration: InputDecoration(
             hintText: "Password",
-            suffixIcon: IconButton(
-              icon: Icon(
-                // Based on passwordVisible state choose the icon
-                _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Theme.of(context).primaryColorDark,
-              ),
-              onPressed: () {
-                setState(() {
-                  _passwordVisible = !_passwordVisible;
-                });
-              },
-            ),
+            suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                  ),
+                  if (passwordCheckSuffix.icon != null)
+                    passwordCheckSuffix, // check that the icon suffix is not set to null
+                ]),
             hintStyle: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w400,
@@ -169,7 +191,6 @@ class _CreateAccount4State extends State<CreateAccount4> {
                     //TODO: remove error message
                     log(state.errorMessage);
                   }
-
                 },
                 child: ElevatedButton(
                     onPressed: nextActive

@@ -20,11 +20,12 @@ class _CreateAccount1State extends State<CreateAccount1> {
       _datefield,
       _usernamefield;
   late double screenHeight, topGap, nextButtomSize;
-  List<String> gender = ['Male', 'Female', 'Others'];
+  List<String> gender = ['Male', 'Female'];
   String? selected_gender = 'Male';
   late String CreateAccountStr;
   bool nextActive = false;
   late String mydate;
+  Icon emailCheckSuffix = const Icon(null);
   final _formkey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -34,6 +35,13 @@ class _CreateAccount1State extends State<CreateAccount1> {
     _datefield = TextEditingController();
     _usernamefield = TextEditingController();
     _emailfield.addListener(() {
+      emailCheckSuffix = ValidateEmailOrPhone()
+          ? const Icon(
+              Icons.check_circle_outline_sharp,
+              size: 25.0,
+              color: Color(0xFF2DB169),
+            )
+          : const Icon(null);
       setState(() {
         nextActive = DisableButton();
       });
@@ -80,6 +88,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
     _namefield.dispose();
     _emailfield.dispose();
     _datefield.dispose();
+    _usernamefield.dispose();
   }
 
   @override
@@ -136,6 +145,10 @@ class _CreateAccount1State extends State<CreateAccount1> {
           width: MediaQuery.of(context).size.width,
           child: DropdownButton<String>(
               value: selected_gender,
+              underline: Container(
+                height: 1,
+                color: Colors.grey,
+              ),
               isExpanded: true,
               items: gender.map(BuildMenuItem).toList(),
               onChanged: (value) => setState(() {
@@ -209,6 +222,13 @@ class _CreateAccount1State extends State<CreateAccount1> {
               },
               controller: _emailfield,
               decoration: InputDecoration(
+                  suffixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (emailCheckSuffix.icon != null) emailCheckSuffix, // c
+                    ],
+                  ),
                   hintText: "Phone number or email address",
                   hintStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 88, 85, 85))),
@@ -262,6 +282,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                                     'date': mydate,
                                     'username': _usernamefield.text,
                                     'gender': selected_gender,
+                                    'dateShow': _datefield.text
                                   });
                             }
                           }

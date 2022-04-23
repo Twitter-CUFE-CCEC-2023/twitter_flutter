@@ -53,7 +53,7 @@ class _CreateAccount3State extends State<CreateAccount3> {
                 createAccountText(),
                 infoField(data['name']),
                 infoField(data['email']),
-                infoField(data['date']),
+                infoField(data['dateShow']),
                 Padding(
                     padding: EdgeInsets.fromLTRB(35, 60, 30, 0),
                     child: termConditions(
