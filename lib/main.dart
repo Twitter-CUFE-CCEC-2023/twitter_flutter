@@ -40,10 +40,11 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-    DevicePreview(
+    /*DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) => Twitter()),
+        builder: (context) =>*/ Twitter()
+  //),
   );
 }
 
@@ -57,7 +58,7 @@ class Twitter extends StatefulWidget {
 class _TwitterState extends State<Twitter> {
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
-      authRepository: AuthRepository(loginReq: AuthenticationRequests()));
+      authRepository: AuthRepository(authReq: AuthenticationRequests()));
   //final UpdatePasswordBloc updatepasswordBloc = UpdatePasswordBloc(
      // authRepository: AuthRepository(updatepasswordReq: AuthenticationRequests()));
 

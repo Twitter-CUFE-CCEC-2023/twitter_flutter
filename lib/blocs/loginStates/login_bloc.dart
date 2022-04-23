@@ -25,7 +25,6 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
   void _onLoginButtonPressed(
       LoginButtonPressed event, Emitter<LoginStates> emit) async {
     emit(LoginLoadingState());
-    // authRepository = AuthRepository(loginReq:UserLoginRequest(event.username, event.password));
     try {
       var data = await authRepository.login(
           username: event.username, password: event.password);
@@ -45,17 +44,20 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     emit(LoginLoadingState());
     try {
       var data = await authRepository.signUp(
-          username: event.name,
-          email: event.email,
-          password: event.password,
-          date_of_birth: event.date);
+        username: event.username,
+        email: event.email,
+        password: event.password,
+        date_of_birth: event.date,
+        gender: event.gender,
+        name: event.name,
+      );
       var pref = await SharedPreferences.getInstance();
       pref.setString("access_token", data.access_token);
       pref.setString("token_expiration_date",
           data.token_expiration_date.toIso8601String());
       emit(LoginSuccessState(data.user));
     } on Exception catch (e) {
-      emit(LoginFailureState(
+      emit(SignupFailureState(
           errorMessage: e.toString().replaceAll("Exception:", "")));
     }
   }

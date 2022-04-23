@@ -167,8 +167,9 @@ class _CreateAccount4State extends State<CreateAccount4> {
                     }
                   } else if (state is SignupFailureState) {
                     //TODO: remove error message
-                    log("FAILED TO SIGNUP");
+                    log(state.errorMessage);
                   }
+
                 },
                 child: ElevatedButton(
                     onPressed: nextActive
@@ -176,7 +177,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
                             if (_formkey.currentState!.validate()) {
                               context.read<LoginBloc>().add(SignupButtonPressed(
                                   name: data['name'].toString(),
-                                  password: data['password'].toString(),
+                                  password: _passwordfield.text,
                                   email: data['email'].toString(),
                                   date: data['date'].toString(),
                                   username: data['username'].toString(),
