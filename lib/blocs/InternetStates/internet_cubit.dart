@@ -4,8 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'internet_cubit.dart';
-
 part 'internet_state.dart';
 
 class InternetCubit extends Cubit<InternetState> {

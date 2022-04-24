@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:equatable/equatable.dart';
 
-class UserModel {
+class UserModel extends Equatable {
+  late String _id;
   late String name;
   late String username;
   late String email;
-  late String phone;
   late String profile_image_url;
   late String cover_image_url;
   late String bio;
@@ -18,51 +18,46 @@ class UserModel {
   late int tweets_count;
   late int likes_count;
   late bool isBanned;
-  late DateTime banDuration;
-  late bool permanentBan;
+  late DateTime birth_date;
 
-  /*UserModel({
-    this.name,
-    this.username,
-    this.email,
-    this.phone,
-    this.profile_image_url,
-    this.cover_image_url,
-    this.bio,
-    this.website,
-    this.location,
-    this.created_at,
-    this.isVerified,
-    this.role,
-    this.followers_count,
-    this.following_count,
-    this.tweets_count,
-    this.likes_count,
-    this.isBanned,
-    this.banDuration,
-    this.permanentBan,
-  });*/
-
-  UserModel.fromJson(Map<String,dynamic> json)
-  {
+  UserModel.fromJson(Map<String, dynamic> json) {
     name = json["name"];
     username = json["username"];
     email = json["email"];
-    phone = json["phone"];
     profile_image_url = json["profile_image_url"];
     cover_image_url = json["cover_image_url"];
     bio = json["bio"];
     website = json["website"];
     location = json["location"];
     created_at = DateTime.parse(json["created_at"]);
+    birth_date = DateTime.parse(json["birth_date"]);
     isVerified = json["isVerified"];
     role = json["role"];
     followers_count = json["followers_count"];
     following_count = json["following_count"];
     tweets_count = json["tweets_count"];
-    likes_count= json["likes_count"];
-    isBanned= json["isBanned"];
-    banDuration= isBanned? DateTime.parse(json["banDuration"]) : DateTime(0);
-    permanentBan= json["permanentBan"];
+    likes_count = json["likes_count"];
+    isBanned = json["isBanned"];
   }
+
+  @override
+  List<Object?> get props => [
+        name,
+        username,
+        email,
+        profile_image_url,
+        cover_image_url,
+        bio,
+        website,
+        location,
+        created_at,
+        isVerified,
+        role,
+        followers_count,
+        following_count,
+        tweets_count,
+        likes_count,
+        isBanned,
+        birth_date
+      ];
 }

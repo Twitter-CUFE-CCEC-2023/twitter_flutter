@@ -8,7 +8,7 @@ import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.d
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
-import 'package:twitter_flutter/utils/Web%20Services/authentication/user_login_request.dart';
+import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/screens/authentication/login_password.dart';
@@ -40,10 +40,11 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-    DevicePreview(
+    /*DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) => Twitter()),
+        builder: (context) =>*/ Twitter()
+  //),
   );
 }
 
@@ -57,7 +58,7 @@ class Twitter extends StatefulWidget {
 class _TwitterState extends State<Twitter> {
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
-      authRepository: AuthRepository(loginReq: AuthenticationRequests()));
+      authRepository: AuthRepository(authReq: AuthenticationRequests()));
   //final UpdatePasswordBloc updatepasswordBloc = UpdatePasswordBloc(
      // authRepository: AuthRepository(updatepasswordReq: AuthenticationRequests()));
 

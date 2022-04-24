@@ -138,94 +138,100 @@ class createaccount2 extends State<CreateAccount2> {
         // double screenWidth = MediaQuery.of(context).size.width;
       }
 
-      return SafeArea(
-          child: Scaffold(
-        appBar: logoAppBar(
-            height: screenHeight, imageMultiplier: imageMultiplier[0]),
-        //),
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 35.0, right: 30.0, top: 20.0, bottom: 10.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                    Widget>[
-              Message(
-                  message: 'Customise your experience',
-                  fontSize: 0.038 * fontSizeMultiplier[0] * screenHeight, // 30
-                  weight: FontWeight.bold,
-                  colors: Colors.black
-                  // family: 'IBMPlexSans',
-                  ),
-              Container(
-                height: 30,
-              ),
-              Message(
-                  message: 'Track where you see Twitter content across the web',
-                  fontSize: 0.028 * fontSizeMultiplier[0] * screenHeight, // 30
-                  weight: FontWeight.bold,
-                  colors: Colors.black
-                  // family: 'IBMPlexSans',
-                  ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.only(
-                    left: 0.0, right: 28.0, top: 10.0, bottom: 00.0),
-                activeColor: Colors.blue,
-                value: value,
-                onChanged: (value) => setState(() => this.value = value!),
-                title: Message(
-                    message:
-                        'Twitter uses this data to personlise your experience. This web browsing history will never be stored with your name, email, or phone number.',
-                    fontSize:
-                        0.021 * fontSizeMultiplier[0] * screenHeight, // 30
-                    weight: FontWeight.normal,
-                    colors: Colors.black54
-                    // family: 'IBMPlexSans',
+      return Container(
+        color: Colors.white,
+        child: SafeArea(
+            child: Scaffold(
+          appBar: logoAppBar(
+              height: screenHeight, imageMultiplier: imageMultiplier[0]),
+          //),
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 35.0, right: 30.0, top: 20.0, bottom: 10.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Message(
+                        message: 'Customise your experience',
+                        fontSize:
+                            0.038 * fontSizeMultiplier[0] * screenHeight, // 30
+                        weight: FontWeight.bold,
+                        colors: Colors.black
+                        // family: 'IBMPlexSans',
+                        ),
+                    Container(
+                      height: 30,
                     ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 0.0, right: 28.0, top: 10.0, bottom: 20.0),
-                child: termConditions(
-                  buttons: buttonStyle(
-                      0.0188 * screenHeight * fontSizeMultiplier[0]), // 11
-                  text: textStyle(
-                      0.0188 * screenHeight * fontSizeMultiplier[2]), // 11
-                ),
-              ),
-            ]),
-          ),
-        ),
-        bottomNavigationBar: ButtonBar(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(5000),
-              child: SizedBox(
-                width: 80,
-                height: 45,
-                child: RaisedButton(
-                  color: Colors.black,
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/CreateAccount3', arguments: {
-                      'name': data['name'],
-                      'email': data['email'],
-                      'date': data['date'],
-                    });
-                  },
-                  child: const Text(
-                    'Next',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                    Message(
+                        message:
+                            'Track where you see Twitter content across the web',
+                        fontSize:
+                            0.028 * fontSizeMultiplier[0] * screenHeight, // 30
+                        weight: FontWeight.bold,
+                        colors: Colors.black
+                        // family: 'IBMPlexSans',
+                        ),
+                    CheckboxListTile(
+                      contentPadding: const EdgeInsets.only(
+                          left: 0.0, right: 28.0, top: 10.0, bottom: 00.0),
+                      activeColor: Colors.blue,
+                      value: value,
+                      onChanged: (value) => setState(() => this.value = value!),
+                      title: Message(
+                          message:
+                              'Twitter uses this data to personlise your experience. This web browsing history will never be stored with your name, email, or phone number.',
+                          fontSize: 0.021 *
+                              fontSizeMultiplier[0] *
+                              screenHeight, // 30
+                          weight: FontWeight.normal,
+                          colors: Colors.black54
+                          // family: 'IBMPlexSans',
+                          ),
                     ),
-                  ),
-                ),
-              ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 0.0, right: 28.0, top: 10.0, bottom: 20.0),
+                      child: termConditions(
+                        buttons: buttonStyle(0.0188 *
+                            screenHeight *
+                            fontSizeMultiplier[0]), // 11
+                        text: textStyle(0.0188 *
+                            screenHeight *
+                            fontSizeMultiplier[2]), // 11
+                      ),
+                    ),
+                  ]),
             ),
-          ],
-        ),
-      ));
+          ),
+          bottomNavigationBar: ButtonBar(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5000),
+                child: SizedBox(
+                  width: 80,
+                  height: 45,
+                  child: RaisedButton(
+                    color: Colors.black,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/CreateAccount3',
+                          arguments: data);
+                    },
+                    child: const Text(
+                      'Next',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )),
+      );
       //);
     });
   }

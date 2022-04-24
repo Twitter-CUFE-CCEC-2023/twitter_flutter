@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
@@ -230,29 +228,32 @@ class _LoginPasswordState extends State<LoginPassword> {
       }),
     );
   }
-}
 
-Widget _buildBottomSheet(context, state) {
-  return Transform.translate(
-    offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom / 3),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(10.0)),
-            child: Text(
-              state.errorMessage,
-              textAlign: TextAlign.center,
+  Widget _buildBottomSheet(context, state) {
+    return Transform.translate(
+      offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom / 3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
+
 }
+
+
