@@ -26,7 +26,21 @@ void main() {
         'user' : {
           "name" : "",
           "username" : "" ,
-          "email" : ""
+          "email" : "",
+          "profile_image_url" : "",
+          "cover_image_url" : "",
+          "bio":"",
+          "website":"",
+          "location":"",
+          "created_at":"2022-04-23T15:48:54.813Z",
+          "isVerified": true,
+          "role":"",
+          "followers_count": 1,
+          "following_count": 1,
+          "tweets_count": 1,
+          "likes_count": 1,
+          "isBanned": true,
+          "birth_date": "2022-04-23T15:48:54.813Z"
         }
       }));
 
@@ -41,7 +55,21 @@ void main() {
         'user' : {
           "name" : "",
           "username" : "" ,
-          "email" : ""
+          "email" : "",
+          "profile_image_url" : "",
+          "cover_image_url" : "",
+          "bio":"",
+          "website":"",
+          "location":"",
+          "created_at":"2022-04-23T15:48:54.813Z",
+          "isVerified":true,
+          "role":"",
+          "followers_count": 1,
+          "following_count": 1,
+          "tweets_count": 1,
+          "likes_count": 1,
+          "isBanned":true,
+          "birth_date": "2022-04-23T15:48:54.813Z"
         }
       }));
 
@@ -69,7 +97,21 @@ void main() {
     expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
       "name" : "",
       "username" : "" ,
-      "email" : ""
+      "email" : "",
+      "profile_image_url" : "",
+      "cover_image_url" : "",
+      "bio":"",
+      "website":"",
+      "location":"",
+      "created_at":"2022-04-23T15:48:54.813Z",
+      "isVerified":true,
+      "role":"",
+      "followers_count": 1,
+      "following_count": 1,
+      "tweets_count": 1,
+      "likes_count": 1,
+      "isBanned":true,
+      "birth_date": "2022-04-23T15:48:54.813Z"
     }))]
     );
 
@@ -84,7 +126,21 @@ void main() {
         expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
           "name" : "",
           "username" : "" ,
-          "email" : ""
+          "email" : "",
+          "profile_image_url" : "",
+          "cover_image_url" : "",
+          "bio":"",
+          "website":"",
+          "location":"",
+          "created_at":"2022-04-23T15:48:54.813Z",
+          "isVerified":true,
+          "role":"",
+          "followers_count": 1,
+          "following_count": 1,
+          "tweets_count": 1,
+          "likes_count": 1,
+          "isBanned":true,
+          "birth_date": "2022-04-23T15:48:54.813Z"
         }))]
     );
 

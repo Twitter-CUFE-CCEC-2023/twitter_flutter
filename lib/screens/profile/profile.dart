@@ -47,10 +47,10 @@ class _UserProfileState extends State<UserProfile> {
           slivers: [
             SliverPersistentHeader(
               delegate: MySliverAppBar(
-                  coverImageURL: "",//userData.cover_image_url,
-                  profileImageURL: "",//userData.profile_image_url,
+                  coverImageURL: userData.cover_image_url,
+                  profileImageURL: userData.profile_image_url,
                   name: userData.name,
-                  tweetCount: 0,//userData.tweets_count,
+                  tweetCount: userData.tweets_count,
                   expandedHeight: orientation == Orientation.portrait
                       ? 0.35 * width
                       : 0.625 * height),
@@ -83,14 +83,15 @@ class _UserProfileState extends State<UserProfile> {
                     child: _buildUserData(
                   name: userData.name,
                   username: userData.username,
-                  birthday: 5,
-                  birthmonth: "July",
-                  birthyear: 1993,
-                  followers: 0,//userData.followers_count,
-                  following: 0,//userData.following_count,
+                  birthday: userData.birth_date.day,
+                  birthmonth: DateFormat('MMMM')
+                      .format(DateTime(0,userData.birth_date.month)),
+                  birthyear: userData.birth_date.year,
+                  followers: userData.followers_count,
+                  following: userData.following_count,
                   joinMonth: DateFormat('MMMM')
-                      .format(DateTime(0, 2/*userData.created_at.month*/)),
-                  joinYear: 2015/*userData.created_at.year*/,
+                      .format(DateTime(0, userData.created_at.month)),
+                  joinYear: userData.created_at.year,
                 )),
               ),
             ),
