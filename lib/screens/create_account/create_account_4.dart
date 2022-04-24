@@ -6,6 +6,7 @@ import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import '../../utils/common_listners/network_listner.dart';
+import 'package:twitter_flutter/widgets/authentication/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class CreateAccount4 extends StatefulWidget {
@@ -24,6 +25,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
   final _formkey = GlobalKey<FormState>();
   late Map<String, String?> data;
   late DateTime date;
+  Widget? bottomSheet = null;
 
   @override
   void initState() {
@@ -61,31 +63,40 @@ class _CreateAccount4State extends State<CreateAccount4> {
       } else {
         nextButtomSize = 0.88;
       }
-      return Container(
-        color: Colors.white,
-        child: SafeArea(
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: myAppBar(),
-            body: SingleChildScrollView(
-              reverse: true,
-              child: Form(
-                key: _formkey,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      widget1(),
-                      widget2(),
-                      passwordField(),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).viewInsets.bottom)),
-                    ]),
+      return GestureDetector(
+        onTap: (){
+          setState(() {
+            bottomSheet = null;
+          });
+        },
+        child: Container(
+          color: Colors.white,
+          child: SafeArea(
+            child: Scaffold(
+              bottomSheet: bottomSheet,
+
+              resizeToAvoidBottomInset: false,
+              appBar: myAppBar(),
+              body: SingleChildScrollView(
+                reverse: true,
+                child: Form(
+                  key: _formkey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        widget1(),
+                        widget2(),
+                        passwordField(),
+                        Padding(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom)),
+                      ]),
+                ),
               ),
+              bottomNavigationBar: nextButton(),
             ),
-            bottomNavigationBar: nextButton(),
           ),
         ),
       );
@@ -188,8 +199,10 @@ class _CreateAccount4State extends State<CreateAccount4> {
                       context.read<LoginBloc>().add(StartEvent());
                     }
                   } else if (state is SignupFailureState) {
-                    //TODO: remove error message
-                    log(state.errorMessage);
+                    setState(() {
+                      bottomSheet = buildBottomSheet(context, state);
+                    });
+
                   }
                 },
                 child: ElevatedButton(

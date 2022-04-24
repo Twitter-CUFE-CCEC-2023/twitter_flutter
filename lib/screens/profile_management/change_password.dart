@@ -99,8 +99,6 @@ class changepassword extends State<ChangePassword> {
     if (value == null) {
       return 'Please re-enter password';
     }
-    print(password.text);
-    print(confirmpassword.text);
     if (password.text != confirmpassword.text) {
       return "Password does not match";
     }
@@ -251,7 +249,6 @@ class changepassword extends State<ChangePassword> {
                               onPressed: nextActive
                                   ? () {
                                       if (_formkey.currentState!.validate()) {
-                                        print("successful");
                                         String oldpassword = pass.text;
                                         String newpassword = confirmpassword.text;
                                         context.read<UpdatePasswordBloc>().add(

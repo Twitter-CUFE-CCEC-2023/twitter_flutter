@@ -98,7 +98,7 @@ class MockAuthenticationRequests extends _i1.Mock
           dynamic username,
           dynamic gender,
           dynamic password,
-          dynamic date_of_birth}) =>
+          dynamic birth_date}) =>
       (super.noSuchMethod(
           Invocation.method(#signUp, [], {
             #name: name,
@@ -106,7 +106,7 @@ class MockAuthenticationRequests extends _i1.Mock
             #username: username,
             #gender: gender,
             #password: password,
-            #date_of_birth: date_of_birth
+            #date_of_birth: birth_date
           }),
           returnValue: Future<String>.value('')) as _i5.Future<String>);
 }

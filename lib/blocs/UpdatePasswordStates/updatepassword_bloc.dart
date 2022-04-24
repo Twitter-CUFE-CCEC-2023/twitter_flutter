@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'package:bloc/bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_events.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_states.dart';
 import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_request.dart';

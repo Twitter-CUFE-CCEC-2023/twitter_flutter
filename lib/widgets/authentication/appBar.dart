@@ -22,3 +22,4 @@ AppBar generalAppBar(BuildContext context,double imageMultiplier) {
     ),
   );
 }
+

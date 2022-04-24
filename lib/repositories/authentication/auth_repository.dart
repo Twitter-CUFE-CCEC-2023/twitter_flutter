@@ -25,7 +25,7 @@ class AuthRepository {
           name: name,
           password: password,
           email: email,
-          date_of_birth: date_of_birth,
+          birth_date: date_of_birth,
           gender: gender,
           username: username);
       print(signupData);
