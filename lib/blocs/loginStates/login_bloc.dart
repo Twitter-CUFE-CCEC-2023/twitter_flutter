@@ -19,6 +19,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     });
     on<StartEvent>((event, emit) => emit(LoginInitState()));
     on<LoginButtonPressed>(_onLoginButtonPressed);
+    on<VerificationButtonPressed>(_onVerificationButtonPressed);
+
   }
 
 
@@ -34,6 +36,19 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       emit(LoginSuccessState(data.user));
     } on Exception catch (e) {
       emit(LoginFailureState(errorMessage: e.toString().replaceAll("Exception:", "")));
+    }
+  }
+
+  void _onVerificationButtonPressed(
+      VerificationButtonPressed event, Emitter<LoginStates> emit) async {
+    emit(VerificationLoadingState());
+    // authRepository = AuthRepository(loginReq:UserLoginRequest(event.username, event.password));
+    try {
+      var data = await authRepository.verification(verification_code: event.verificationCode);
+      var pref= await SharedPreferences.getInstance();
+      emit(VerificationSuccessState(data.user));
+    } on Exception catch (e) {
+      emit(VerificationFailureState(errorMessage: e.toString().replaceAll("Exception:", "")));
     }
   }
 
