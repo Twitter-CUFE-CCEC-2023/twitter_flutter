@@ -216,6 +216,18 @@ class HomePage extends StatelessWidget {
                         "https://gamingintel.com/wp-content/uploads/2020/11/Black-Ops-Cold-War-New-Map-Vietnam-Zombies.jpg",
                     imageFour:
                         "https://charlieintel.com/wp-content/uploads/2021/06/mauer-der-toten-1.jpg"),
+                tweet(
+                  userProfilePicture:
+                      "https://pbs.twimg.com/media/E9gpNWsXEAYir33.jpg",
+                  user_Name: "Maged Alosali",
+                  tweet_Text: "Check the new gif",
+                  imageCount: 1,
+                  CommentCount: 2,
+                  retweetCount: 3,
+                  likeCount: 4,
+                  imageOne:
+                      "https://c.tenor.com/EWiHVwPUEOoAAAAC/coxa-among-us.gif",
+                ),
               ],
             ),
             bottomNavigationBar: Bottom(
