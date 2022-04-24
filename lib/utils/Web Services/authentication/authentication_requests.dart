@@ -42,7 +42,7 @@ class AuthenticationRequests {
   }
 
   Future<String> signUp(
-      {name, email, username, gender, password, date_of_birth}) async {
+      {name, email, username, gender, password, birth_date}) async {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonEncode(<String, String>{
@@ -51,7 +51,7 @@ class AuthenticationRequests {
       "password": password,
       "name": name,
       "gender": gender,
-      "dateOfBirth": date_of_birth,
+      "birth_date": birth_date,
     });
 
     print(body);
