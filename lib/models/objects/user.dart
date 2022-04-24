@@ -1,27 +1,28 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class UserModel {
+class UserModel extends Equatable{
   late String name;
   //late String _id;
   late String username;
   late String email;
-  late DateTime dateOfBirth;
-  late String phone;
-  late String profilePicture;
-  late String coverPicture;
-  late String bio;
-  late String website;
-  late String location;
+  //late DateTime dateOfBirth;
+  //late String phone;
+  //late String profilePicture;
+  //late String coverPicture;
+  //late String bio;
+  //late String website;
+  //late String location;
   //late DateTime created_at;
-  late bool isVerified;
-  late String role;
+  //late bool isVerified;
+  //late String role;
   //late int followers_count;
   //late int following_count;
   //late int tweets_count;
   //late int likes_count;
-  late bool isBanned;
-  late DateTime banDuration;
-  late bool permanentBan;
+  //late bool isBanned;
+  //late DateTime banDuration;
+  //late bool permanentBan;
 
   /*UserModel({
     this.name,
@@ -67,4 +68,8 @@ class UserModel {
     //banDuration= isBanned? DateTime.parse(json["banDuration"]) : DateTime(0);
     //permanentBan= json["permanentBan"];
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name,username,email,];
 }

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 
-class UserAuthenticationModel {
+class UserAuthenticationModel extends Equatable{
   late String message;
   late String access_token;
   late DateTime token_expiration_date;
@@ -21,4 +22,8 @@ class UserAuthenticationModel {
 
 
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [message,access_token,token_expiration_date,user];
 }
