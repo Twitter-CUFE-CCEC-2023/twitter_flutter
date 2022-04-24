@@ -39,7 +39,8 @@ void main() {
           "following_count": 1,
           "tweets_count": 1,
           "likes_count": 1,
-          "isBanned": true
+          "isBanned": true,
+          "birth_date": "2022-04-23T15:48:54.813Z"
         }
       }));
 
@@ -67,7 +68,8 @@ void main() {
           "following_count": 1,
           "tweets_count": 1,
           "likes_count": 1,
-          "isBanned":true
+          "isBanned":true,
+          "birth_date": "2022-04-23T15:48:54.813Z"
         }
       }));
 
@@ -108,7 +110,8 @@ void main() {
       "following_count": 1,
       "tweets_count": 1,
       "likes_count": 1,
-      "isBanned":true
+      "isBanned":true,
+      "birth_date": "2022-04-23T15:48:54.813Z"
     }))]
     );
 
@@ -136,7 +139,8 @@ void main() {
           "following_count": 1,
           "tweets_count": 1,
           "likes_count": 1,
-          "isBanned":true
+          "isBanned":true,
+          "birth_date": "2022-04-23T15:48:54.813Z"
         }))]
     );
 
