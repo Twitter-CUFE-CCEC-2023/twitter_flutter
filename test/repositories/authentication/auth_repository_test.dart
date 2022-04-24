@@ -20,14 +20,14 @@ void main() {
     authRepository = AuthRepository(authReq: mockAuthenticationRequests);
   });
 
-  test("ds", () {
-    expect(
-        authRepository.login(username: " ", password: " "),
-        Future.value(UserAuthenticationModel.fromJson(<String, dynamic>{
-          'message': '',
-          'token_expiration_date': '2022-04-23T15:48:54.813Z',
-          'access_token': '',
-          'user': {"name": "", "username": "", "email": ""}
-        })));
-  });
+  // test("ds", () {
+  //   expect(
+  //       authRepository.login(username: " ", password: " "),
+  //       Future.value(UserAuthenticationModel.fromJson(<String, dynamic>{
+  //         'message': '',
+  //         'token_expiration_date': '2022-04-23T15:48:54.813Z',
+  //         'access_token': '',
+  //         'user': {"name": "", "username": "", "email": ""}
+  //       })));
+  // });
 }
