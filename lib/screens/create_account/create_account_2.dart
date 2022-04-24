@@ -130,18 +130,10 @@ class createaccount2 extends State<CreateAccount2> {
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
         imageMultiplier[0] = 1;
-        imageMultiplier[1] = 1;
         fontSizeMultiplier[0] = 1;
-        fontSizeMultiplier[1] = 1;
-        fontSizeMultiplier[2] = 1;
-        fontSizeMultiplier[3] = 1;
       } else {
         imageMultiplier[0] = 1.8;
-        imageMultiplier[1] = 1.8;
         fontSizeMultiplier[0] = 2;
-        fontSizeMultiplier[1] = 2;
-        fontSizeMultiplier[2] = 2;
-        fontSizeMultiplier[3] = 2;
         // double screenHeight = MediaQuery.of(context).size.height;
         // double screenWidth = MediaQuery.of(context).size.width;
       }
