@@ -121,10 +121,6 @@ Widget tweetText(String? tweetText) {
       ),
     );
   }
-  return Text(
-    tweetText ?? '',
-    style: TextStyle(fontSize: 15, color: Colors.black),
-  );
 }
 
 Widget tweetButtons(
