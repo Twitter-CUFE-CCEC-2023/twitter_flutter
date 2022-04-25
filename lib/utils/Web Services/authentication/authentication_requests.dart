@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
@@ -65,4 +66,39 @@ class AuthenticationRequests {
       throw Exception("Undefined Error");
     }
   }
+
+  Future<String> Verification({id,verification_code}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    //TODO:Correct post request body to be used upon deployment
+    /*var body = jsonEncode(<String,dynamic>{
+      "email_or_username": _email_or_username,
+      "password": _password,
+      "remember_me" : _remember_me
+    });*/
+
+    //TODO:Josn-Server-auth request body format to be deleted upon deployment
+    var body = jsonEncode(<String, String?>{
+      "id": id ?? _id,
+      "verification_code": verification_code ?? _verification_code
+    });
+
+    http.Response res = await http.put(Uri.parse("$ENDPOINT/auth/login"),
+        body: body, headers: headers);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+
 }

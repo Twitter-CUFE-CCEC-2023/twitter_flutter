@@ -3,6 +3,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
@@ -26,8 +27,11 @@ import 'package:twitter_flutter/screens/profile_management/change_password.dart'
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/utils/Web Services/authentication/authentication_requests.dart';
-
+import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
+import 'package:twitter_flutter/utils/Web Services/edit_profile/edit_profile_request.dart';
+
+import 'models/objects/user.dart';
 
 void main() {
   // To set the status bar to be transparent and text in status bar to be dark
@@ -56,19 +60,21 @@ class Twitter extends StatefulWidget {
 }
 
 class _TwitterState extends State<Twitter> {
+  final EditProfileBloc editProfileBloc = EditProfileBloc(editProfileRequests: EditProfileRequests());
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
   //final UpdatePasswordBloc updatepasswordBloc = UpdatePasswordBloc(
      // authRepository: AuthRepository(updatepasswordReq: AuthenticationRequests()));
-
+  late UserModel data;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: loginBloc),
    //     BlocProvider.value(value: UpdatePasswordBloc),
-        BlocProvider.value(value: internetCubit)
+        BlocProvider.value(value: internetCubit),
+        BlocProvider.value(value: editProfileBloc),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -76,7 +82,9 @@ class _TwitterState extends State<Twitter> {
         useInheritedMediaQuery: true,
         // Start the app with the "/" named route. In this case, the app starts
         // on the FirstScreen widget.
-        initialRoute: "/",
+
+
+        initialRoute: '/',
         routes: {
           // When navigating to the starting page
           StartingPage.route: (context) => const StartingPage(),
@@ -103,7 +111,7 @@ class _TwitterState extends State<Twitter> {
 
           UserProfile.route: (context) => const UserProfile(),
 
-          EditProfile.route: (context) => const EditProfile(),
+          EditProfile.route: (context) => EditProfile(),
 
           ChangePassword.route: (context) => const ChangePassword(),
         },

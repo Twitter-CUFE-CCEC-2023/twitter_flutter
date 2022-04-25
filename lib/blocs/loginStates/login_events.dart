@@ -14,7 +14,15 @@ class LoginButtonPressed extends LoginEvents {
   static const bool rememberMe = true;
   LoginButtonPressed({required this.username, required this.password});
   @override
-  List<Object?> get props => [username, password];
+  List<Object?> get props =>[username,password];  
+}
+
+
+class VerificationButtonPressed extends LoginEvents {
+  final int verificationCode;
+  VerificationButtonPressed({ required this.verificationCode});
+  @override
+  List<Object?> get props => [ verificationCode];
 }
 
 class SignupButtonPressed extends LoginEvents {
