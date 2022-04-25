@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
-  late String _id;
+  late String id;
   late String name;
   late String username;
   late String email;
@@ -21,7 +21,7 @@ class UserModel extends Equatable {
   late DateTime birth_date;
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    _id = json["_id"];
+    id = json["id"];
     name = json["name"];
     username = json["username"];
     email = json["email"];
@@ -43,7 +43,7 @@ class UserModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        _id,
+        id,
         name,
         username,
         email,

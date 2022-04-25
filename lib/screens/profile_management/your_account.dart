@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 
 import '../../blocs/loginStates/login_bloc.dart';
@@ -84,7 +85,7 @@ class _YourAccountState extends State<YourAccount> {
                   Text2:
                       "see infomation about your account, download an archive of your data or learn about your account deactivation options."),
               buildItem(Icons.https_outlined, "Change your password", context,
-                  Text2: "Change your password at any time"),
+                  Text2: "Change your password at any time",route: ChangePassword.route),
               buildItem(Icons.download_outlined,
                   "Download an archive of your data", context,
                   Text2:

@@ -24,7 +24,7 @@ void main() {
         'token_expiration_date' : '2022-04-23T15:48:54.813Z',
         'access_token' : '',
         'user' : {
-          "_id":"",
+          "id":"",
           "name" : "",
           "username" : "" ,
           "email" : "",
@@ -53,7 +53,7 @@ void main() {
         'token_expiration_date' : '2022-04-23T15:48:54.813Z',
         'access_token' : '',
         'user' : {
-          "_id":"",
+          "id":"",
           "name" : "",
           "username" : "" ,
           "email" : "",
@@ -95,7 +95,7 @@ void main() {
     blocTest<LoginBloc,LoginStates>("Login Success State is Emitted after Loading when a success response is returned from Login Event", build: ()=>loginBloc,
     act: (bloc)=>bloc.add(LoginButtonPressed(username:" " ,password: " ")),
     expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
-      "_id":"",
+      "id":"",
       "name" : "",
       "username" : "" ,
       "email" : "",
@@ -124,7 +124,7 @@ void main() {
     blocTest<LoginBloc,LoginStates>("SignUp Success State is Emitted after Loading when a success response is returned for SignUp event", build: ()=>loginBloc,
         act: (bloc)=>bloc.add(SignupButtonPressed(username:" " ,password: " ",date: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")),
         expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
-          "_id":"",
+          "id":"",
           "name" : "",
           "username" : "" ,
           "email" : "",

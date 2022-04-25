@@ -61,7 +61,8 @@ class HomeSideBar extends StatelessWidget {
           style: const TextStyle(
               fontSize: 18, color: Color.fromARGB(255, 125, 119, 119))),
       onTap: () {
-        //TODO: Implement logout function
+        //Update Login Bloc to add LogOut State
+        Navigator.pushNamedAndRemoveUntil(context, "/", (Route<dynamic> route) => false);
       },
     );
   }

@@ -55,7 +55,6 @@ class ChangePassword extends StatefulWidget {
 
 class changepassword extends State<ChangePassword> {
   bool isButtonEnabled = true;
-  late TextEditingController controller;
   late TextEditingController password;
   late TextEditingController confirmpassword;
   late TextEditingController pass;
@@ -68,7 +67,6 @@ class changepassword extends State<ChangePassword> {
     confirmpassword.dispose();
     password.dispose();
     pass.dispose();
-    controller.dispose();
     super.dispose();
   }
 
@@ -78,6 +76,7 @@ class changepassword extends State<ChangePassword> {
     pass = TextEditingController();
     password = TextEditingController();
     confirmpassword = TextEditingController();
+
     confirmpassword.addListener(() {
       setState(() {
         nextActive = DisableButton();
@@ -181,101 +180,99 @@ class changepassword extends State<ChangePassword> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Positioned(
-                    top: 0,
-                    child: Column(
-                      children: <Widget>[
-                        textfield(
-                            message: 'Current Password',
-                            message2: '',
-                            width: screenWidth - 50,
-                            controller: pass,
-                            validator: Validatepassword),
-                        Container(
-                          height: 10,
-                        ),
-                        textfield(
-                            message: 'New Password',
-                            message2: 'At least 8 characters',
-                            width: screenWidth - 50,
-                            controller: password,
-                            validator: Validatepassword),
-                        Container(
-                          height: 10,
-                        ),
-                        textfield(
-                          message: 'Confirm Password',
+                  Column(
+                    children: <Widget>[
+                      textfield(
+                          message: 'Current Password',
+                          message2: '',
+                          width: screenWidth - 50,
+                          controller: pass,
+                          validator: Validatepassword),
+                      Container(
+                        height: 10,
+                      ),
+                      textfield(
+                          message: 'New Password',
                           message2: 'At least 8 characters',
                           width: screenWidth - 50,
-                          controller: confirmpassword,
-                          validator: ValidateConfirmpassword,
-                        ),
-                        Container(
-                          height: 20,
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(5000),
-                          child: SizedBox(
-                            width: screenWidth / 2,
-                            height: 45,
-                            child: BlocListener<UpdatePasswordBloc, UpdatePasswordStates>(
-                              listener: (context, state) {
-                                if (state is UpdatePasswordSuccessState) {
-                                  try {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        HomePage.route,
-                                            (Route<dynamic> route) => false);
-                                  } on Exception catch (e) {
-                                    context.read<UpdatePasswordBloc>().add(StartEvent());
-                                  }
-                                } else if (state is UpdatePasswordFailureState) {
-                                  setState(() {
-                                  });
+                          controller: password,
+                          validator: Validatepassword),
+                      Container(
+                        height: 10,
+                      ),
+                      textfield(
+                        message: 'Confirm Password',
+                        message2: 'At least 8 characters',
+                        width: screenWidth - 50,
+                        controller: confirmpassword,
+                        validator: ValidateConfirmpassword,
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5000),
+                        child: SizedBox(
+                          width: screenWidth / 2,
+                          height: 45,
+                          child: BlocListener<UpdatePasswordBloc, UpdatePasswordStates>(
+                            listener: (context, state) {
+                              if (state is UpdatePasswordSuccessState) {
+                                try {
+                                  //TODO:Add bottom sheet to show success Message
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      HomePage.route,
+                                          (Route<dynamic> route) => false);
+                                } on Exception catch (e) {
+                                  context.read<UpdatePasswordBloc>().add(StartEvent());
                                 }
-                              },
-                              child: RaisedButton(
-                              color: Colors.blueAccent,
-                              disabledColor: Colors.lightBlueAccent,
-                              disabledElevation: 54,
-                              child: const Text(
-                                'Update password',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
+                              } else if (state is UpdatePasswordFailureState) {
+                                //TODO:Add bottom sheet to show Failure Message
+
+                              }
+                            },
+                            child: RaisedButton(
+                            color: Colors.blueAccent,
+                            disabledColor: Colors.lightBlueAccent,
+                            disabledElevation: 54,
+                            child: const Text(
+                              'Update password',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
                               ),
-                              onPressed: nextActive
-                                  ? () {
-                                      if (_formkey.currentState!.validate()) {
-                                        String oldpassword = pass.text;
-                                        String newpassword = confirmpassword.text;
-                                        context.read<UpdatePasswordBloc>().add(
-                                            UpdatePasswordButtonPressed(
-                                                oldpassword: oldpassword,
-                                                newpassword: newpassword));
-                                      } else {
-                                        print("UnSuccessfull");
-                                      }
-                                    }
-                                  : null,
                             ),
+                            onPressed: nextActive
+                                ? () {
+                                    if (_formkey.currentState!.validate()) {
+                                      String oldpassword = pass.text;
+                                      String newpassword = confirmpassword.text;
+                                      context.read<UpdatePasswordBloc>().add(
+                                          UpdatePasswordButtonPressed(
+                                              oldpassword: oldpassword,
+                                              newpassword: newpassword));
+                                    } else {
+                                      print("UnSuccessfull");
+                                    }
+                                  }
+                                : null,
                           ),
                         ),
-                        ),
-                        Container(height: 10),
-                        SizedBox(
-                            width: screenWidth,
-                            height: 20,
-                            child: Center(
-                              child: Message(
-                                  fontSize: 15,
-                                  message: 'Forgotten your password?',
-                                  colors: Colors.black54),
-                            )),
-                      ],
-                    ),
+                      ),
+                      ),
+                      Container(height: 10),
+                      SizedBox(
+                          width: screenWidth,
+                          height: 20,
+                          child: Center(
+                            child: Message(
+                                fontSize: 15,
+                                message: 'Forgotten your password?',
+                                colors: Colors.black54),
+                          )),
+                    ],
                   ),
                 ],
               ),
