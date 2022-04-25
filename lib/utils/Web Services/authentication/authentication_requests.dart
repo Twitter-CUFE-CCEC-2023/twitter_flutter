@@ -4,18 +4,13 @@ import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class AuthenticationRequests {
-  late final String _email_or_username;
-  late final String _password;
-  late final String _accessToken;
-  late final bool _remember_me = true;
-
   Future<String> Login({username, password}) async {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonEncode(<String,dynamic>{
       "email_or_username": username,
       "password": password,
-      "remember_me" : _remember_me
+      "remember_me" : true
     });
 
     //TODO:Josn-Server-auth request body format to be deleted upon deployment
