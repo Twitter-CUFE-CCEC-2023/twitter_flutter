@@ -6,16 +6,23 @@ import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/screens/profile/profile.dart';
 
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
+import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-
   static String route = '/HomePage';
   static const String username =
       "Ahmedhgjghjgfhjfghjfghjfghjfghjgfhjgfhjfghjgffghfdghdfghdzkjcflhgbnlkdsjfhglkjdsfhglkdfhgkdljfh";
 
   static const String tweetTexts =
       "This is a tweetfgklh jdfklg;h jflk;gjh;flk gjhlfkdgjhlfgh jflgkhl kfjgh;sdlkhf jdsfg;hsdklf;gj dsflk jhgsdklf ghdsjlkf hgdfjslk hgdsjklf ghdfjskl hdsjlfk ghsdjklf ghsdjklf ghjdsklf ghsdjlkfg hsdjlkf ghdsjklf jhgsdljkf gljkdf gjhkld;f gjds;lk gdlfjkgh;slk djhdf;klghd l;kfjhg;lsda hfdfl;kjg hsd;fgh;d flkg";
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   BottomNavigationBar Bottom(
       {required double height, required double imageMultiplier}) {
     return BottomNavigationBar(
@@ -76,7 +83,7 @@ class HomePage extends StatelessWidget {
       leading: Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: GestureDetector(
-          onTap: () => Navigator.pushNamed(context, UserProfile.route),
+          onTap: () => scaffoldKey.currentState?.openDrawer(),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
                 "https://archziner.com/wp-content/uploads/2020/07/air-jordan-hoodie-worn-by-man-wearing-purge-mask-with-neon-lights-super-cool-wallpapers-holding-pink-smoke-bomb.jpg"),
@@ -139,6 +146,8 @@ class HomePage extends StatelessWidget {
         color: Colors.white,
         child: SafeArea(
           child: Scaffold(
+            key: scaffoldKey,
+            drawer: HomeSideBar(),
             appBar: logoAppBar(
                 height: screenHeight,
                 imageMultiplier: imageMultiplier[0],
