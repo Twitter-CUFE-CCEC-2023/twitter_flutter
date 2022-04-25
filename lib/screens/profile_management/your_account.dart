@@ -103,32 +103,35 @@ class _YourAccountState extends State<YourAccount> {
 
 Widget buildItem(IconData myIcon, String Text1, BuildContext context,
     {String? Text2, String? route}) {
-  return ListTile(
-    leading: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          myIcon,
-          color: const Color.fromARGB(255, 95, 76, 76),
-          size: 30,
-        ),
-      ],
+  return Padding(
+    padding: const EdgeInsets.only(top: 8, bottom: 8),
+    child: ListTile(
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            myIcon,
+            color: const Color.fromARGB(255, 95, 76, 76),
+            size: 30,
+          ),
+        ],
+      ),
+      title: Text(
+        Text1,
+        style: const TextStyle(fontSize: 18),
+      ),
+      subtitle: (Text2 != null)
+          ? Text(
+              Text2,
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 143, 119, 119), fontSize: 14.5),
+            )
+          : null,
+      onTap: () {
+        if (route != null) {
+          Navigator.pushNamed(context, route);
+        }
+      },
     ),
-    title: Text(
-      Text1,
-      style: const TextStyle(fontSize: 18),
-    ),
-    subtitle: (Text2 != null)
-        ? Text(
-            Text2,
-            style: const TextStyle(
-                color: Color.fromARGB(255, 143, 119, 119), fontSize: 14.5),
-          )
-        : null,
-    onTap: () {
-      if (route != null) {
-        Navigator.pushNamed(context, route);
-      }
-    },
   );
 }
