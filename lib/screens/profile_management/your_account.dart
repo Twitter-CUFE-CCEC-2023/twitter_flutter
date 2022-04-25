@@ -2,117 +2,132 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 
-class YourAccount extends StatelessWidget {
+import '../../blocs/loginStates/login_bloc.dart';
+import '../../blocs/loginStates/login_states.dart';
+import '../../models/objects/user.dart';
+import '../starting_page.dart';
+
+class YourAccount extends StatefulWidget {
   const YourAccount({Key? key}) : super(key: key);
   static String route = '/YourAccount';
 
-  static Padding MyBar(IconData MyIcon, String Text1, String Text2,
-      String NextPage, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, NextPage),
-        behavior: HitTestBehavior.translucent,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 25, 0),
-              child: Icon(
-                MyIcon,
-                color: const Color.fromARGB(255, 95, 76, 76),
-                size: 30,
-              ),
-            ),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    Text1,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    Text2,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 143, 119, 119),
-                        fontSize: 15),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  @override
+  State<YourAccount> createState() => _YourAccountState();
+}
 
+class _YourAccountState extends State<YourAccount> {
+  late UserModel userData;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.5,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+    var state = context.watch<LoginBloc>().state;
+
+    if (state is LoginSuccessState) {
+      userData = state.userdata;
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+          context, StartingPage.route, (route) => false);
+    }
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          drawer: HomeSideBar(),
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0.5,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Column(
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Your account",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "@" + userData.username.toString(),
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 116, 104, 104),
+                        fontSize: 15),
+                  ),
+                ),
+              ],
+            ),
           ),
-          title: Column(
-            children: const [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Your account",
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "@username", //CHANGE LATTER
+          body: ListView(
+            children: [
+              // ignore: prefer_const_constructors
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, top: 20, right: 15, bottom: 30),
+                child: const Text(
+                  "See infromation about your account, download an archive of your data or learn about your account deactivation options.",
                   style: TextStyle(
-                      color: Color.fromARGB(255, 116, 104, 104), fontSize: 15),
+                    fontSize: 18,
+                    color: Color.fromARGB(255, 95, 110, 100),
+                  ),
                 ),
               ),
+              //TODO: Add account infromation root to the function call
+              buildItem(Icons.person_outlined, "Account Infromation", context,
+                  Text2:
+                      "see infomation about your account, download an archive of your data or learn about your account deactivation options."),
+              buildItem(Icons.https_outlined, "Change your password", context,
+                  Text2: "Change your password at any time"),
+              buildItem(Icons.download_outlined,
+                  "Download an archive of your data", context,
+                  Text2:
+                      "Get insights into the type of infromation stored for your account"),
+              buildItem(Icons.heart_broken_outlined, "Deavtivate your account",
+                  context,
+                  Text2: "find out how can you deavtivate your account")
             ],
           ),
         ),
-        body: ListView(
-          children: [
-            // ignore: prefer_const_constructors
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, top: 20, right: 15, bottom: 30),
-              child: const Text(
-                "See infromation about your account, download an archive of your data or learn about your account deactivation options.",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color.fromARGB(255, 95, 110, 100),
-                ),
-              ),
-            ),
-            MyBar(Icons.person_outlined, "Account Infromation", "see info",
-                "/second", context),
-            MyBar(Icons.https_outlined, "Change your password",
-                "Change your password at any time", "/second", context),
-            MyBar(
-                Icons.download_outlined,
-                "Download an archive of your data",
-                "Get insights into the type of infromation stored for your account",
-                "/second",
-                context),
-            MyBar(
-                Icons.heart_broken_outlined,
-                "Deavtivate your account",
-                "find out how can you deavtivate your account",
-                "/second",
-                context)
-          ],
-        ),
       ),
     );
   }
+}
+
+Widget buildItem(IconData myIcon, String Text1, BuildContext context,
+    {String? Text2, String? route}) {
+  return ListTile(
+    leading: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          myIcon,
+          color: const Color.fromARGB(255, 95, 76, 76),
+          size: 30,
+        ),
+      ],
+    ),
+    title: Text(
+      Text1,
+      style: const TextStyle(fontSize: 18),
+    ),
+    subtitle: (Text2 != null)
+        ? Text(
+            Text2,
+            style: const TextStyle(
+                color: Color.fromARGB(255, 143, 119, 119), fontSize: 14.5),
+          )
+        : null,
+    onTap: () {
+      if (route != null) {
+        Navigator.pushNamed(context, route);
+      }
+    },
+  );
 }
