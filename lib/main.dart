@@ -10,6 +10,7 @@ import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
 import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
+import 'package:twitter_flutter/utils/Web%20Services/edit_profile/update_password_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/screens/authentication/login_password.dart';
@@ -30,7 +31,7 @@ import 'package:twitter_flutter/utils/Web Services/authentication/authentication
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/utils/Web Services/edit_profile/edit_profile_request.dart';
-
+import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_request.dart';
 import 'models/objects/user.dart';
 
 void main() {
@@ -61,18 +62,17 @@ class Twitter extends StatefulWidget {
 
 class _TwitterState extends State<Twitter> {
   final EditProfileBloc editProfileBloc = EditProfileBloc(editProfileRequests: EditProfileRequests());
+  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdateaPasswordRequests());
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  //final UpdatePasswordBloc updatepasswordBloc = UpdatePasswordBloc(
-     // authRepository: AuthRepository(updatepasswordReq: AuthenticationRequests()));
   late UserModel data;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: loginBloc),
-   //     BlocProvider.value(value: UpdatePasswordBloc),
+        BlocProvider.value(value: updatePasswordBloc),
         BlocProvider.value(value: internetCubit),
         BlocProvider.value(value: editProfileBloc),
       ],

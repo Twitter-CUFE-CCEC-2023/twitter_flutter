@@ -14,100 +14,7 @@ import '../../blocs/loginStates/login_states.dart';
 import '../../models/objects/user.dart';
 import '../starting_page.dart';
 
-Widget IcoButton({
-  required double width,
-  required double size,
-  required double left,
-  required double top,
-  required double right,
-  required double bottom,
-  required double height,
-}) {
-  return Container(
-    color: Colors.blueAccent,
-    height: height,
-    width: width,
-    child: Padding(
-      padding: EdgeInsets.fromLTRB(left, top, right, bottom),
-      child: IconButton(
-        onPressed: null,
-        icon: Icon(
-          Icons.add_a_photo,
-          color: Colors.white70,
-          size: size,
-        ),
-      ),
-    ),
-  );
-}
 
-Widget Message(
-    {required String message,
-    required double fontSize,
-    required Color colors}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 35), // 35
-    child: AutoSizeText(
-      message,
-      style: TextStyle(fontSize: fontSize, color: colors),
-      maxLines: 2,
-    ),
-  );
-}
-
-TextStyle buttonStyle(double size) {
-  return TextStyle(color: Colors.lightBlue, fontSize: size);
-}
-
-TextStyle textStyle(double size) {
-  return TextStyle(color: Colors.black54, fontSize: size);
-}
-
-Widget textfieldController(
-    {required int lines,
-      required String message,
-    required String message2,
-    required double width,
-    required TextEditingController controller,
-   // required String inialvalue,
-    required double fontSizeMultiplier,}) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-    child: SizedBox(
-        width: width,
-        child: TextFormField(
-          enabled: true,
-         // initialValue: inialvalue,
-          controller: controller,
-          keyboardType: TextInputType.text,
-          maxLines: lines,
-          decoration: InputDecoration(
-            labelText: message,
-            hintText: message2,
-            hintStyle: textStyle(fontSizeMultiplier),
-          ),
-        )),
-  );
-}
-
-Widget textfield({
-  required String message,
-  required double width,
-  required int lines,
-  required String inialvalue,
-}) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-    child: SizedBox(
-        width: width,
-        child: TextFormField(
-          initialValue: inialvalue,
-          maxLines: lines,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(labelText: message),
-        )),
-  );
-}
 
 class EditProfile extends StatefulWidget {
   static String route = '/EditProfile';
@@ -150,11 +57,106 @@ class editprofile extends State<EditProfile> {
     }
   }
 
+  Widget IcoButton({
+    required double width,
+    required double size,
+    required double left,
+    required double top,
+    required double right,
+    required double bottom,
+    required double height,
+  }) {
+    return Container(
+      color: Colors.blueAccent,
+      height: height,
+      width: width,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(left, top, right, bottom),
+        child: IconButton(
+          onPressed: null,
+          icon: Icon(
+            Icons.add_a_photo,
+            color: Colors.white70,
+            size: size,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget Message(
+      {required String message,
+        required double fontSize,
+        required Color colors}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 35), // 35
+      child: AutoSizeText(
+        message,
+        style: TextStyle(fontSize: fontSize, color: colors),
+        maxLines: 2,
+      ),
+    );
+  }
+
+  TextStyle buttonStyle(double size) {
+    return TextStyle(color: Colors.lightBlue, fontSize: size);
+  }
+
+  TextStyle textStyle(double size) {
+    return TextStyle(color: Colors.black54, fontSize: size);
+  }
+
+  Widget textfieldController(
+      {required int lines,
+        required String message,
+        required String message2,
+        required double width,
+        required TextEditingController controller,
+        // required String inialvalue,
+        required double fontSizeMultiplier,}) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+      child: SizedBox(
+          width: width,
+          child: TextFormField(
+            enabled: true,
+            // initialValue: inialvalue,
+            controller: controller,
+            keyboardType: TextInputType.text,
+            maxLines: lines,
+            decoration: InputDecoration(
+              labelText: message,
+              hintText: message2,
+              hintStyle: textStyle(fontSizeMultiplier),
+            ),
+          )),
+    );
+  }
+
+  Widget textfield({
+    required String message,
+    required double width,
+    required int lines,
+    required String inialvalue,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+      child: SizedBox(
+          width: width,
+          child: TextFormField(
+            initialValue: inialvalue,
+            maxLines: lines,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(labelText: message),
+          )),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     userData = ModalRoute.of(context)?.settings.arguments as UserModel;
-    _namefield.text = userData.name;
+   // _namefield.text = userData.name;
     var state = context.watch<LoginBloc>().state;
     if (state is LoginSuccessState) {
     } else {
@@ -326,7 +328,7 @@ class editprofile extends State<EditProfile> {
                         fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
                         controller: _biofield,
                         message: 'Bio',
-                        message2: '',
+                        message2: userData.bio==''? '':userData.bio,
                         width: screenWidth - 50,
                         lines: 3,
                        // inialvalue: userData.bio,
@@ -335,15 +337,16 @@ class editprofile extends State<EditProfile> {
                           fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
                         controller: _locationfield,
                           message: ('Location'),
-                          message2: '',
+                          message2: userData.location==''? '':userData.location,
                           width: screenWidth - 50,
                           //inialvalue: userData.location,
                           lines: 1),
+
                       textfieldController(
                           fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
                           controller: _websitefield,
                           message: ('Website'),
-                          message2: '',
+                          message2: userData.website==''? '':userData.website,
                           width: screenWidth - 50,
                          // inialvalue: userData.website,
                           lines: 1),
@@ -356,11 +359,10 @@ class editprofile extends State<EditProfile> {
                               readOnly: true,
                               onTap: () {
                                 DatePicker.showDatePicker(context,
-
                                     showTitleActions: true,
                                     minTime: DateTime(1950, 1, 1),
                                     maxTime: DateTime.now(),
-                                    currentTime: DateTime.now(),
+                                    currentTime: userData.birth_date,
                                     onConfirm: (date) {
                                   _datefield.text =
                                       '${date.year}-${date.month}-${date.day}';
