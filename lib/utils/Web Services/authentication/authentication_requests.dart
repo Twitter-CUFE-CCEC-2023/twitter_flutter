@@ -79,8 +79,8 @@ class AuthenticationRequests {
 
     //TODO:Josn-Server-auth request body format to be deleted upon deployment
     var body = jsonEncode(<String, String?>{
-      "id": id ?? _id,
-      "verification_code": verification_code ?? _verification_code
+      "id": id ,
+      "verification_code": verification_code
     });
 
     http.Response res = await http.put(Uri.parse("$ENDPOINT/auth/login"),

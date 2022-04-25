@@ -37,7 +37,7 @@ class AuthRepository {
   Future<UserAuthenticationModel> verification({id,verification_code}) async {
     try {
       String verificationData = await authReq.Verification(id:id,verification_code:verification_code);
-      return UserAuthenticationModel.fromJson(jsonDecode(verificationData));
+      return UserAuthenticationModel.fromJsonSignUp(jsonDecode(verificationData));
     } on Exception catch (e) {
       throw Exception(e);
     }
