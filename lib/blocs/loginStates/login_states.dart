@@ -26,6 +26,32 @@ class LoginFailureState extends LoginStates {
   List<Object?> get props => [errorMessage];
 }
 
+class VerificationInitState extends LoginStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class VerificationLoadingState extends LoginStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class VerificationSuccessState extends LoginStates {
+  final dynamic userdata;
+  VerificationSuccessState(this.userdata);
+  @override
+  List<Object?> get props => [userdata];
+}
+
+class VerificationFailureState extends LoginStates {
+  final String errorMessage;
+  VerificationFailureState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+
+
 class SignupFailureState extends LoginStates {
   final String errorMessage;
   SignupFailureState({required this.errorMessage});
