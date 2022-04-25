@@ -42,10 +42,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
         gender: event.gender,
         name: event.name,
       );
-      var pref = await SharedPreferences.getInstance();
-      pref.setString("access_token", data.access_token);
-      pref.setString("token_expiration_date",
-          data.token_expiration_date.toIso8601String());
+      //TODO: Add a SignUp Success State to handle verification of email
       emit(LoginSuccessState(data.user));
     } on Exception catch (e) {
       emit(SignupFailureState(
@@ -53,8 +50,4 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     }
   }
 
-  @override
-  Future<void> close() {
-    return super.close();
-  }
 }
