@@ -19,11 +19,12 @@ void main() {
     setUp(() {
       mockAuthRepository = MockAuthRepository();
       //stub 1
-      when(mockAuthRepository.login(username:" " ,password:" ")).thenAnswer((_) async => UserAuthenticationModel.fromJson(<String,dynamic>{
+      when(mockAuthRepository.login(username:" " ,password:" ")).thenAnswer((_) async => UserAuthenticationModel.fromJsonLogin(<String,dynamic>{
         'message' : '',
         'token_expiration_date' : '2022-04-23T15:48:54.813Z',
         'access_token' : '',
         'user' : {
+          "_id":"",
           "name" : "",
           "username" : "" ,
           "email" : "",
@@ -34,7 +35,6 @@ void main() {
           "location":"",
           "created_at":"2022-04-23T15:48:54.813Z",
           "isVerified": true,
-          "role":"",
           "followers_count": 1,
           "following_count": 1,
           "tweets_count": 1,
@@ -48,11 +48,12 @@ void main() {
       when(mockAuthRepository.login(username:"err" ,password:" ")).thenThrow(Exception("wrong Credentials"));
 
       //stub 3
-      when(mockAuthRepository.signUp(username:" " ,password: " ",date_of_birth: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")).thenAnswer((_) async => UserAuthenticationModel.fromJson(<String,dynamic>{
+      when(mockAuthRepository.signUp(username:" " ,password: " ",date_of_birth: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")).thenAnswer((_) async => UserAuthenticationModel.fromJsonLogin(<String,dynamic>{
         'message' : '',
         'token_expiration_date' : '2022-04-23T15:48:54.813Z',
         'access_token' : '',
         'user' : {
+          "_id":"",
           "name" : "",
           "username" : "" ,
           "email" : "",
@@ -63,7 +64,6 @@ void main() {
           "location":"",
           "created_at":"2022-04-23T15:48:54.813Z",
           "isVerified":true,
-          "role":"",
           "followers_count": 1,
           "following_count": 1,
           "tweets_count": 1,
@@ -92,9 +92,10 @@ void main() {
 
 
 
-    blocTest<LoginBloc,LoginStates>("SignUp/Login Success State is Emitted after Loading when a success response is returned from Login Event", build: ()=>loginBloc,
+    blocTest<LoginBloc,LoginStates>("Login Success State is Emitted after Loading when a success response is returned from Login Event", build: ()=>loginBloc,
     act: (bloc)=>bloc.add(LoginButtonPressed(username:" " ,password: " ")),
     expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
+      "_id":"",
       "name" : "",
       "username" : "" ,
       "email" : "",
@@ -105,7 +106,6 @@ void main() {
       "location":"",
       "created_at":"2022-04-23T15:48:54.813Z",
       "isVerified":true,
-      "role":"",
       "followers_count": 1,
       "following_count": 1,
       "tweets_count": 1,
@@ -121,9 +121,10 @@ void main() {
     );
 
 
-    blocTest<LoginBloc,LoginStates>("SignUp/Login Success State is Emitted after Loading when a success response is returned for SignUp event", build: ()=>loginBloc,
+    blocTest<LoginBloc,LoginStates>("SignUp Success State is Emitted after Loading when a success response is returned for SignUp event", build: ()=>loginBloc,
         act: (bloc)=>bloc.add(SignupButtonPressed(username:" " ,password: " ",date: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")),
         expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
+          "_id":"",
           "name" : "",
           "username" : "" ,
           "email" : "",
@@ -134,7 +135,6 @@ void main() {
           "location":"",
           "created_at":"2022-04-23T15:48:54.813Z",
           "isVerified":true,
-          "role":"",
           "followers_count": 1,
           "following_count": 1,
           "tweets_count": 1,
