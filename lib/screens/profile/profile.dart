@@ -15,6 +15,7 @@ import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import '../../blocs/loginStates/login_bloc.dart';
 import '../utility_screens/opened_image.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
+import 'package:twitter_flutter/screens/profile/edit_profile.dart';
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
   static const route = "/userProfile";
@@ -69,7 +70,7 @@ class _UserProfileState extends State<UserProfile> {
                       OutlinedButton(
                         child: const Text("Edit Profile"),
                         style: outlinedButtonsStyle,
-                        onPressed: () => print("Edit Profile Pressed"),
+                        onPressed: () => Navigator.pushNamed(context, EditProfile.route, arguments: userData),
                       ),
                     ],
                   ),
@@ -471,18 +472,4 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _buildEditProfileButton(
-      {required screenWidth,
-      required double shrinkOffset,
-      required BuildContext context}) {
-    return Positioned(
-      top: expandedHeight / 1 - shrinkOffset,
-      right: screenWidth / 25,
-      child: OutlinedButton(
-        child: const Text("Edit Profile"),
-        style: outlinedButtonsStyle,
-        onPressed: () => print("Edit Profile Pressed"),
-      ),
-    );
-  }
 }

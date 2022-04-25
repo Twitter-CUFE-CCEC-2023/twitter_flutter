@@ -23,7 +23,6 @@ class VerificationButtonPressed extends LoginEvents {
   VerificationButtonPressed({ required this.verificationCode});
   @override
   List<Object?> get props => [ verificationCode];
-  List<Object?> get props => [username, password];
 }
 
 class SignupButtonPressed extends LoginEvents {
