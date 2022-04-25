@@ -119,6 +119,8 @@ class editprofile extends State<EditProfile> {
       child: SizedBox(
           width: width,
           child: TextFormField(
+
+            key: Key(userData.name),
             enabled: true,
             // initialValue: inialvalue,
             controller: controller,
@@ -138,6 +140,7 @@ class editprofile extends State<EditProfile> {
     required double width,
     required int lines,
     required String inialvalue,
+    required double fontSizeMultiplier,
   }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
@@ -156,7 +159,8 @@ class editprofile extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     userData = ModalRoute.of(context)?.settings.arguments as UserModel;
-   // _namefield.text = userData.name;
+
+     _namefield.text = userData.name;
     var state = context.watch<LoginBloc>().state;
     if (state is LoginSuccessState) {
     } else {
@@ -291,7 +295,7 @@ class editprofile extends State<EditProfile> {
                     child: CircleAvatar(
                       radius: 40,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 10),
+                        padding: const EdgeInsets.fromLTRB(0, 5, 2, 10),
                         child: IconButton(
                           onPressed: null,
                           icon: Icon(
@@ -304,6 +308,8 @@ class editprofile extends State<EditProfile> {
                     ),
                   ),
                 ),
+
+
                 Positioned(
                   top: screenHeight * 0.16 + 40,
                   child: Column(
@@ -324,31 +330,26 @@ class editprofile extends State<EditProfile> {
                             controller: _namefield,
                             width: screenWidth - 50),
                       ),
-                      textfieldController(
+
+                      textfield(
                         fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                        controller: _biofield,
                         message: 'Bio',
-                        message2: userData.bio==''? '':userData.bio,
+                        inialvalue: userData.bio,
                         width: screenWidth - 50,
                         lines: 3,
-                       // inialvalue: userData.bio,
                       ),
-                      textfieldController(
+                      textfield(
                           fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                        controller: _locationfield,
                           message: ('Location'),
-                          message2: userData.location==''? '':userData.location,
+                          inialvalue: userData.location,
                           width: screenWidth - 50,
-                          //inialvalue: userData.location,
                           lines: 1),
 
-                      textfieldController(
+                      textfield(
                           fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                          controller: _websitefield,
                           message: ('Website'),
-                          message2: userData.website==''? '':userData.website,
+                          inialvalue: userData.website,
                           width: screenWidth - 50,
-                         // inialvalue: userData.website,
                           lines: 1),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
