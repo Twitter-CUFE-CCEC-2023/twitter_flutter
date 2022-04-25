@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/profile/tweets_widget.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/screens/profile/profile.dart';
 
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
+
+import '../../blocs/loginStates/login_bloc.dart';
+import '../../blocs/loginStates/login_states.dart';
+import '../../widgets/profile/logged_FAB_actions.dart';
+import '../starting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,6 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  late UserModel userData;
   BottomNavigationBar Bottom(
       {required double height, required double imageMultiplier}) {
     return BottomNavigationBar(
@@ -68,7 +76,8 @@ class _HomePageState extends State<HomePage> {
   AppBar logoAppBar(
       {required double height,
       required double imageMultiplier,
-      required BuildContext context}) {
+      required BuildContext context,
+      required String imageUrl}) {
     return AppBar(
       elevation: 1,
       actions: [
@@ -84,21 +93,18 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.only(left: 8.0),
         child: GestureDetector(
           onTap: () => scaffoldKey.currentState?.openDrawer(),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://archziner.com/wp-content/uploads/2020/07/air-jordan-hoodie-worn-by-man-wearing-purge-mask-with-neon-lights-super-cool-wallpapers-holding-pink-smoke-bomb.jpg"),
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(imageUrl),
+              ),
+            ),
           ),
         ),
       ),
-      //IconButton(
-      //   onPressed: () => {},
-      //
-      //   icon: Icon(
-      //     Icons.circle,
-      //     color: Colors.blue,
-      //     size: 0.038 * imageMultiplier * height,
-      //   ),
-      // ),
       backgroundColor: Colors.white,
       title: Image.asset(
         'assets/images/bluetwitterlogo64.png',
@@ -121,6 +127,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var state = context.watch<LoginBloc>().state;
+
+    if (state is LoginSuccessState) {
+      userData = state.userdata;
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+          context, StartingPage.route, (route) => false);
+      //TODO:Log the user out in case of the state is not login success or the access token is expired
+    }
+
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
@@ -151,10 +167,27 @@ class _HomePageState extends State<HomePage> {
             appBar: logoAppBar(
                 height: screenHeight,
                 imageMultiplier: imageMultiplier[0],
-                context: context),
+                context: context,
+                imageUrl: userData.profile_image_url),
             backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                  builder: (context) {
+                    return GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          height: 0.97 * MediaQuery.of(context).size.height,
+                          color: Color(0xDFFFFFFF),
+                          child: FABActions(),
+                        ));
+                  },
+                  context: context,
+                  backgroundColor: Colors.white24,
+                  isDismissible: true,
+                  isScrollControlled: true,
+                );
+              },
               child: Icon(Icons.add),
             ),
             body: ListView(
