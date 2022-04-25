@@ -12,7 +12,7 @@ class UserModel extends Equatable {
   late String location;
   late DateTime created_at;
   late bool isVerified;
-  late String role;
+  //late String role;
   late int followers_count;
   late int following_count;
   late int tweets_count;
@@ -21,6 +21,7 @@ class UserModel extends Equatable {
   late DateTime birth_date;
 
   UserModel.fromJson(Map<String, dynamic> json) {
+    _id = json["_id"];
     name = json["name"];
     username = json["username"];
     email = json["email"];
@@ -32,7 +33,7 @@ class UserModel extends Equatable {
     created_at = DateTime.parse(json["created_at"]);
     birth_date = DateTime.parse(json["birth_date"]);
     isVerified = json["isVerified"];
-    role = json["role"];
+    //role = json["role"];
     followers_count = json["followers_count"];
     following_count = json["following_count"];
     tweets_count = json["tweets_count"];
@@ -42,6 +43,7 @@ class UserModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        _id,
         name,
         username,
         email,
@@ -52,7 +54,6 @@ class UserModel extends Equatable {
         location,
         created_at,
         isVerified,
-        role,
         followers_count,
         following_count,
         tweets_count,

@@ -9,18 +9,24 @@ class UserAuthenticationModel extends Equatable{
   late DateTime token_expiration_date;
   late UserModel user;
 
-  UserAuthenticationModel.fromJson(Map<String, dynamic> json) {
-    //TODO:To be uncommented upon deployment
+  UserAuthenticationModel.fromJsonLogin(Map<String, dynamic> json) {
     message = json["message"];
     access_token = json["access_token"];
     token_expiration_date = DateTime.parse(json["token_expiration_date"]);
     user = UserModel.fromJson(json["user"]);
-    // //TODO:Josn Server Response format to be deleted upon deployment
-    // message=" ";
-    // access_token = json["accessToken"];
-    // token_expiration_date = DateTime(0);
 
+    /*//TODO:Josn Server Response format to be deleted upon deployment
+    message=" ";
+    access_token = json["accessToken"];
+    token_expiration_date = DateTime(0)*/
+  }
 
+  UserAuthenticationModel.fromJsonSignUp(Map<String, dynamic> json) {
+    //TODO:To be uncommented upon deployment
+    message = json["message"];
+    user = UserModel.fromJson(json["user"]);
+    access_token = "";
+    token_expiration_date = DateTime(0);
   }
 
   @override

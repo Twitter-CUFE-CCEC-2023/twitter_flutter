@@ -54,8 +54,6 @@ class AuthenticationRequests {
       "birth_date": birth_date,
     });
 
-    print(body);
-
     http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/signup"),
         body: body, headers: headers);
 

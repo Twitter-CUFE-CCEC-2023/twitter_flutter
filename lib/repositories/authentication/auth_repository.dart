@@ -12,7 +12,7 @@ class AuthRepository {
     try {
       String loginData =
           await authReq.Login(username: username, password: password);
-      return UserAuthenticationModel.fromJson(jsonDecode(loginData));
+      return UserAuthenticationModel.fromJsonLogin(jsonDecode(loginData));
     } on Exception catch (e) {
       throw Exception(e);
     }
@@ -28,9 +28,7 @@ class AuthRepository {
           birth_date: date_of_birth,
           gender: gender,
           username: username);
-      print(signupData);
-      return UserAuthenticationModel.fromJson(jsonDecode(signupData));
-
+      return UserAuthenticationModel.fromJsonSignUp(jsonDecode(signupData));
     } on Exception catch (e) {
       throw Exception(e);
     }
