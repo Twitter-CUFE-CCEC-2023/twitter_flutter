@@ -11,6 +11,8 @@ class Tweets extends StatefulWidget {
 class _TweetsState extends State<Tweets> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: ListView(
         children: [
@@ -18,22 +20,24 @@ class _TweetsState extends State<Tweets> {
             userProfilePicture:
                 "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
             user_Name: "Johnny",
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
             imageCount: 0,
             CommentCount: 2,
             retweetCount: 4,
             likeCount: 7,
-            context: context,
             tweet_Text: "Hello guys, How are you?",
           ),
           tweet(
               userProfilePicture:
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQmyyuPaZzRHAIpnCtIWLhyIoghmcPu3dZxQ&usqp=CAU",
               user_Name: "Activation",
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
               imageCount: 4,
               CommentCount: 20,
               retweetCount: 40,
               likeCount: 200,
-              context: context,
               tweet_Text:
                   "Check out the newest mapes in the game (new enemies added, new characters, and new guns)",
               imageOne:
@@ -48,12 +52,13 @@ class _TweetsState extends State<Tweets> {
             userProfilePicture:
                 "https://pbs.twimg.com/media/E9gpNWsXEAYir33.jpg",
             user_Name: "Maged Alosali",
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
             tweet_Text: "Check the new gif",
             imageCount: 1,
             CommentCount: 2,
             retweetCount: 3,
             likeCount: 4,
-            context: context,
             imageOne: "https://c.tenor.com/EWiHVwPUEOoAAAAC/coxa-among-us.gif",
           ),
         ],

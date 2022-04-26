@@ -11,6 +11,8 @@ class Media extends StatefulWidget {
 class _MediaState extends State<Media> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: ListView(
         children: [
@@ -18,11 +20,12 @@ class _MediaState extends State<Media> {
               userProfilePicture:
                   "https://www.howfamous.is/celebrity/chris-hemsworth/200/220.jpg?lang=en",
               user_Name: "Chris",
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
               imageCount: 1,
               CommentCount: 300,
               retweetCount: 40,
               likeCount: 77,
-              context: context,
               tweet_Text: "Stay tuned for the new thor movie!",
               imageOne:
                   "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg"),

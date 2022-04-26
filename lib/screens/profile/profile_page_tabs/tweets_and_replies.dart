@@ -11,6 +11,8 @@ class TweetsAndReplies extends StatefulWidget {
 class _TweetsAndRepliesState extends State<TweetsAndReplies> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
         child: ListView(
       children: <Widget>[
@@ -18,11 +20,12 @@ class _TweetsAndRepliesState extends State<TweetsAndReplies> {
             userProfilePicture:
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOAAggR0b98DcebtjSUaSn8yMSQAhoOrRdRA&usqp=CAU",
             user_Name: "Thomas brush",
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
             imageCount: 2,
             CommentCount: 60,
             retweetCount: 20,
             likeCount: 34,
-            context: context,
             imageOne:
                 "https://www.giantbomb.com/a/uploads/scale_small/8/87790/3005649-box_ps.png",
             imageTwo:
@@ -31,11 +34,12 @@ class _TweetsAndRepliesState extends State<TweetsAndReplies> {
             userProfilePicture:
                 "https://yt3.ggpht.com/ytc/AKedOLRTZPbxwPklr6CPZy4TcMNwLAgxdoJ2gyOXbq2fXw=s900-c-k-c0x00ffffff-no-rj",
             user_Name: "My Name is Mohamed Ahmed Mohamed",
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
             imageCount: 3,
             CommentCount: 10,
             retweetCount: 30,
             likeCount: 23,
-            context: context,
             tweet_Text: "Check out my newest videos",
             imageOne:
                 "https://i.ytimg.com/vi/kfWfMvA0heY/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBgf-z5Mh91YfdsjSg_afubvzJtXQ",

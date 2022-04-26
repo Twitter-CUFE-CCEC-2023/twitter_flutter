@@ -11,6 +11,8 @@ class Likes extends StatefulWidget {
 class _LikesState extends State<Likes> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
         child: ListView(
       children: [
@@ -18,11 +20,12 @@ class _LikesState extends State<Likes> {
             userProfilePicture:
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQmyyuPaZzRHAIpnCtIWLhyIoghmcPu3dZxQ&usqp=CAU",
             user_Name: "Activation",
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
             imageCount: 4,
             CommentCount: 20,
             retweetCount: 40,
             likeCount: 200,
-            context: context,
             tweet_Text:
                 "Check out the newest mapes in the game (new enemies added, new characters, and new guns)",
             imageOne:

@@ -45,13 +45,11 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-      // DevicePreview(
-      //     enabled: true,
-      // tools: const [...DevicePreview.defaultTools],
-      // builder: (context) =>
-      Twitter()
-      // ),
-      );
+    DevicePreview(
+        enabled: true,
+        tools: const [...DevicePreview.defaultTools],
+        builder: (context) => Twitter()),
+  );
 }
 
 class Twitter extends StatefulWidget {
@@ -72,7 +70,6 @@ class _TwitterState extends State<Twitter> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-
       providers: [
         BlocProvider.value(value: loginBloc),
         BlocProvider.value(value: updatePasswordBloc),
