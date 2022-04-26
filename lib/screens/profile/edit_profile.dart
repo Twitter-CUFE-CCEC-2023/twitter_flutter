@@ -169,8 +169,6 @@ class editprofile extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
 
-
-    //   data = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
@@ -285,6 +283,7 @@ class editprofile extends State<EditProfile> {
                     //      color: Colors.white,
                     padding: const EdgeInsets.all(8),
                     child: const CircleAvatar(
+                      backgroundImage: null,
                       radius: 45,
                       backgroundColor: Colors.white,
                     ),
@@ -296,6 +295,7 @@ class editprofile extends State<EditProfile> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     child: CircleAvatar(
+                      backgroundImage:null,
                       radius: 40,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 2, 10),
