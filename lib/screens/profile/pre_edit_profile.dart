@@ -12,23 +12,32 @@ class PreEditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var state = context.watch<LoginBloc>().state;
-    return BlocListener<LoginBloc,LoginStates>(listener: (_, __) {
-      if (state is LoginSuccessState) {
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => EditProfile(
-                        name: state.userdata.name,
-                        bio: state.userdata.bio,
-                        birth_date: state.userdata.birth_date,
-                        location: state.userdata.location,
-                        website: state.userdata.website,
-                      )));
-        });
-      }
-    },
-    child: Container(),
-    );
+    if (state is LoginSuccessState) {
+      return FutureBuilder(
+        future: _editProfile(state, context),
+        builder: (context, ss) {
+          return Container(
+            color: Colors.lightBlue,
+          );
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Future<String> _editProfile(LoginSuccessState state, context) async {
+    await Future.delayed(Duration(seconds: 0))
+        .then((value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditProfile(
+                      name: state.userdata.name,
+                      bio: state.userdata.bio,
+                      birth_date: state.userdata.birth_date,
+                      location: state.userdata.location,
+                      website: state.userdata.website,
+                    ))));
+    return "";
   }
 }
