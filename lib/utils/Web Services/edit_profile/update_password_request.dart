@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
-class UpdateaPasswordRequests {
+class UpdatePasswordRequests {
 
   late final String _token;
   late final String _old_password;
@@ -37,4 +37,5 @@ class UpdateaPasswordRequests {
       throw Exception("Undefined Error");
     }
   }
+
 }
