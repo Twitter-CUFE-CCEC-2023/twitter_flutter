@@ -1,6 +1,11 @@
+import 'dart:developer';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+late BuildContext contexT;
 
 class tweetModel {
   late String userProfileImage;
@@ -51,11 +56,13 @@ Widget tweet(
     required int CommentCount,
     required int retweetCount,
     required int likeCount,
+    required BuildContext context,
     String? tweet_Text,
     String? imageOne,
     String? imageTwo,
     String? imageThree,
     String? imageFour}) {
+  contexT = context;
   return Column(
     children: [
       Row(
@@ -189,50 +196,52 @@ Widget tweetImage(int count,
     String? imageTwo,
     String? imageThree,
     String? imageFour}) {
+  double screenHeight = MediaQuery.of(contexT).size.height; //868
+  double screenWidth = MediaQuery.of(contexT).size.width; //411
   if (count == 0) {
     return Container();
   } else if (count == 1) {
     return oneImage(imageOne ?? "", 12, 12, 12, 12);
   } else if (count == 2) {
     return Container(
-      width: 400,
-      height: 160,
+      width: 400, //400
+      height: 160, //160
       child: Row(
         children: <Widget>[
           oneImage(imageOne ?? "", 12, 0, 12, 0,
-              imageWidth: 140, imageHeight: 160),
+              imageWidth: 140, imageHeight: 160), // 140  160
           SizedBox(
             width: 3,
           ),
           oneImage(imageTwo ?? "", 0, 12, 0, 12,
-              imageWidth: 140, imageHeight: 160),
+              imageWidth: 140, imageHeight: 160), // 140 160
         ],
       ),
     );
   } else if (count == 3) {
     return Container(
-      width: 400,
-      height: 160,
+      width: 400, //400
+      height: 160, //160
       child: Row(
         children: <Widget>[
           oneImage(imageOne ?? "", 12, 0, 12, 0,
-              imageWidth: 150, imageHeight: 160),
+              imageWidth: 150, imageHeight: 160), //150 160
           SizedBox(
             width: 3,
           ),
           Container(
-            width: 128,
-            height: 160,
+            width: 128, //128
+            height: 160, //160
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 oneImage(imageTwo ?? "", 0, 12, 0, 0,
-                    imageWidth: 128, imageHeight: 78),
+                    imageWidth: 128, imageHeight: 78), //128 78
                 SizedBox(
                   height: 3,
                 ),
                 oneImage(imageThree ?? "", 0, 0, 0, 12,
-                    imageWidth: 128, imageHeight: 78),
+                    imageWidth: 128, imageHeight: 78), // 128 78
               ],
             ),
           ),

@@ -62,7 +62,8 @@ class HomeSideBar extends StatelessWidget {
               fontSize: 18, color: Color.fromARGB(255, 125, 119, 119))),
       onTap: () {
         //Update Login Bloc to add LogOut State
-        Navigator.pushNamedAndRemoveUntil(context, "/", (Route<dynamic> route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/", (Route<dynamic> route) => false);
       },
     );
   }
@@ -118,7 +119,9 @@ class HomeSideBar extends StatelessWidget {
             fit: BoxFit.contain,
             child: CircleAvatar(
               backgroundImage: NetworkImage(
-                userData.profile_image_url,
+                (userData.profile_image_url != "")
+                    ? userData.profile_image_url
+                    : "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
               ),
               radius: 5,
             ),

@@ -45,12 +45,12 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-      /*DevicePreview(
-        enabled: true,
-        tools: const [...DevicePreview.defaultTools],
-        builder: (context) =>*/
+      // DevicePreview(
+      //     enabled: true,
+      // tools: const [...DevicePreview.defaultTools],
+      // builder: (context) =>
       Twitter()
-      //),
+      // ),
       );
 }
 
