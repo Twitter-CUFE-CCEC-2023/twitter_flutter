@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:twitter_flutter/models/objects/user.dart';
-import 'package:twitter_flutter/screens/profile/profile.dart';
 
 class UserProfileModel {
   late String message;
