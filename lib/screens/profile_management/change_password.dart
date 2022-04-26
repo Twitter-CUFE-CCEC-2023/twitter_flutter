@@ -8,43 +8,9 @@ import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_states
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import 'package:twitter_flutter/screens/profile/home_page.dart';
+import 'package:twitter_flutter/screens/profile_management/your_account.dart';
+import 'package:twitter_flutter/screens/profile_management/your_account.dart';
 
-Widget Message(
-    {required String message,
-    required double fontSize,
-    required Color colors}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 35), // 35
-    child: AutoSizeText(
-      message,
-      style: TextStyle(fontSize: fontSize, color: colors),
-      maxLines: 2,
-    ),
-  );
-}
-
-Widget textfield(
-    {required String message,
-    required String message2,
-    required double width,
-    required TextEditingController controller,
-    required validator}) {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
-    child: SizedBox(
-        width: width,
-        child: TextFormField(
-          controller: controller,
-          keyboardType: TextInputType.text,
-          validator: validator,
-          decoration: InputDecoration(
-            labelText: message,
-            hintText: message2,
-          ),
-        )),
-  );
-}
 
 class ChangePassword extends StatefulWidget {
   static String route = '/ChangePassword';
@@ -68,6 +34,41 @@ class changepassword extends State<ChangePassword> {
     password.dispose();
     pass.dispose();
     super.dispose();
+  }
+  Widget Message(
+      {required String message,
+        required double fontSize,
+        required Color colors}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 35), // 35
+      child: AutoSizeText(
+        message,
+        style: TextStyle(fontSize: fontSize, color: colors),
+        maxLines: 2,
+      ),
+    );
+  }
+
+  Widget textfield(
+      {required String message,
+        required String message2,
+        required double width,
+        required TextEditingController controller,
+        required validator}) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
+      child: SizedBox(
+          width: width,
+          child: TextFormField(
+            controller: controller,
+            keyboardType: TextInputType.text,
+            validator: validator,
+            decoration: InputDecoration(
+              labelText: message,
+              hintText: message2,
+            ),
+          )),
+    );
   }
 
   @override
@@ -108,7 +109,7 @@ class changepassword extends State<ChangePassword> {
     if (value == null) {
       return 'Please Enter password';
     } else if (value.length < 8) {
-      return 'Username must be at least 8 characters long.';
+      return 'Your password needs to be at least 8 characters.\n Please enter a longer one.';
     }
     return null;
   }
@@ -128,10 +129,13 @@ class changepassword extends State<ChangePassword> {
     final double screenHeight = MediaQuery.of(context).size.height;
     double borderRadiusMultiplier = 1;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
+    final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
+        sizedBoxHeightMultiplier[0] = 1;
         fontSizeMultiplier[0] = 1;
       } else {
+        sizedBoxHeightMultiplier[0] = .1;
         fontSizeMultiplier[0] = 2;
       }
       double screenHeight = MediaQuery.of(context).size.height;
@@ -147,30 +151,28 @@ class changepassword extends State<ChangePassword> {
               ),
               onPressed: () => Navigator.pop(context, false)),
           backgroundColor: Colors.white,
-          title: SizedBox.fromSize(
-            child: Column(children: <Widget>[
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  'Update Password',
-                  style: TextStyle(
-                    fontSize: 0.025 * fontSizeMultiplier[0] * screenHeight,
-                    color: Colors.black,
-                  ),
+          title: Column(children: <Widget>[
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                'Update Password',
+                style: TextStyle(
+                  fontSize: 0.025 * fontSizeMultiplier[0] * screenHeight,
+                  color: Colors.black,
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  '@username ',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 0.023 * fontSizeMultiplier[0] * screenHeight,
-                  ),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                '@username ',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 0.023 * fontSizeMultiplier[0] * screenHeight,
                 ),
               ),
-            ]),
-          ),
+            ),
+          ]),
         ),
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -181,6 +183,7 @@ class changepassword extends State<ChangePassword> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       textfield(
                           message: 'Current Password',
@@ -222,7 +225,7 @@ class changepassword extends State<ChangePassword> {
                                   //TODO:Add bottom sheet to show success Message
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      HomePage.route,
+                                      YourAccount.route,
                                           (Route<dynamic> route) => false);
                                 } on Exception catch (e) {
                                   context.read<UpdatePasswordBloc>().add(StartEvent());
@@ -260,18 +263,18 @@ class changepassword extends State<ChangePassword> {
                                 : null,
                           ),
                         ),
-                      ),
-                      ),
-                      Container(height: 10),
+                      ),),
                       SizedBox(
                           width: screenWidth,
-                          height: 20,
+                          height: screenHeight*sizedBoxHeightMultiplier[0]*0.043,
                           child: Center(
-                            child: Message(
-                                fontSize: 15,
-                                message: 'Forgotten your password?',
+                            child: TextButton(
+                              onPressed: (){},
+                            child : Message(
+                                fontSize: 25 ,
+                                message: 'Forgot password?',
                                 colors: Colors.black54),
-                          )),
+                            ),   )),
                     ],
                   ),
                 ],

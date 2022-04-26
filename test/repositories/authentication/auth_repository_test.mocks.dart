@@ -48,7 +48,13 @@ class MockAuthenticationRequests extends _i1.Mock
             #username: username,
             #gender: gender,
             #password: password,
-            #date_of_birth: birth_date
+            #birth_date: birth_date
           }),
+          returnValue: Future<String>.value('')) as _i3.Future<String>);
+  @override
+  _i3.Future<String> Verification({dynamic id, dynamic verification_code}) =>
+      (super.noSuchMethod(
+          Invocation.method(#Verification, [],
+              {#id: id, #verification_code: verification_code}),
           returnValue: Future<String>.value('')) as _i3.Future<String>);
 }

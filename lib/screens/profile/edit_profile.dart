@@ -5,128 +5,47 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_states.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_events.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/loginStates/login_bloc.dart';
-import '../../blocs/loginStates/login_states.dart';
-import '../../models/objects/user.dart';
-import '../starting_page.dart';
-
-Widget IcoButton({
-  required double width,
-  required double size,
-  required double left,
-  required double top,
-  required double right,
-  required double bottom,
-  required double height,
-}) {
-  return Container(
-    color: Colors.blueAccent,
-    height: height,
-    width: width,
-    child: Padding(
-      padding: EdgeInsets.fromLTRB(left, top, right, bottom),
-      child: IconButton(
-        onPressed: null,
-        icon: Icon(
-          Icons.add_a_photo,
-          color: Colors.white70,
-          size: size,
-        ),
-      ),
-    ),
-  );
-}
-
-Widget Message(
-    {required String message,
-    required double fontSize,
-    required Color colors}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 35), // 35
-    child: AutoSizeText(
-      message,
-      style: TextStyle(fontSize: fontSize, color: colors),
-      maxLines: 2,
-    ),
-  );
-}
-
-TextStyle buttonStyle(double size) {
-  return TextStyle(color: Colors.lightBlue, fontSize: size);
-}
-
-TextStyle textStyle(double size) {
-  return TextStyle(color: Colors.black54, fontSize: size);
-}
-
-Widget textfieldController(
-    {required int lines,
-      required String message,
-    required String message2,
-    required double width,
-    required TextEditingController controller,
-   // required String inialvalue,
-    required double fontSizeMultiplier,}) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-    child: SizedBox(
-        width: width,
-        child: TextFormField(
-          enabled: true,
-         // initialValue: inialvalue,
-          controller: controller,
-          keyboardType: TextInputType.text,
-          maxLines: lines,
-          decoration: InputDecoration(
-            labelText: message,
-            hintText: message2,
-            hintStyle: textStyle(fontSizeMultiplier),
-          ),
-        )),
-  );
-}
-
-Widget textfield({
-  required String message,
-  required double width,
-  required int lines,
-  required String inialvalue,
-}) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-    child: SizedBox(
-        width: width,
-        child: TextFormField(
-          initialValue: inialvalue,
-          maxLines: lines,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(labelText: message),
-        )),
-  );
-}
 
 class EditProfile extends StatefulWidget {
   static String route = '/EditProfile';
-   EditProfile({Key? key}) : super(key: key);
+  String name;
+  String bio;
+  String location;
+  String website;
+  DateTime birth_date;
+  EditProfile(
+      {Key? key,
+      required this.name,
+      required this.website,
+      required this.birth_date,
+      required this.location,
+      required this.bio})
+      : super(key: key);
   editprofile createState() => editprofile();
 }
 
 class editprofile extends State<EditProfile> {
-  late UserModel userData;
-  late String name ;
-  late TextEditingController _namefield,_datefield,_biofield,_locationfield,_websitefield;
-  late String birth_date ;
-  late String bio ;
-  late String location ;
+  late String name;
+  late TextEditingController _namefield,
+      _datefield,
+      _biofield,
+      _locationfield,
+      _websitefield;
+  late DateTime birth_date;
+  late String bio;
+  late String location;
   late String website;
   bool nextActive = false;
 
   @override
   void initState() {
+    name = widget.name;
+    birth_date = widget.birth_date;
+    bio = widget.bio;
+    location = widget.location;
+    website = widget.website;
+
     super.initState();
     _namefield = TextEditingController();
     _namefield.addListener(() {
@@ -134,12 +53,16 @@ class editprofile extends State<EditProfile> {
         nextActive = DisableButton();
       });
     });
-
     _biofield = TextEditingController();
     _websitefield = TextEditingController();
     _locationfield = TextEditingController();
     _datefield = TextEditingController();
 
+    _namefield.text = name;
+    _biofield.text = bio;
+    _locationfield.text = location;
+    _datefield.text = birth_date.toIso8601String();
+    _websitefield.text = website;
   }
 
   bool DisableButton() {
@@ -150,18 +73,102 @@ class editprofile extends State<EditProfile> {
     }
   }
 
+  Widget IcoButton({
+    required double width,
+    required double size,
+    required double left,
+    required double top,
+    required double right,
+    required double bottom,
+    required double height,
+  }) {
+    return Container(
+      color: Colors.blueAccent,
+      height: height,
+      width: width,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(left, top, right, bottom),
+        child: IconButton(
+          onPressed: null,
+          icon: Icon(
+            Icons.add_a_photo,
+            color: Colors.white70,
+            size: size,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget Message(
+      {required String message,
+      required double fontSize,
+      required Color colors}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 35), // 35
+      child: AutoSizeText(
+        message,
+        style: TextStyle(fontSize: fontSize, color: colors),
+        maxLines: 2,
+      ),
+    );
+  }
+
+  TextStyle buttonStyle(double size) {
+    return TextStyle(color: Colors.lightBlue, fontSize: size);
+  }
+
+  TextStyle textStyle(double size) {
+    return TextStyle(color: Colors.black54, fontSize: size);
+  }
+
+  Widget textfieldController(
+      {required int lines,
+        required String message,
+        required String message2,
+        required double width,
+        required TextEditingController controller,
+        required double fontSizeMultiplier,}) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+      child: SizedBox(
+          width: width,
+          child: TextFormField(
+            key: Key(name),
+            enabled: true,
+            controller: controller,
+            keyboardType: TextInputType.text,
+            maxLines: lines,
+            decoration: InputDecoration(
+              labelText: message,
+              hintText: message2,
+              hintStyle: textStyle(fontSizeMultiplier),
+            ),
+          )),
+    );
+  }
+
+  Widget textfield({
+    required String message,
+    required double width,
+    required int lines,
+    required double fontSizeMultiplier,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+      child: SizedBox(
+          width: width,
+          child: TextFormField(
+            maxLines: lines,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(labelText: message),
+          )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    userData = ModalRoute.of(context)?.settings.arguments as UserModel;
-    _namefield.text = userData.name;
-    var state = context.watch<LoginBloc>().state;
-    if (state is LoginSuccessState) {
-    } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, StartingPage.route, (route) => false);
-      //TODO:Log the user out in case of the state is not login success or the access token is expired
-    }
+
 
     //   data = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -208,13 +215,15 @@ class editprofile extends State<EditProfile> {
                       ? () {
                           context.read<EditProfileBloc>().add(
                               EditProfileButtonPressed(
-                                  birth_date: birth_date,
-                                 name:_namefield.text.isEmpty? userData.name:_namefield.text,
-                                  website:_websitefield.text.isEmpty? userData.website:_websitefield.text,
-                                  bio:_biofield.text.isEmpty? userData.bio:_biofield.text,
-                                  location:_locationfield.text.isEmpty? userData.location:_locationfield.text,
-                                  month_day_access:'2', //data['month_day_access'].toString(),
-                                  year_access: '1'));//data['year_access'].toString()));
+                                  birth_date: birth_date.toIso8601String(),
+                                  name: _namefield.text,
+                                  website: _websitefield.text,
+                                  bio: _biofield.text,
+                                  location: _locationfield.text,
+                                  month_day_access:
+                                      '2', //data['month_day_access'].toString(),
+                                  year_access:
+                                      '1')); //data['year_access'].toString()));
                         }
                       : null,
                   child: Text(
@@ -289,7 +298,7 @@ class editprofile extends State<EditProfile> {
                     child: CircleAvatar(
                       radius: 40,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 10),
+                        padding: const EdgeInsets.fromLTRB(0, 5, 2, 10),
                         child: IconButton(
                           onPressed: null,
                           icon: Icon(
@@ -307,45 +316,38 @@ class editprofile extends State<EditProfile> {
                   child: Column(
                     children: <Widget>[
                       GestureDetector(
-                        onTap:(){
+                        onTap: () {
                           setState(() {
                             _namefield.clear();
                           });
                         },
                         child: textfieldController(
-                          lines: 1,
+                            lines: 1,
                             fontSizeMultiplier:
                                 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                           // inialvalue: userData.name,
                             message: 'Name',
-                            message2:userData.name==''? 'Name cannot be blank':userData.name,
+                            message2: 'Name cannot be blank',
                             controller: _namefield,
                             width: screenWidth - 50),
                       ),
-                      textfieldController(
-                        fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                        controller: _biofield,
+                      textfield(
+                        fontSizeMultiplier:
+                            0.0192 * fontSizeMultiplier[0] * screenHeight,
                         message: 'Bio',
-                        message2: '',
                         width: screenWidth - 50,
                         lines: 3,
-                       // inialvalue: userData.bio,
                       ),
-                      textfieldController(
-                          fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                        controller: _locationfield,
+                      textfield(
+                          fontSizeMultiplier:
+                              0.0192 * fontSizeMultiplier[0] * screenHeight,
                           message: ('Location'),
-                          message2: '',
                           width: screenWidth - 50,
-                          //inialvalue: userData.location,
                           lines: 1),
-                      textfieldController(
-                          fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                          controller: _websitefield,
+                      textfield(
+                          fontSizeMultiplier:
+                              0.0192 * fontSizeMultiplier[0] * screenHeight,
                           message: ('Website'),
-                          message2: '',
                           width: screenWidth - 50,
-                         // inialvalue: userData.website,
                           lines: 1),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
@@ -356,15 +358,14 @@ class editprofile extends State<EditProfile> {
                               readOnly: true,
                               onTap: () {
                                 DatePicker.showDatePicker(context,
-
                                     showTitleActions: true,
                                     minTime: DateTime(1950, 1, 1),
                                     maxTime: DateTime.now(),
-                                    currentTime: DateTime.now(),
+                                    currentTime: widget.birth_date,
                                     onConfirm: (date) {
                                   _datefield.text =
                                       '${date.year}-${date.month}-${date.day}';
-                                  birth_date = date.toIso8601String();
+                                  birth_date = date;
                                 }, locale: LocaleType.en);
                               },
                               decoration: const InputDecoration(

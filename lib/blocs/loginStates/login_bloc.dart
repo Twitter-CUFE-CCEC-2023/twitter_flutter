@@ -28,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       emit(LoginSuccessState(data.user));
     } on Exception catch (e) {
       emit(LoginFailureState(
-          errorMessage: e.toString().replaceAll("Exception:", "")));
+          errorMessage: e.toString().replaceAll("Exception: ", "")));
     }
   }
 

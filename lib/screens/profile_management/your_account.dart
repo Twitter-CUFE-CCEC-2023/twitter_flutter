@@ -10,6 +10,7 @@ import '../../blocs/loginStates/login_bloc.dart';
 import '../../blocs/loginStates/login_states.dart';
 import '../../models/objects/user.dart';
 import '../starting_page.dart';
+import 'change_password.dart';
 
 class YourAccount extends StatefulWidget {
   const YourAccount({Key? key}) : super(key: key);
@@ -127,7 +128,7 @@ Widget buildItem(IconData myIcon, String Text1, BuildContext context,
         : null,
     onTap: () {
       if (route != null) {
-        Navigator.pushNamed(context, route);
+        Navigator.pushNamed(context, ChangePassword.route);
       }
     },
   );

@@ -14,6 +14,7 @@ class UpdatePasswordLoadingState extends UpdatePasswordStates{
   List<Object?> get props =>[];
 }
 
+
 class UpdatePasswordSuccessState extends UpdatePasswordStates{
   final String succesMessage;
   UpdatePasswordSuccessState({required this.succesMessage});
