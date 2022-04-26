@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
-class UpdateaPasswordRequests {
+class UpdatePasswordRequests {
   Future<String> UpadtePassword(
       {required New_Password, required Old_Password, token}) async {
     var pref = await SharedPreferences.getInstance();

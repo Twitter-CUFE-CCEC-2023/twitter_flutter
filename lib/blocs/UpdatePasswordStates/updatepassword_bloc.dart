@@ -7,7 +7,7 @@ import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_
 
 
 class UpdatePasswordBloc extends Bloc<UpdatePasswordEvents, UpdatePasswordStates> {
-  UpdateaPasswordRequests updateapasswordrequests;
+  UpdatePasswordRequests updateapasswordrequests;
   UpdatePasswordBloc({required this.updateapasswordrequests}) : super(UpdatePasswordInitState()) {
     on<StartEvent>((event, emit) => emit(UpdatePasswordInitState()));
     on<UpdatePasswordButtonPressed>(_onUpdatePasswordButtonPressed);

@@ -30,7 +30,7 @@ import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/utils/Web Services/authentication/authentication_requests.dart';
 import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/utils/Web Services/edit_profile/edit_profile_request.dart';
-
+import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_request.dart';
 import 'models/objects/user.dart';
 
 void main() {
@@ -64,7 +64,7 @@ class _TwitterState extends State<Twitter> {
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdateaPasswordRequests());
+  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdatePasswordRequests());
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
