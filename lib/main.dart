@@ -29,7 +29,6 @@ import 'package:twitter_flutter/screens/profile_management/change_password.dart'
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/utils/Web Services/authentication/authentication_requests.dart';
-import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/utils/Web Services/edit_profile/edit_profile_request.dart';
 import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_request.dart';
@@ -67,7 +66,7 @@ class _TwitterState extends State<Twitter> {
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  late UserModel data;
+  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdateaPasswordRequests());
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -81,9 +80,6 @@ class _TwitterState extends State<Twitter> {
         debugShowCheckedModeBanner: false,
         theme: generalTheme,
         useInheritedMediaQuery: true,
-        // Start the app with the "/" named route. In this case, the app starts
-        // on the FirstScreen widget.
-
 
         initialRoute: '/',
         routes: {
@@ -125,6 +121,8 @@ class _TwitterState extends State<Twitter> {
     // TODO: implement dispose
     internetCubit.close();
     loginBloc.close();
+    updatePasswordBloc.close();
+    editProfileBloc.close();
     super.dispose();
   }
 }

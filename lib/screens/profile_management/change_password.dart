@@ -77,6 +77,7 @@ class changepassword extends State<ChangePassword> {
     pass = TextEditingController();
     password = TextEditingController();
     confirmpassword = TextEditingController();
+
     confirmpassword.addListener(() {
       setState(() {
         nextActive = DisableButton();
@@ -217,49 +218,49 @@ class changepassword extends State<ChangePassword> {
                         child: SizedBox(
                           width: screenWidth / 2,
                           height: 45,
-                          child: BlocListener<UpdatePasswordBloc,
-                              UpdatePasswordStates>(
+                          child: BlocListener<UpdatePasswordBloc, UpdatePasswordStates>(
                             listener: (context, state) {
                               if (state is UpdatePasswordSuccessState) {
                                 try {
+                                  //TODO:Add bottom sheet to show success Message
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      YourAccount.route,
-                                      (Route<dynamic> route) => false);
+                                      HomePage.route,
+                                          (Route<dynamic> route) => false);
                                 } on Exception catch (e) {
-                                  context
-                                      .read<UpdatePasswordBloc>()
-                                      .add(StartEvent());
+                                  context.read<UpdatePasswordBloc>().add(StartEvent());
                                 }
                               } else if (state is UpdatePasswordFailureState) {
-                                setState(() {});
+                                //TODO:Add bottom sheet to show Failure Message
+
                               }
                             },
                             child: RaisedButton(
-                              color: Colors.blueAccent,
-                              disabledColor: Colors.lightBlueAccent,
-                              disabledElevation: 54,
-                              child: Text(
-                                'Update password',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: fontSizeMultiplier[0]*screenHeight*0.0232,
-                                ),
+                            color: Colors.blueAccent,
+                            disabledColor: Colors.lightBlueAccent,
+                            disabledElevation: 54,
+                            child: const Text(
+                              'Update password',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
                               ),
-                              onPressed: nextActive
-                                  ? () {
-                                      if (_formkey.currentState!.validate()) {
-                                        String oldpassword = pass.text;
-                                        String newpassword = confirmpassword.text;
-                                        context.read<UpdatePasswordBloc>().add(
-                                            UpdatePasswordButtonPressed(
-                                                oldpassword: oldpassword,
-                                                newpassword: newpassword));
-                                      }
-                                    }
-                                  : null,
                             ),
+                            onPressed: nextActive
+                                ? () {
+                                    if (_formkey.currentState!.validate()) {
+                                      String oldpassword = pass.text;
+                                      String newpassword = confirmpassword.text;
+                                      context.read<UpdatePasswordBloc>().add(
+                                          UpdatePasswordButtonPressed(
+                                              oldpassword: oldpassword,
+                                              newpassword: newpassword));
+                                    } else {
+                                      print("UnSuccessfull");
+                                    }
+                                  }
+                                : null,
                           ),
                         ),
                       ),
