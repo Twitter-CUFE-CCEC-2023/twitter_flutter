@@ -12,7 +12,6 @@ class UserProfileModel {
 
     //TODO:Josn Server Response format to be deleted upon deployment
     message=" ";
-
     user = UserModel.fromJson(json["user"]);
   }
 }

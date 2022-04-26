@@ -10,7 +10,7 @@ class ProfileRepository {
 
   ProfileRepository({required this.profileReq});
 
-  Future<UserProfileModel> editProfile({username,password}) async {
+  Future<UserProfileModel> editProfile({oldPassword,newPassword}) async {
     try {
       String profileData = await profileReq.EditProfile();
       return UserProfileModel.fromJson(jsonDecode(profileData));

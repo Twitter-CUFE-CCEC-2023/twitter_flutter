@@ -72,6 +72,7 @@ class _TwitterState extends State<Twitter> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
+
       providers: [
         BlocProvider.value(value: loginBloc),
         BlocProvider.value(value: updatePasswordBloc),

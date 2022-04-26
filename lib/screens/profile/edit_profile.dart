@@ -122,15 +122,13 @@ class editprofile extends State<EditProfile> {
     return TextStyle(color: Colors.black54, fontSize: size);
   }
 
-  Widget textfieldController({
-    required int lines,
-    required String message,
-    required String message2,
-    required double width,
-    required TextEditingController controller,
-    // required String inialvalue,
-    required double fontSizeMultiplier,
-  }) {
+  Widget textfieldController(
+      {required int lines,
+        required String message,
+        required String message2,
+        required double width,
+        required TextEditingController controller,
+        required double fontSizeMultiplier,}) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
       child: SizedBox(
@@ -138,7 +136,6 @@ class editprofile extends State<EditProfile> {
           child: TextFormField(
             key: Key(name),
             enabled: true,
-            // initialValue: inialvalue,
             controller: controller,
             keyboardType: TextInputType.text,
             maxLines: lines,
@@ -171,6 +168,8 @@ class editprofile extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+
+
     //   data = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -361,7 +360,7 @@ class editprofile extends State<EditProfile> {
                                 DatePicker.showDatePicker(context,
                                     showTitleActions: true,
                                     minTime: DateTime(1950, 1, 1),
-                                    maxTime: DateTime.now(),
+                                    maxTime: widget.birth_date,
                                     //currentTime: serData.birth_date,
                                     onConfirm: (date) {
                                   _datefield.text =
