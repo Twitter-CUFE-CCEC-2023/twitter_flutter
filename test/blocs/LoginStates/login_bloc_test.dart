@@ -117,7 +117,7 @@ void main() {
 
     blocTest<LoginBloc,LoginStates>("Login Failure State is Emitted when an exception is thrown due to wrong response",build: ()=>loginBloc,
         act: (bloc)=>bloc.add(LoginButtonPressed(username: "err",password: " ")),
-        expect: ()=>[LoginLoadingState(),LoginFailureState(errorMessage: " wrong Credentials")]
+        expect: ()=>[LoginLoadingState(),LoginFailureState(errorMessage: "wrong Credentials")]
     );
 
 

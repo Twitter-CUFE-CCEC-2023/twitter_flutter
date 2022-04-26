@@ -7,9 +7,7 @@ import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
-import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
-import 'package:twitter_flutter/repositories/profile_management/update_password_repository.dart';
 import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
 import 'package:twitter_flutter/utils/Web%20Services/edit_profile/update_password_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
@@ -62,11 +60,10 @@ class Twitter extends StatefulWidget {
 
 class _TwitterState extends State<Twitter> {
   final EditProfileBloc editProfileBloc = EditProfileBloc(editProfileRequests: EditProfileRequests());
-  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updatePasswordRepository: UpdatePasswordRepository(updatePasswordReq: UpdatePasswordRequests()));
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdateaPasswordRequests());
+  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdatePasswordRequests());
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -108,7 +105,7 @@ class _TwitterState extends State<Twitter> {
 
           UserProfile.route: (context) => const UserProfile(),
 
-          EditProfile.route: (context) => EditProfile(),
+          EditProfile.route: (context) => EditProfile(name: "Ahmed"),
 
           ChangePassword.route: (context) => const ChangePassword(),
         },

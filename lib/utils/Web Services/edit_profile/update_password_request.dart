@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
-class UpdateaPasswordRequests {
+class UpdatePasswordRequests {
   Future<String> UpadtePassword(
-      {required New_Password, required Old_Password, token}) async {
+      {required New_Password, required Old_Password}) async {
     var pref = await SharedPreferences.getInstance();
     String? accessToken = pref.getString("access_token");
     var headers = {
@@ -24,7 +24,6 @@ class UpdateaPasswordRequests {
         headers: headers);
     int statusCode = res.statusCode;
     if (statusCode == 200) {
-      print(res.body);
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");

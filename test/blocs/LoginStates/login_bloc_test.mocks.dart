@@ -74,6 +74,15 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
               returnValue: Future<_i3.UserAuthenticationModel>.value(
                   _FakeUserAuthenticationModel_1()))
           as _i5.Future<_i3.UserAuthenticationModel>);
+  @override
+  _i5.Future<_i3.UserAuthenticationModel> verification(
+          {dynamic id, dynamic verification_code}) =>
+      (super.noSuchMethod(
+              Invocation.method(#verification, [],
+                  {#id: id, #verification_code: verification_code}),
+              returnValue: Future<_i3.UserAuthenticationModel>.value(
+                  _FakeUserAuthenticationModel_1()))
+          as _i5.Future<_i3.UserAuthenticationModel>);
 }
 
 /// A class which mocks [AuthenticationRequests].
@@ -106,7 +115,13 @@ class MockAuthenticationRequests extends _i1.Mock
             #username: username,
             #gender: gender,
             #password: password,
-            #date_of_birth: birth_date
+            #birth_date: birth_date
           }),
+          returnValue: Future<String>.value('')) as _i5.Future<String>);
+  @override
+  _i5.Future<String> Verification({dynamic id, dynamic verification_code}) =>
+      (super.noSuchMethod(
+          Invocation.method(#Verification, [],
+              {#id: id, #verification_code: verification_code}),
           returnValue: Future<String>.value('')) as _i5.Future<String>);
 }

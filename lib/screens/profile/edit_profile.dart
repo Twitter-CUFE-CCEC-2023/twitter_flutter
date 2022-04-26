@@ -18,7 +18,8 @@ import '../starting_page.dart';
 
 class EditProfile extends StatefulWidget {
   static String route = '/EditProfile';
-   EditProfile({Key? key}) : super(key: key);
+  String name;
+   EditProfile({Key? key,required this.name}) : super(key: key);
   editprofile createState() => editprofile();
 }
 
@@ -41,6 +42,7 @@ class editprofile extends State<EditProfile> {
         nextActive = DisableButton();
       });
     });
+    _namefield.text = widget.name;
 
     _biofield = TextEditingController();
     _websitefield = TextEditingController();

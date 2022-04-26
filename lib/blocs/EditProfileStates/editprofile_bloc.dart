@@ -29,7 +29,6 @@ import 'package:twitter_flutter/repositories/profile_management/profile_reposito
           Month_Day_Access: event.month_day_access,
           Year_Access: event.year_access,
           Birth_Date: event.birth_date);
-      var pref = await SharedPreferences.getInstance();
       emit(EditProfileSuccessState(jsonDecode(data)['user']));
     } on Exception catch (e) {
       emit(EditProfileFailureState(

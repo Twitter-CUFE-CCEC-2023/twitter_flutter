@@ -225,7 +225,7 @@ class changepassword extends State<ChangePassword> {
                                   //TODO:Add bottom sheet to show success Message
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      HomePage.route,
+                                      YourAccount.route,
                                           (Route<dynamic> route) => false);
                                 } on Exception catch (e) {
                                   context.read<UpdatePasswordBloc>().add(StartEvent());
@@ -263,7 +263,7 @@ class changepassword extends State<ChangePassword> {
                                 : null,
                           ),
                         ),
-                      ),
+                      ),),
                       SizedBox(
                           width: screenWidth,
                           height: screenHeight*sizedBoxHeightMultiplier[0]*0.043,
