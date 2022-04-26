@@ -85,7 +85,7 @@ class _LoginPasswordState extends State<LoginPassword> {
           color: Colors.white,
           child: SafeArea(
               child: Scaffold(
-            appBar: generalAppBar(context,imageMultiplier),
+            appBar: generalAppBar(context, imageMultiplier),
             bottomSheet: bottomSheet,
             body: BlocListener<InternetCubit, InternetState>(
               listenWhen: (previousState, currentState) =>
@@ -205,6 +205,8 @@ class _LoginPasswordState extends State<LoginPassword> {
                             child: ElevatedButton(
                               onPressed: logActive
                                   ? () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                       String password = controller.text;
                                       context.read<LoginBloc>().add(
                                           LoginButtonPressed(
@@ -253,7 +255,4 @@ class _LoginPasswordState extends State<LoginPassword> {
       ),
     );
   }
-
 }
-
-

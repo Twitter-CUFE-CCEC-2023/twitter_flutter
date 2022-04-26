@@ -166,10 +166,13 @@ class _HomePageState extends State<HomePage> {
             key: scaffoldKey,
             drawer: HomeSideBar(),
             appBar: logoAppBar(
-                height: screenHeight,
-                imageMultiplier: imageMultiplier[0],
-                context: context,
-                imageUrl: userData.profile_image_url),
+              height: screenHeight,
+              imageMultiplier: imageMultiplier[0],
+              context: context,
+              imageUrl: (userData.profile_image_url != "")
+                  ? userData.profile_image_url
+                  : "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
+            ),
             backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -207,6 +210,7 @@ class _HomePageState extends State<HomePage> {
                     CommentCount: 2,
                     retweetCount: 4,
                     likeCount: 7,
+                    context: context,
                     tweet_Text: "Hello guys, How are you?",
                   ),
                   tweet(
@@ -217,6 +221,7 @@ class _HomePageState extends State<HomePage> {
                       CommentCount: 300,
                       retweetCount: 40,
                       likeCount: 77,
+                      context: context,
                       tweet_Text: "Stay tuned for the new thor movie!",
                       imageOne:
                           "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg"),
@@ -228,6 +233,7 @@ class _HomePageState extends State<HomePage> {
                       CommentCount: 60,
                       retweetCount: 20,
                       likeCount: 34,
+                      context: context,
                       imageOne:
                           "https://www.giantbomb.com/a/uploads/scale_small/8/87790/3005649-box_ps.png",
                       imageTwo:
@@ -240,6 +246,7 @@ class _HomePageState extends State<HomePage> {
                       CommentCount: 10,
                       retweetCount: 30,
                       likeCount: 23,
+                      context: context,
                       tweet_Text: "Check out my newest videos",
                       imageOne:
                           "https://i.ytimg.com/vi/kfWfMvA0heY/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBgf-z5Mh91YfdsjSg_afubvzJtXQ",
@@ -255,6 +262,7 @@ class _HomePageState extends State<HomePage> {
                       CommentCount: 20,
                       retweetCount: 40,
                       likeCount: 200,
+                      context: context,
                       tweet_Text:
                           "Check out the newest mapes in the game (new enemies added, new characters, and new guns)",
                       imageOne:
@@ -274,6 +282,7 @@ class _HomePageState extends State<HomePage> {
                     CommentCount: 2,
                     retweetCount: 3,
                     likeCount: 4,
+                    context: context,
                     imageOne:
                         "https://c.tenor.com/EWiHVwPUEOoAAAAC/coxa-among-us.gif",
                   ),

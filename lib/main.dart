@@ -44,11 +44,10 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-    /*DevicePreview(
+    DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) =>*/ Twitter()
-  //),
+        builder: (context) => Twitter()),
   );
 }
 
@@ -60,11 +59,13 @@ class Twitter extends StatefulWidget {
 }
 
 class _TwitterState extends State<Twitter> {
-  final EditProfileBloc editProfileBloc = EditProfileBloc(editProfileRequests: EditProfileRequests());
+  final EditProfileBloc editProfileBloc =
+      EditProfileBloc(editProfileRequests: EditProfileRequests());
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdateaPasswordRequests());
+  final UpdatePasswordBloc updatePasswordBloc =
+      UpdatePasswordBloc(updateapasswordrequests: UpdateaPasswordRequests());
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -78,7 +79,6 @@ class _TwitterState extends State<Twitter> {
         debugShowCheckedModeBanner: false,
         theme: generalTheme,
         useInheritedMediaQuery: true,
-
         initialRoute: '/',
         routes: {
           // When navigating to the starting page
