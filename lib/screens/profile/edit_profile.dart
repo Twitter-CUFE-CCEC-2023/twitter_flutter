@@ -5,36 +5,47 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_states.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_events.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/loginStates/login_bloc.dart';
-import '../../blocs/loginStates/login_states.dart';
-import '../../models/objects/user.dart';
-import '../starting_page.dart';
-
-
 
 class EditProfile extends StatefulWidget {
   static String route = '/EditProfile';
   String name;
-   EditProfile({Key? key,required this.name}) : super(key: key);
+  String bio;
+  String location;
+  String website;
+  DateTime birth_date;
+  EditProfile(
+      {Key? key,
+      required this.name,
+      required this.website,
+      required this.birth_date,
+      required this.location,
+      required this.bio})
+      : super(key: key);
   editprofile createState() => editprofile();
 }
 
 class editprofile extends State<EditProfile> {
-  late UserModel userData;
-  late String name ;
-  late TextEditingController _namefield,_datefield,_biofield,_locationfield,_websitefield;
-  late String birth_date ;
-  late String bio ;
-  late String location ;
+  late String name;
+  late TextEditingController _namefield,
+      _datefield,
+      _biofield,
+      _locationfield,
+      _websitefield;
+  late DateTime birth_date;
+  late String bio;
+  late String location;
   late String website;
   bool nextActive = false;
 
   @override
   void initState() {
+    name = widget.name;
+    birth_date = widget.birth_date;
+    bio = widget.bio;
+    location = widget.location;
+    website = widget.website;
+
     super.initState();
     _namefield = TextEditingController();
     _namefield.addListener(() {
@@ -42,13 +53,16 @@ class editprofile extends State<EditProfile> {
         nextActive = DisableButton();
       });
     });
-    _namefield.text = widget.name;
-
     _biofield = TextEditingController();
     _websitefield = TextEditingController();
     _locationfield = TextEditingController();
     _datefield = TextEditingController();
 
+    _namefield.text = name;
+    _biofield.text = bio;
+    _locationfield.text = location;
+    _datefield.text = birth_date.toIso8601String();
+    _websitefield.text = website;
   }
 
   bool DisableButton() {
@@ -88,8 +102,8 @@ class editprofile extends State<EditProfile> {
 
   Widget Message(
       {required String message,
-        required double fontSize,
-        required Color colors}) {
+      required double fontSize,
+      required Color colors}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 35), // 35
       child: AutoSizeText(
@@ -108,21 +122,21 @@ class editprofile extends State<EditProfile> {
     return TextStyle(color: Colors.black54, fontSize: size);
   }
 
-  Widget textfieldController(
-      {required int lines,
-        required String message,
-        required String message2,
-        required double width,
-        required TextEditingController controller,
-        // required String inialvalue,
-        required double fontSizeMultiplier,}) {
+  Widget textfieldController({
+    required int lines,
+    required String message,
+    required String message2,
+    required double width,
+    required TextEditingController controller,
+    // required String inialvalue,
+    required double fontSizeMultiplier,
+  }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
       child: SizedBox(
           width: width,
           child: TextFormField(
-
-            key: Key(userData.name),
+            key: Key(name),
             enabled: true,
             // initialValue: inialvalue,
             controller: controller,
@@ -141,7 +155,6 @@ class editprofile extends State<EditProfile> {
     required String message,
     required double width,
     required int lines,
-    required String inialvalue,
     required double fontSizeMultiplier,
   }) {
     return Padding(
@@ -149,7 +162,6 @@ class editprofile extends State<EditProfile> {
       child: SizedBox(
           width: width,
           child: TextFormField(
-            initialValue: inialvalue,
             maxLines: lines,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(labelText: message),
@@ -157,20 +169,8 @@ class editprofile extends State<EditProfile> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-    userData = ModalRoute.of(context)?.settings.arguments as UserModel;
-
-     _namefield.text = userData.name;
-    var state = context.watch<LoginBloc>().state;
-    if (state is LoginSuccessState) {
-    } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, StartingPage.route, (route) => false);
-      //TODO:Log the user out in case of the state is not login success or the access token is expired
-    }
-
     //   data = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -216,13 +216,15 @@ class editprofile extends State<EditProfile> {
                       ? () {
                           context.read<EditProfileBloc>().add(
                               EditProfileButtonPressed(
-                                  birth_date: birth_date,
-                                 name:_namefield.text.isEmpty? userData.name:_namefield.text,
-                                  website:_websitefield.text.isEmpty? userData.website:_websitefield.text,
-                                  bio:_biofield.text.isEmpty? userData.bio:_biofield.text,
-                                  location:_locationfield.text.isEmpty? userData.location:_locationfield.text,
-                                  month_day_access:'2', //data['month_day_access'].toString(),
-                                  year_access: '1'));//data['year_access'].toString()));
+                                  birth_date: birth_date.toIso8601String(),
+                                  name: _namefield.text,
+                                  website: _websitefield.text,
+                                  bio: _biofield.text,
+                                  location: _locationfield.text,
+                                  month_day_access:
+                                      '2', //data['month_day_access'].toString(),
+                                  year_access:
+                                      '1')); //data['year_access'].toString()));
                         }
                       : null,
                   child: Text(
@@ -310,47 +312,42 @@ class editprofile extends State<EditProfile> {
                     ),
                   ),
                 ),
-
-
                 Positioned(
                   top: screenHeight * 0.16 + 40,
                   child: Column(
                     children: <Widget>[
                       GestureDetector(
-                        onTap:(){
+                        onTap: () {
                           setState(() {
                             _namefield.clear();
                           });
                         },
                         child: textfieldController(
-                          lines: 1,
+                            lines: 1,
                             fontSizeMultiplier:
                                 0.0192 * fontSizeMultiplier[0] * screenHeight,
-                           // inialvalue: userData.name,
                             message: 'Name',
-                            message2:userData.name==''? 'Name cannot be blank':userData.name,
+                            message2: 'Name cannot be blank',
                             controller: _namefield,
                             width: screenWidth - 50),
                       ),
-
                       textfield(
-                        fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
+                        fontSizeMultiplier:
+                            0.0192 * fontSizeMultiplier[0] * screenHeight,
                         message: 'Bio',
-                        inialvalue: userData.bio,
                         width: screenWidth - 50,
                         lines: 3,
                       ),
                       textfield(
-                          fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
+                          fontSizeMultiplier:
+                              0.0192 * fontSizeMultiplier[0] * screenHeight,
                           message: ('Location'),
-                          inialvalue: userData.location,
                           width: screenWidth - 50,
                           lines: 1),
-
                       textfield(
-                          fontSizeMultiplier: 0.0192 * fontSizeMultiplier[0] * screenHeight,
+                          fontSizeMultiplier:
+                              0.0192 * fontSizeMultiplier[0] * screenHeight,
                           message: ('Website'),
-                          inialvalue: userData.website,
                           width: screenWidth - 50,
                           lines: 1),
                       Padding(
@@ -365,11 +362,11 @@ class editprofile extends State<EditProfile> {
                                     showTitleActions: true,
                                     minTime: DateTime(1950, 1, 1),
                                     maxTime: DateTime.now(),
-                                    currentTime: userData.birth_date,
+                                    //currentTime: serData.birth_date,
                                     onConfirm: (date) {
                                   _datefield.text =
                                       '${date.year}-${date.month}-${date.day}';
-                                  birth_date = date.toIso8601String();
+                                  birth_date = date;
                                 }, locale: LocaleType.en);
                               },
                               decoration: const InputDecoration(

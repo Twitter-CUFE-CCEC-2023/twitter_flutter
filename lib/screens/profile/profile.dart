@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
+import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/media.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/tweets.dart';
@@ -70,7 +71,7 @@ class _UserProfileState extends State<UserProfile> {
                       OutlinedButton(
                         child: const Text("Edit Profile"),
                         style: outlinedButtonsStyle,
-                        onPressed: () => Navigator.pushNamed(context, EditProfile.route, arguments: userData),
+                        onPressed: () => Navigator.pushNamed(context, PreEditProfile.route),
                       ),
                     ],
                   ),

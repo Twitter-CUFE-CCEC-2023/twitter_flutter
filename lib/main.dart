@@ -7,7 +7,9 @@ import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
+import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
+import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
 import 'package:twitter_flutter/utils/Web%20Services/edit_profile/update_password_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
@@ -43,12 +45,13 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-    /*DevicePreview(
+      /*DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) =>*/ Twitter()
-  //),
-  );
+        builder: (context) =>*/
+      Twitter()
+      //),
+      );
 }
 
 class Twitter extends StatefulWidget {
@@ -59,11 +62,13 @@ class Twitter extends StatefulWidget {
 }
 
 class _TwitterState extends State<Twitter> {
-  final EditProfileBloc editProfileBloc = EditProfileBloc(editProfileRequests: EditProfileRequests());
+  final EditProfileBloc editProfileBloc =
+      EditProfileBloc(editProfileRequests: EditProfileRequests());
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  final UpdatePasswordBloc updatePasswordBloc = UpdatePasswordBloc(updateapasswordrequests: UpdatePasswordRequests());
+  final UpdatePasswordBloc updatePasswordBloc =
+      UpdatePasswordBloc(updateapasswordrequests: UpdatePasswordRequests());
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -77,7 +82,6 @@ class _TwitterState extends State<Twitter> {
         debugShowCheckedModeBanner: false,
         theme: generalTheme,
         useInheritedMediaQuery: true,
-
         initialRoute: '/',
         routes: {
           // When navigating to the starting page
@@ -105,7 +109,7 @@ class _TwitterState extends State<Twitter> {
 
           UserProfile.route: (context) => const UserProfile(),
 
-          EditProfile.route: (context) => EditProfile(name: "Ahmed"),
+          PreEditProfile.route: (context) => const PreEditProfile(),
 
           ChangePassword.route: (context) => const ChangePassword(),
         },
