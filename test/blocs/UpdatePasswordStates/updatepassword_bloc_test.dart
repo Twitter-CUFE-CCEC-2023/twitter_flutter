@@ -17,14 +17,14 @@ void main() {
   setUp(() {
     mockUpdatePasswordRequests = MockUpdatePasswordRequests();
     //Stub 1
-    when(mockUpdatePasswordRequests.UpadtePassword(
+    when(mockUpdatePasswordRequests.UpdatePassword(
             Old_Password: " ", New_Password: " "))
         .thenAnswer((_) async {
       return "Success";
     });
 
     //Stub 2
-    when(mockUpdatePasswordRequests.UpadtePassword(
+    when(mockUpdatePasswordRequests.UpdatePassword(
             Old_Password: "err", New_Password: " "))
         .thenThrow(Exception("Failure"));
     updatePasswordBloc =

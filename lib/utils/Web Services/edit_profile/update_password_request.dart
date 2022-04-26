@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class UpdatePasswordRequests {
-  Future<String> UpadtePassword(
+  Future<String> UpdatePassword(
       {required New_Password, required Old_Password}) async {
     var pref = await SharedPreferences.getInstance();
     String? accessToken = pref.getString("access_token");
@@ -28,7 +28,7 @@ class UpdatePasswordRequests {
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
     } else if (statusCode == 401) {
-      throw Exception("Invalid Password Credentials");
+      throw Exception("Unauthorized");
     } else if (statusCode == 500) {
       throw Exception("Server Error");
     } else {

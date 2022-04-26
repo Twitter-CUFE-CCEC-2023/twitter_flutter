@@ -17,7 +17,7 @@ class UpdatePasswordBloc extends Bloc<UpdatePasswordEvents, UpdatePasswordStates
       UpdatePasswordButtonPressed event, Emitter<UpdatePasswordStates> emit) async {
     emit(UpdatePasswordLoadingState());
     try {
-      var data = await updateapasswordrequests.UpadtePassword(Old_Password:event.oldpassword,New_Password:event.newpassword);
+      var data = await updateapasswordrequests.UpdatePassword(Old_Password:event.oldpassword,New_Password:event.newpassword);
       emit(UpdatePasswordSuccessState(succesMessage: data));
     } on Exception catch (e) {
       emit(UpdatePasswordFailureState(failureMessage: e.toString().replaceAll("Exception: ","")));

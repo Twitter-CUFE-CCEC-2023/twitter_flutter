@@ -28,7 +28,7 @@ class MockUpdatePasswordRequests extends _i1.Mock
   }
 
   @override
-  _i3.Future<String> UpadtePassword(
+  _i3.Future<String> UpdatePassword(
           {dynamic New_Password, dynamic Old_Password, dynamic token}) =>
       (super.noSuchMethod(
           Invocation.method(#UpadtePassword, [], {

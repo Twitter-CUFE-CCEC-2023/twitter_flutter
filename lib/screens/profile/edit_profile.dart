@@ -360,8 +360,8 @@ class editprofile extends State<EditProfile> {
                                 DatePicker.showDatePicker(context,
                                     showTitleActions: true,
                                     minTime: DateTime(1950, 1, 1),
-                                    maxTime: widget.birth_date,
-                                    //currentTime: serData.birth_date,
+                                    maxTime: DateTime.now(),
+                                    currentTime: widget.birth_date,
                                     onConfirm: (date) {
                                   _datefield.text =
                                       '${date.year}-${date.month}-${date.day}';
