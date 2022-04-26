@@ -22,6 +22,7 @@ class EditProfile extends StatefulWidget {
       required this.location,
       required this.bio})
       : super(key: key);
+  @override
   editprofile createState() => editprofile();
 }
 
