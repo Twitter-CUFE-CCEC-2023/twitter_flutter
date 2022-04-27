@@ -45,11 +45,12 @@ void main() {
         systemNavigationBarIconBrightness: Brightness.dark),
   );
   runApp(
-    DevicePreview(
+      /*DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) => Twitter()),
-  );
+        builder: (context) => */
+      Twitter() //),
+      );
 }
 
 class Twitter extends StatefulWidget {
