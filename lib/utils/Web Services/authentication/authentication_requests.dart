@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
-import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class AuthenticationRequests {

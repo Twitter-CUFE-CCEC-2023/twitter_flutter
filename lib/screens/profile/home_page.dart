@@ -136,8 +136,6 @@ class _HomePageState extends State<HomePage> {
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-    print(screenHeight);
-    print(screenWidth);
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {

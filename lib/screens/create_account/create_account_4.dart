@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, file_names
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
 import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
@@ -63,42 +64,72 @@ class _CreateAccount4State extends State<CreateAccount4> {
       } else {
         nextButtomSize = 0.88;
       }
-      return GestureDetector(
-        onTap: (){
-          setState(() {
-            bottomSheet = null;
-          });
-        },
-        child: Container(
-          color: Colors.white,
-          child: SafeArea(
-            child: Scaffold(
-              bottomSheet: bottomSheet,
+      return BlocConsumer<LoginBloc,LoginStates>(
+          listener: (context, state) {
+            if (state is LoginSuccessState) {
+              try {
+                Navigator.pushNamedAndRemoveUntil(context, '/HomePage',
+                        (Route<dynamic> route) => false);
+              } on Exception catch (e) {
+                context.read<LoginBloc>().add(StartEvent());
+              }
+            } else if (state is SignupFailureState) {
+              setState(() {
+                bottomSheet = buildBottomSheet(context, state);
+              });
 
-              resizeToAvoidBottomInset: false,
-              appBar: myAppBar(),
-              body: SingleChildScrollView(
-                reverse: true,
-                child: Form(
-                  key: _formkey,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget1(),
-                        widget2(),
-                        passwordField(),
-                        Padding(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom)),
-                      ]),
+            }
+          },
+        builder: (context,state) {
+          if(state is LoginLoadingState)
+            {
+              return Container(
+                color: Colors.lightBlue,
+                child: SpinKitFadingCircle(
+                  color: Colors.white,
+                ),
+              );
+            }
+          else {
+            return GestureDetector(
+            onTap: (){
+              setState(() {
+                bottomSheet = null;
+              });
+            },
+            child: Container(
+              color: Colors.white,
+              child: SafeArea(
+                child: Scaffold(
+                  bottomSheet: bottomSheet,
+
+                  resizeToAvoidBottomInset: false,
+                  appBar: myAppBar(),
+                  body: SingleChildScrollView(
+                    reverse: true,
+                    child: Form(
+                      key: _formkey,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            widget1(),
+                            widget2(),
+                            passwordField(),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom:
+                                        MediaQuery.of(context).viewInsets.bottom)),
+                          ]),
+                    ),
+                  ),
+                  bottomNavigationBar: nextButton(),
                 ),
               ),
-              bottomNavigationBar: nextButton(),
             ),
-          ),
-        ),
+          );
+          }
+        }
       );
     });
   }
@@ -186,47 +217,27 @@ class _CreateAccount4State extends State<CreateAccount4> {
                 left: MediaQuery.of(context).size.width * nextButtomSize), //310
             child: Transform.translate(
               offset: Offset(-15, -5),
-              child: BlocListener<LoginBloc, LoginStates>(
-                listenWhen: (previous, current) =>
-                    current is LoginSuccessState ||
-                    current is SignupFailureState,
-                listener: (context, state) {
-                  if (state is LoginSuccessState) {
-                    try {
-                      Navigator.pushNamedAndRemoveUntil(context, '/HomePage',
-                          (Route<dynamic> route) => false);
-                    } on Exception catch (e) {
-                      context.read<LoginBloc>().add(StartEvent());
-                    }
-                  } else if (state is SignupFailureState) {
-                    setState(() {
-                      bottomSheet = buildBottomSheet(context, state);
-                    });
-
-                  }
-                },
-                child: ElevatedButton(
-                    onPressed: nextActive
-                        ? () {
-                            if (_formkey.currentState!.validate()) {
-                              context.read<LoginBloc>().add(SignupButtonPressed(
-                                  name: data['name'].toString(),
-                                  password: _passwordfield.text,
-                                  email: data['email'].toString(),
-                                  date: data['date'].toString(),
-                                  username: data['username'].toString(),
-                                  gender: data['gender'].toString()));
-                            }
+              child: ElevatedButton(
+                  onPressed: nextActive
+                      ? () {
+                          if (_formkey.currentState!.validate()) {
+                            context.read<LoginBloc>().add(SignupButtonPressed(
+                                name: data['name'].toString(),
+                                password: _passwordfield.text,
+                                email: data['email'].toString(),
+                                date: data['date'].toString(),
+                                username: data['username'].toString(),
+                                gender: data['gender'].toString()));
                           }
-                        : null,
-                    child: const Text("next"),
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(18.0))))),
-              ),
+                        }
+                      : null,
+                  child: const Text("next"),
+                  style: ButtonStyle(
+                      shape:
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(18.0))))),
             ),
           ),
         ),

@@ -126,8 +126,6 @@ class changepassword extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    double borderRadiusMultiplier = 1;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
