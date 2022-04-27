@@ -11,6 +11,7 @@ import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
 import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
+import 'package:twitter_flutter/utils/Web%20Services/edit_profile/edit_profile_request.dart';
 import 'package:twitter_flutter/utils/Web%20Services/edit_profile/update_password_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
@@ -30,7 +31,7 @@ import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/utils/Web Services/authentication/authentication_requests.dart';
 import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
-import 'package:twitter_flutter/utils/Web Services/edit_profile/edit_profile_request.dart';
+import 'package:twitter_flutter/repositories/profile_management/profile_repository.dart';
 import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_request.dart';
 import 'models/objects/user.dart';
 
@@ -63,7 +64,7 @@ class Twitter extends StatefulWidget {
 
 class _TwitterState extends State<Twitter> {
   final EditProfileBloc editProfileBloc =
-      EditProfileBloc(editProfileRequests: EditProfileRequests());
+      EditProfileBloc(profileRepository: ProfileRepository(profileReq: EditProfileRequests()));
   final InternetCubit internetCubit = InternetCubit(Connectivity());
   final LoginBloc loginBloc = LoginBloc(
       authRepository: AuthRepository(authReq: AuthenticationRequests()));
