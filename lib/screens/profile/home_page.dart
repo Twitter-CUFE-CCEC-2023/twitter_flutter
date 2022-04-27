@@ -18,11 +18,6 @@ import '../starting_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   static String route = '/HomePage';
-  static const String username =
-      "Ahmedhgjghjgfhjfghjfghjfghjfghjgfhjgfhjfghjgffghfdghdfghdzkjcflhgbnlkdsjfhglkjdsfhglkdfhgkdljfh";
-
-  static const String tweetTexts =
-      "This is a tweetfgklh jdfklg;h jflk;gjh;flk gjhlfkdgjhlfgh jflgkhl kfjgh;sdlkhf jdsfg;hsdklf;gj dsflk jhgsdklf ghdsjlkf hgdfjslk hgdsjklf ghdfjskl hdsjlfk ghsdjklf ghsdjklf ghjdsklf ghsdjlkfg hsdjlkf ghdsjklf jhgsdljkf gljkdf gjhkld;f gjds;lk gdlfjkgh;slk djhdf;klghd l;kfjhg;lsda hfdfl;kjg hsd;fgh;d flkg";
 
   @override
   State<HomePage> createState() => _HomePageState();

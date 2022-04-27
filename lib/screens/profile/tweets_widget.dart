@@ -4,48 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class tweetModel {
-  late String userProfileImage;
-  late String userName;
-  late int imageCount;
-  late int CommentCount;
-  late int retweetCount;
-  late int likeCount;
-  String? tweet_Text;
-
-  String? imageOne;
-  String? imageTwo;
-  String? imageThree;
-  String? imageFour;
-
-  tweetModel({
-    required this.userProfileImage,
-    required this.userName,
-    required this.imageCount,
-    required this.CommentCount,
-    required this.retweetCount,
-    required this.likeCount,
-    this.tweet_Text,
-    this.imageOne,
-    this.imageTwo,
-    this.imageThree,
-    this.imageFour,
-  });
-}
-
-List<tweetModel> tweets = [
-  tweetModel(
-      userProfileImage:
-          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
-      userName: "huda el mufti",
-      imageCount: 1,
-      imageOne:
-          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
-      CommentCount: 1,
-      likeCount: 1,
-      retweetCount: 1),
-];
-
 Widget tweet(
     {required String userProfilePicture,
     required String user_Name,
