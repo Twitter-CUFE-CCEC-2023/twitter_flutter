@@ -62,7 +62,7 @@ class editprofile extends State<EditProfile> {
     _namefield.text = name;
     _biofield.text = bio;
     _locationfield.text = location;
-    _datefield.text = birth_date.toIso8601String();
+    _datefield.text = '${birth_date.year}-${birth_date.month}-${birth_date.day}';
     _websitefield.text = website;
   }
 
@@ -174,7 +174,6 @@ class editprofile extends State<EditProfile> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
     final List<double> imageMultiplier = [1, 1];
-    double borderRadiusMultiplier = 1;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
@@ -362,7 +361,7 @@ class editprofile extends State<EditProfile> {
                                     showTitleActions: true,
                                     minTime: DateTime(1950, 1, 1),
                                     maxTime: DateTime.now(),
-                                    currentTime: widget.birth_date,
+                                     currentTime: widget.birth_date,
                                     onConfirm: (date) {
                                   _datefield.text =
                                       '${date.year}-${date.month}-${date.day}';
