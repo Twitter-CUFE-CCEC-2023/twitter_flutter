@@ -18,11 +18,6 @@ import '../starting_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   static String route = '/HomePage';
-  static const String username =
-      "Ahmedhgjghjgfhjfghjfghjfghjfghjgfhjgfhjfghjgffghfdghdfghdzkjcflhgbnlkdsjfhglkjdsfhglkdfhgkdljfh";
-
-  static const String tweetTexts =
-      "This is a tweetfgklh jdfklg;h jflk;gjh;flk gjhlfkdgjhlfgh jflgkhl kfjgh;sdlkhf jdsfg;hsdklf;gj dsflk jhgsdklf ghdsjlkf hgdfjslk hgdsjklf ghdfjskl hdsjlfk ghsdjklf ghsdjklf ghjdsklf ghsdjlkfg hsdjlkf ghdsjklf jhgsdljkf gljkdf gjhkld;f gjds;lk gdlfjkgh;slk djhdf;klghd l;kfjhg;lsda hfdfl;kjg hsd;fgh;d flkg";
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -34,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   BottomNavigationBar Bottom(
       {required double height, required double imageMultiplier}) {
     return BottomNavigationBar(
+      elevation: 0,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       type: BottomNavigationBarType.fixed,
@@ -79,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       required BuildContext context,
       required String imageUrl}) {
     return AppBar(
-      elevation: 1,
+      elevation: 0,
       actions: [
         IconButton(
           icon: Icon(
@@ -139,6 +135,9 @@ class _HomePageState extends State<HomePage> {
 
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    print(screenHeight);
+    print(screenWidth);
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
@@ -150,6 +149,7 @@ class _HomePageState extends State<HomePage> {
 
         fontSizeMultiplier[0] = 2;
       }
+
       return Container(
         color: Colors.white,
         child: SafeArea(
@@ -157,10 +157,13 @@ class _HomePageState extends State<HomePage> {
             key: scaffoldKey,
             drawer: HomeSideBar(),
             appBar: logoAppBar(
-                height: screenHeight,
-                imageMultiplier: imageMultiplier[0],
-                context: context,
-                imageUrl: userData.profile_image_url),
+              height: screenHeight,
+              imageMultiplier: imageMultiplier[0],
+              context: context,
+              imageUrl: (userData.profile_image_url != "")
+                  ? userData.profile_image_url
+                  : "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
+            ),
             backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -182,87 +185,106 @@ class _HomePageState extends State<HomePage> {
               },
               child: Icon(Icons.add),
             ),
-            body: ListView(
-              children: [
-                tweet(
-                  userProfilePicture:
-                      "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
-                  user_Name: "Johnny",
-                  imageCount: 0,
-                  CommentCount: 2,
-                  retweetCount: 4,
-                  likeCount: 7,
-                  tweet_Text: "Hello guys, How are you?",
-                ),
-                tweet(
+            body: GestureDetector(
+              onPanUpdate: ((details) {
+                if (details.delta.dx > 5) {
+                  scaffoldKey.currentState?.openDrawer();
+                }
+              }),
+              child: ListView(
+                children: [
+                  tweet(
                     userProfilePicture:
-                        "https://www.howfamous.is/celebrity/chris-hemsworth/200/220.jpg?lang=en",
-                    user_Name: "Chris",
+                        "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
+                    user_Name: "Johnny",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    imageCount: 0,
+                    CommentCount: 2,
+                    retweetCount: 4,
+                    likeCount: 7,
+                    tweet_Text: "Hello guys, How are you?",
+                  ),
+                  tweet(
+                      userProfilePicture:
+                          "https://www.howfamous.is/celebrity/chris-hemsworth/200/220.jpg?lang=en",
+                      user_Name: "Chris",
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth,
+                      imageCount: 1,
+                      CommentCount: 300,
+                      retweetCount: 40,
+                      likeCount: 77,
+                      tweet_Text: "Stay tuned for the new thor movie!",
+                      imageOne:
+                          "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg"),
+                  tweet(
+                      userProfilePicture:
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOAAggR0b98DcebtjSUaSn8yMSQAhoOrRdRA&usqp=CAU",
+                      user_Name: "Thomas brush",
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth,
+                      imageCount: 2,
+                      CommentCount: 60,
+                      retweetCount: 20,
+                      likeCount: 34,
+                      imageOne:
+                          "https://www.giantbomb.com/a/uploads/scale_small/8/87790/3005649-box_ps.png",
+                      imageTwo:
+                          "https://assets-prd.ignimgs.com/2020/07/06/neversong-button-fin-1594055577425.jpg"),
+                  tweet(
+                      userProfilePicture:
+                          "https://yt3.ggpht.com/ytc/AKedOLRTZPbxwPklr6CPZy4TcMNwLAgxdoJ2gyOXbq2fXw=s900-c-k-c0x00ffffff-no-rj",
+                      user_Name: "My Name is Mohamed Ahmed Mohamed",
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth,
+                      imageCount: 3,
+                      CommentCount: 10,
+                      retweetCount: 30,
+                      likeCount: 23,
+                      tweet_Text: "Check out my newest videos",
+                      imageOne:
+                          "https://i.ytimg.com/vi/kfWfMvA0heY/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBgf-z5Mh91YfdsjSg_afubvzJtXQ",
+                      imageTwo:
+                          "https://i.ytimg.com/vi/f3UZ0v1icmQ/maxresdefault.jpg",
+                      imageThree:
+                          "https://i.ytimg.com/vi/HvKbsCowLVU/maxresdefault.jpg"),
+                  tweet(
+                      userProfilePicture:
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQmyyuPaZzRHAIpnCtIWLhyIoghmcPu3dZxQ&usqp=CAU",
+                      user_Name: "Activation",
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth,
+                      imageCount: 4,
+                      CommentCount: 20,
+                      retweetCount: 40,
+                      likeCount: 200,
+                      tweet_Text:
+                          "Check out the newest mapes in the game (new enemies added, new characters, and new guns)",
+                      imageOne:
+                          "https://cdn.vox-cdn.com/thumbor/v4CFyRhEvWB9Ct_YeP8tEH0i2xo=/0x0:1920x1080/1200x800/filters:focal(381x260:687x566)/cdn.vox-cdn.com/uploads/chorus_image/image/68764501/FirebaseZ2.0.jpg",
+                      imageTwo:
+                          "https://imageio.forbes.com/specials-images/imageserve/60e7537510a61c82e917781b/BOCW-Zombies-Story-So-Far-TOUT/960x0.jpg?fit=bounds&format=jpg&width=960",
+                      imageThree:
+                          "https://gamingintel.com/wp-content/uploads/2020/11/Black-Ops-Cold-War-New-Map-Vietnam-Zombies.jpg",
+                      imageFour:
+                          "https://charlieintel.com/wp-content/uploads/2021/06/mauer-der-toten-1.jpg"),
+                  tweet(
+                    userProfilePicture:
+                        "https://pbs.twimg.com/media/E9gpNWsXEAYir33.jpg",
+                    user_Name: "Maged Alosali",
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    tweet_Text: "Check the new gif",
                     imageCount: 1,
-                    CommentCount: 300,
-                    retweetCount: 40,
-                    likeCount: 77,
-                    tweet_Text: "Stay tuned for the new thor movie!",
+                    CommentCount: 2,
+                    retweetCount: 3,
+                    likeCount: 4,
                     imageOne:
-                        "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg"),
-                tweet(
-                    userProfilePicture:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOAAggR0b98DcebtjSUaSn8yMSQAhoOrRdRA&usqp=CAU",
-                    user_Name: "Thomas brush",
-                    imageCount: 2,
-                    CommentCount: 60,
-                    retweetCount: 20,
-                    likeCount: 34,
-                    imageOne:
-                        "https://www.giantbomb.com/a/uploads/scale_small/8/87790/3005649-box_ps.png",
-                    imageTwo:
-                        "https://assets-prd.ignimgs.com/2020/07/06/neversong-button-fin-1594055577425.jpg"),
-                tweet(
-                    userProfilePicture:
-                        "https://yt3.ggpht.com/ytc/AKedOLRTZPbxwPklr6CPZy4TcMNwLAgxdoJ2gyOXbq2fXw=s900-c-k-c0x00ffffff-no-rj",
-                    user_Name: "My Name is Mohamed Ahmed Mohamed",
-                    imageCount: 3,
-                    CommentCount: 10,
-                    retweetCount: 30,
-                    likeCount: 23,
-                    tweet_Text: "Check out my newest videos",
-                    imageOne:
-                        "https://i.ytimg.com/vi/kfWfMvA0heY/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBgf-z5Mh91YfdsjSg_afubvzJtXQ",
-                    imageTwo:
-                        "https://i.ytimg.com/vi/f3UZ0v1icmQ/maxresdefault.jpg",
-                    imageThree:
-                        "https://i.ytimg.com/vi/HvKbsCowLVU/maxresdefault.jpg"),
-                tweet(
-                    userProfilePicture:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQmyyuPaZzRHAIpnCtIWLhyIoghmcPu3dZxQ&usqp=CAU",
-                    user_Name: "Activation",
-                    imageCount: 4,
-                    CommentCount: 20,
-                    retweetCount: 40,
-                    likeCount: 200,
-                    tweet_Text:
-                        "Check out the newest mapes in the game (new enemies added, new characters, and new guns)",
-                    imageOne:
-                        "https://cdn.vox-cdn.com/thumbor/v4CFyRhEvWB9Ct_YeP8tEH0i2xo=/0x0:1920x1080/1200x800/filters:focal(381x260:687x566)/cdn.vox-cdn.com/uploads/chorus_image/image/68764501/FirebaseZ2.0.jpg",
-                    imageTwo:
-                        "https://imageio.forbes.com/specials-images/imageserve/60e7537510a61c82e917781b/BOCW-Zombies-Story-So-Far-TOUT/960x0.jpg?fit=bounds&format=jpg&width=960",
-                    imageThree:
-                        "https://gamingintel.com/wp-content/uploads/2020/11/Black-Ops-Cold-War-New-Map-Vietnam-Zombies.jpg",
-                    imageFour:
-                        "https://charlieintel.com/wp-content/uploads/2021/06/mauer-der-toten-1.jpg"),
-                tweet(
-                  userProfilePicture:
-                      "https://pbs.twimg.com/media/E9gpNWsXEAYir33.jpg",
-                  user_Name: "Maged Alosali",
-                  tweet_Text: "Check the new gif",
-                  imageCount: 1,
-                  CommentCount: 2,
-                  retweetCount: 3,
-                  likeCount: 4,
-                  imageOne:
-                      "https://c.tenor.com/EWiHVwPUEOoAAAAC/coxa-among-us.gif",
-                ),
-              ],
+                        "https://c.tenor.com/EWiHVwPUEOoAAAAC/coxa-among-us.gif",
+                  ),
+                ],
+              ),
             ),
             bottomNavigationBar: Bottom(
                 height: screenHeight, imageMultiplier: imageMultiplier[0]),

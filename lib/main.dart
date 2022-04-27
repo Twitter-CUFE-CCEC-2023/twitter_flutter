@@ -49,9 +49,8 @@ void main() {
       /*DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) =>*/
-      Twitter()
-      //),
+        builder: (context) => */
+      Twitter() //),
       );
 }
 
@@ -73,7 +72,6 @@ class _TwitterState extends State<Twitter> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-
       providers: [
         BlocProvider.value(value: loginBloc),
         BlocProvider.value(value: updatePasswordBloc),

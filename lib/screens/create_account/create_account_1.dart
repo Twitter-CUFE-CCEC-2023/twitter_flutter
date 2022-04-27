@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, file_names, non_constant_identifier_names
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/screens/create_account/create_account_2.dart';
 import '../../utils/common_listners/network_listner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -35,7 +35,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
     _datefield = TextEditingController();
     _usernamefield = TextEditingController();
     _emailfield.addListener(() {
-      emailCheckSuffix = ValidateEmailOrPhone()
+      emailCheckSuffix = ValidateEmailOrPhone(_emailfield.text)
           ? const Icon(
               Icons.check_circle_outline_sharp,
               size: 25.0,
@@ -61,14 +61,6 @@ class _CreateAccount1State extends State<CreateAccount1> {
         nextActive = DisableButton();
       });
     });
-  }
-
-  bool ValidateEmailOrPhone() {
-    String p = _emailfield.text;
-    RegExp regMail = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    RegExp regPhone = RegExp(r"^01[0-2,5]{1}[0-9]{8}$");
-    return regMail.hasMatch(p) || regPhone.hasMatch(p);
   }
 
   bool DisableButton() {
@@ -214,7 +206,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               validator: (Value) {
-                if (ValidateEmailOrPhone()) {
+                if (ValidateEmailOrPhone(_emailfield.text)) {
                   return null;
                 } else {
                   return "Enter Valid Email or Phone";
@@ -275,7 +267,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                     onPressed: nextActive
                         ? () {
                             if (_formkey.currentState!.validate()) {
-                              Navigator.pushNamed(context, '/CreateAccount2',
+                              Navigator.pushNamed(context, CreateAccount2.route,
                                   arguments: {
                                     'name': _namefield.text,
                                     'email': _emailfield.text,
@@ -300,3 +292,15 @@ class _CreateAccount1State extends State<CreateAccount1> {
         ),
       );
 }
+
+bool ValidateEmailOrPhone(String p) {
+  RegExp regMail = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  RegExp regPhone = RegExp(r"^01[0-2,5]{1}[0-9]{8}$");
+  return regMail.hasMatch(p) || regPhone.hasMatch(p);
+}
+
+
+// onHorizontalDragStart: (DragStartDetails) => () {
+//               scaffoldKey.currentState?.openDrawer();
+//             },

@@ -1,48 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-class tweetModel {
-  late String userProfileImage;
-  late String userName;
-  late int imageCount;
-  late int CommentCount;
-  late int retweetCount;
-  late int likeCount;
-  String? tweet_Text;
-
-  String? imageOne;
-  String? imageTwo;
-  String? imageThree;
-  String? imageFour;
-
-  tweetModel({
-    required this.userProfileImage,
-    required this.userName,
-    required this.imageCount,
-    required this.CommentCount,
-    required this.retweetCount,
-    required this.likeCount,
-    this.tweet_Text,
-    this.imageOne,
-    this.imageTwo,
-    this.imageThree,
-    this.imageFour,
-  });
-}
-
-List<tweetModel> tweets = [
-  tweetModel(
-      userProfileImage:
-          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
-      userName: "huda el mufti",
-      imageCount: 1,
-      imageOne:
-          "https://www.pics-place.com/wp-content/uploads/2018/05/%D9%87%D8%AF%D9%89-%D8%A7%D9%84%D9%85%D9%81%D8%AA%D9%8A-6.jpg",
-      CommentCount: 1,
-      likeCount: 1,
-      retweetCount: 1),
-];
 
 Widget tweet(
     {required String userProfilePicture,
@@ -51,6 +11,8 @@ Widget tweet(
     required int CommentCount,
     required int retweetCount,
     required int likeCount,
+    required double screenWidth,
+    required double screenHeight,
     String? tweet_Text,
     String? imageOne,
     String? imageTwo,
@@ -61,30 +23,34 @@ Widget tweet(
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          tweetProfilePicture(userProfilePicture),
+          tweetProfilePicture(userProfilePicture, screenHeight),
           Flexible(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  userName(user_Name),
+                  userName(user_Name, screenHeight),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 5, 15, 0),
-                    child: tweetText(tweet_Text),
+                    padding: const EdgeInsets.fromLTRB(0, 5, 13, 0),
+                    child: tweetText(tweet_Text, screenHeight),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 15, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
                     child: tweetImage(imageCount,
                         imageOne: imageOne,
                         imageTwo: imageTwo,
                         imageThree: imageThree,
-                        imageFour: imageFour),
+                        imageFour: imageFour,
+                        screenWidth: screenWidth,
+                        screenHeight: screenHeight),
                   ),
                   tweetButtons(
                       like_count: likeCount,
                       commentCount: CommentCount,
-                      retweetCount: retweetCount),
+                      retweetCount: retweetCount,
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth),
                 ],
               ),
             ),
@@ -99,24 +65,24 @@ Widget tweet(
   );
 }
 
-Widget userName(String username) {
+Widget userName(String username, double screenHeight) {
   return Text(
     username,
     overflow: TextOverflow.ellipsis,
     style: TextStyle(
-      fontSize: 20,
+      fontSize: 0.0256 * screenHeight, // 20
     ),
   );
 }
 
-Widget tweetText(String? tweetText) {
+Widget tweetText(String? tweetText, double screenHeight) {
   if (tweetText == null) {
     return Container();
   } else {
     return Text(
       tweetText,
       style: TextStyle(
-        fontSize: 15,
+        fontSize: 0.0192 * screenHeight, // 15
         color: Colors.black,
       ),
     );
@@ -126,7 +92,9 @@ Widget tweetText(String? tweetText) {
 Widget tweetButtons(
     {required int like_count,
     required int retweetCount,
-    required int commentCount}) {
+    required int commentCount,
+    required double screenHeight,
+    required double screenWidth}) {
   return Row(
     children: <Widget>[
       LikeButton(
@@ -136,12 +104,12 @@ Widget tweetButtons(
           return Icon(
             FontAwesomeIcons.comment,
             color: Colors.grey,
-            size: 20,
+            size: 0.0256 * screenHeight,
           );
         },
       ),
       SizedBox(
-        width: 30,
+        width: 0.0764 * screenWidth,
       ),
       LikeButton(
         animationDuration: const Duration(milliseconds: 0),
@@ -150,12 +118,12 @@ Widget tweetButtons(
           return Icon(
             FontAwesomeIcons.retweet,
             color: isLiked ? Colors.green : Colors.grey,
-            size: 20,
+            size: 0.0256 * screenHeight,
           );
         },
       ),
       SizedBox(
-        width: 30,
+        width: 0.0764 * screenWidth,
       ),
       LikeButton(
         likeCount: like_count,
@@ -163,12 +131,12 @@ Widget tweetButtons(
           return Icon(
             FontAwesomeIcons.solidHeart,
             color: isLiked ? Colors.red : Colors.grey,
-            size: 20,
+            size: 0.0256 * screenHeight,
           );
         },
       ),
       SizedBox(
-        width: 30,
+        width: 0.0764 * screenWidth,
       ),
       LikeButton(
         animationDuration: const Duration(milliseconds: 0),
@@ -176,7 +144,7 @@ Widget tweetButtons(
           return Icon(
             FontAwesomeIcons.arrowUpFromBracket,
             color: Colors.grey,
-            size: 20,
+            size: 0.0256 * screenHeight,
           );
         },
       ),
@@ -185,54 +153,69 @@ Widget tweetButtons(
 }
 
 Widget tweetImage(int count,
-    {String? imageOne,
+    {required double screenWidth,
+    required double screenHeight,
+    String? imageOne,
     String? imageTwo,
     String? imageThree,
     String? imageFour}) {
   if (count == 0) {
     return Container();
   } else if (count == 1) {
-    return oneImage(imageOne ?? "", 12, 12, 12, 12);
+    return oneImage(
+        imageOne ?? "",
+        0.01536 * screenHeight,
+        0.01536 * screenHeight,
+        0.01536 * screenHeight,
+        0.01536 * screenHeight); // 12,12,12,12
   } else if (count == 2) {
     return Container(
-      width: 400,
-      height: 160,
+      width: 1.019 * screenWidth, //400
+      height: 0.205 * screenHeight, //160
       child: Row(
         children: <Widget>[
-          oneImage(imageOne ?? "", 12, 0, 12, 0,
-              imageWidth: 140, imageHeight: 160),
-          SizedBox(
+          oneImage(imageOne ?? "", 0.01536 * screenHeight, 0,
+              0.01536 * screenHeight, 0,
+              imageWidth: 0.356 * screenWidth,
+              imageHeight: 0.205 * screenHeight), // 140  160
+          const SizedBox(
             width: 3,
           ),
-          oneImage(imageTwo ?? "", 0, 12, 0, 12,
-              imageWidth: 140, imageHeight: 160),
+          oneImage(imageTwo ?? "", 0, 0.01536 * screenHeight, 0,
+              0.01536 * screenHeight,
+              imageWidth: 0.356 * screenWidth,
+              imageHeight: 0.205 * screenHeight), // 140 160
         ],
       ),
     );
   } else if (count == 3) {
     return Container(
-      width: 400,
-      height: 160,
+      width: 1.019 * screenWidth, //400
+      height: 0.205 * screenHeight, //160
       child: Row(
         children: <Widget>[
-          oneImage(imageOne ?? "", 12, 0, 12, 0,
-              imageWidth: 150, imageHeight: 160),
-          SizedBox(
+          oneImage(imageOne ?? "", 0.01536 * screenHeight, 0,
+              0.01536 * screenHeight, 0,
+              imageWidth: 0.382 * screenWidth,
+              imageHeight: 0.205 * screenHeight), //150 160
+          const SizedBox(
             width: 3,
           ),
           Container(
-            width: 128,
-            height: 160,
+            width: 0.326 * screenWidth, //128
+            height: 0.205 * screenHeight, //160
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                oneImage(imageTwo ?? "", 0, 12, 0, 0,
-                    imageWidth: 128, imageHeight: 78),
-                SizedBox(
+                oneImage(imageTwo ?? "", 0, 0.01536 * screenHeight, 0, 0,
+                    imageWidth: 0.326 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight), //128 78
+                const SizedBox(
                   height: 3,
                 ),
-                oneImage(imageThree ?? "", 0, 0, 0, 12,
-                    imageWidth: 128, imageHeight: 78),
+                oneImage(imageThree ?? "", 0, 0, 0, 0.01536 * screenHeight,
+                    imageWidth: 0.326 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight), // 128 78
               ],
             ),
           ),
@@ -241,42 +224,46 @@ Widget tweetImage(int count,
     );
   } else {
     return Container(
-      width: 400,
-      height: 160,
+      width: 1.019 * screenWidth,
+      height: 0.205 * screenHeight,
       child: Row(
         children: <Widget>[
           Container(
-            width: 140,
-            height: 160,
+            width: 0.356 * screenWidth,
+            height: 0.205 * screenHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                oneImage(imageOne ?? "", 12, 0, 0, 0,
-                    imageWidth: 140, imageHeight: 78),
-                SizedBox(
+                oneImage(imageOne ?? "", 0.01536 * screenHeight, 0, 0, 0,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
+                const SizedBox(
                   height: 3,
                 ),
-                oneImage(imageTwo ?? "", 0, 0, 12, 0,
-                    imageWidth: 140, imageHeight: 78),
+                oneImage(imageTwo ?? "", 0, 0, 0.01536 * screenHeight, 0,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 3,
           ),
           Container(
-            width: 140,
-            height: 160,
+            width: 0.356 * screenWidth,
+            height: 0.205 * screenHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                oneImage(imageThree ?? "", 0, 12, 0, 0,
-                    imageWidth: 140, imageHeight: 78),
-                SizedBox(
+                oneImage(imageThree ?? "", 0, 0.01536 * screenHeight, 0, 0,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
+                const SizedBox(
                   height: 3,
                 ),
-                oneImage(imageFour ?? "", 0, 0, 0, 12,
-                    imageWidth: 140, imageHeight: 78),
+                oneImage(imageFour ?? "", 0, 0, 0, 0.01536 * screenHeight,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
               ],
             ),
           ),
@@ -307,11 +294,11 @@ Widget oneImage(String imageUrl, double topLeftClip, double topRightClip,
   );
 }
 
-Widget tweetProfilePicture(String profilePicture) {
+Widget tweetProfilePicture(String profilePicture, double screenHeight) {
   return Padding(
     padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
     child: CircleAvatar(
-      radius: 28,
+      radius: 0.0358 * screenHeight, //20
       backgroundImage: NetworkImage(
         profilePicture,
       ),
