@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/material.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -75,6 +74,8 @@ void main() {
 
       //stub 4
       when(mockAuthRepository.signUp(username:"err" ,password: " ",date_of_birth: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")).thenThrow(Exception("Invalid Credentials"));
+
+
       loginBloc = LoginBloc(authRepository:mockAuthRepository);
     });
 
