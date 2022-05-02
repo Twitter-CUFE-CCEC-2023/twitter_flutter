@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 
-import '../../blocs/loginStates/login_bloc.dart';
-import '../../blocs/loginStates/login_states.dart';
+import '../../blocs/userManagement/user_management_bloc.dart';
+import '../../blocs/userManagement/user_management_states.dart';
 import '../../models/objects/user.dart';
 import '../starting_page.dart';
 import 'change_password.dart';
@@ -24,7 +24,7 @@ class _YourAccountState extends State<YourAccount> {
   late UserModel userData;
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<LoginBloc>().state;
+    var state = context.watch<UserManagementBloc>().state;
 
     if (state is LoginSuccessState) {
       userData = state.userdata;

@@ -7,9 +7,9 @@ import 'dart:async' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:twitter_flutter/models/authentication/user_authentication_model.dart'
     as _i3;
-import 'package:twitter_flutter/repositories/authentication/auth_repository.dart'
+import 'package:twitter_flutter/repositories/user_management_repository.dart'
     as _i4;
-import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart'
+import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart'
     as _i2;
 
 // ignore_for_file: type=lint
@@ -23,7 +23,7 @@ import 'package:twitter_flutter/utils/Web%20Services/authentication/authenticati
 // ignore_for_file: camel_case_types
 
 class _FakeAuthenticationRequests_0 extends _i1.Fake
-    implements _i2.AuthenticationRequests {}
+    implements _i2.UserManagementRequests {}
 
 class _FakeUserAuthenticationModel_1 extends _i1.Fake
     implements _i3.UserAuthenticationModel {}
@@ -31,18 +31,18 @@ class _FakeUserAuthenticationModel_1 extends _i1.Fake
 /// A class which mocks [AuthRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
+class MockAuthRepository extends _i1.Mock implements _i4.UserManagementRepository {
   MockAuthRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.AuthenticationRequests get authReq =>
+  _i2.UserManagementRequests get userManagementRequests =>
       (super.noSuchMethod(Invocation.getter(#authReq),
               returnValue: _FakeAuthenticationRequests_0())
-          as _i2.AuthenticationRequests);
+          as _i2.UserManagementRequests);
   @override
-  set authReq(_i2.AuthenticationRequests? _authReq) =>
+  set userManagementRequests(_i2.UserManagementRequests? _authReq) =>
       super.noSuchMethod(Invocation.setter(#authReq, _authReq),
           returnValueForMissingStub: null);
   @override
@@ -75,7 +75,7 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
                   _FakeUserAuthenticationModel_1()))
           as _i5.Future<_i3.UserAuthenticationModel>);
   @override
-  _i5.Future<_i3.UserAuthenticationModel> verification(
+  _i5.Future<_i3.UserAuthenticationModel> verify(
           {dynamic id, dynamic verification_code}) =>
       (super.noSuchMethod(
               Invocation.method(#verification, [],
@@ -89,13 +89,13 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAuthenticationRequests extends _i1.Mock
-    implements _i2.AuthenticationRequests {
+    implements _i2.UserManagementRequests {
   MockAuthenticationRequests() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<String> Login({dynamic username, dynamic password}) =>
+  _i5.Future<String> login({dynamic username, dynamic password}) =>
       (super.noSuchMethod(
           Invocation.method(
               #Login, [], {#username: username, #password: password}),

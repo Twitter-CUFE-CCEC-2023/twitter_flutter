@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import '../../utils/common_listners/network_listner.dart';
 import 'package:twitter_flutter/widgets/authentication/bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -64,14 +64,14 @@ class _CreateAccount4State extends State<CreateAccount4> {
       } else {
         nextButtomSize = 0.88;
       }
-      return BlocConsumer<LoginBloc,LoginStates>(
+      return BlocConsumer<UserManagementBloc,UserManagementStates>(
           listener: (context, state) {
             if (state is LoginSuccessState) {
               try {
                 Navigator.pushNamedAndRemoveUntil(context, '/HomePage',
                         (Route<dynamic> route) => false);
               } on Exception catch (e) {
-                context.read<LoginBloc>().add(StartEvent());
+                context.read<UserManagementBloc>().add(StartEvent());
               }
             } else if (state is SignupFailureState) {
               setState(() {
@@ -81,7 +81,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
             }
           },
         builder: (context,state) {
-          if(state is LoginLoadingState)
+          if(state is LoadingState)
             {
               return Container(
                 color: Colors.lightBlue,
@@ -221,7 +221,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
                   onPressed: nextActive
                       ? () {
                           if (_formkey.currentState!.validate()) {
-                            context.read<LoginBloc>().add(SignupButtonPressed(
+                            context.read<UserManagementBloc>().add(SignupButtonPressed(
                                 name: data['name'].toString(),
                                 password: _passwordfield.text,
                                 email: data['email'].toString(),

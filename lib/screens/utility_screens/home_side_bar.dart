@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 
-import '../../blocs/loginStates/login_bloc.dart';
-import '../../blocs/loginStates/login_states.dart';
+import '../../blocs/userManagement/user_management_bloc.dart';
+import '../../blocs/userManagement/user_management_states.dart';
 import '../starting_page.dart';
 
 class HomeSideBar extends StatelessWidget {
@@ -13,7 +13,7 @@ class HomeSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<LoginBloc>().state;
+    var state = context.watch<UserManagementBloc>().state;
 
     if (state is LoginSuccessState) {
       userData = state.userdata;

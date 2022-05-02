@@ -5,15 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/profile/tweets_widget.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
-import 'package:twitter_flutter/screens/profile/profile.dart';
-
-import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
-
-import '../../blocs/loginStates/login_bloc.dart';
-import '../../blocs/loginStates/login_states.dart';
-import '../../widgets/profile/logged_FAB_actions.dart';
-import '../starting_page.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
+import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
+import 'package:twitter_flutter/screens/starting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -123,7 +119,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<LoginBloc>().state;
+    var state = context.watch<UserManagementBloc>().state;
 
     if (state is LoginSuccessState) {
       userData = state.userdata;

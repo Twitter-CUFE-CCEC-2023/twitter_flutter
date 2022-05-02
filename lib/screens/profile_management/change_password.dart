@@ -1,16 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
-import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_events.dart';
-import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:twitter_flutter/widgets/authentication/constants.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/screens/profile_management/your_account.dart';
-import 'package:twitter_flutter/screens/profile_management/your_account.dart';
-
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
 
 class ChangePassword extends StatefulWidget {
   static String route = '/ChangePassword';
@@ -216,7 +212,7 @@ class changepassword extends State<ChangePassword> {
                         child: SizedBox(
                           width: screenWidth / 2,
                           height: 45,
-                          child: BlocListener<UpdatePasswordBloc, UpdatePasswordStates>(
+                          child: BlocListener<UserManagementBloc, UserManagementStates>(
                             listener: (context, state) {
                               if (state is UpdatePasswordSuccessState) {
                                 try {
@@ -224,9 +220,9 @@ class changepassword extends State<ChangePassword> {
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       YourAccount.route,
-                                          (Route<dynamic> route) => false);
+                                      (route)=>route == ChangePassword.route);
                                 } on Exception catch (e) {
-                                  context.read<UpdatePasswordBloc>().add(StartEvent());
+                                  context.read<UserManagementBloc>().add(StartEvent());
                                 }
                               } else if (state is UpdatePasswordFailureState) {
                                 //TODO:Add bottom sheet to show Failure Message
@@ -250,7 +246,7 @@ class changepassword extends State<ChangePassword> {
                                     if (_formkey.currentState!.validate()) {
                                       String oldpassword = pass.text;
                                       String newpassword = confirmpassword.text;
-                                      context.read<UpdatePasswordBloc>().add(
+                                      context.read<UserManagementBloc>().add(
                                           UpdatePasswordButtonPressed(
                                               oldpassword: oldpassword,
                                               newpassword: newpassword));

@@ -2,18 +2,18 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
 import 'package:twitter_flutter/models/authentication/user_authentication_model.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
-import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
-import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
+import 'package:twitter_flutter/repositories/user_management_repository.dart';
+import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart';
 import 'login_bloc_test.mocks.dart';
 
-@GenerateMocks([AuthRepository,AuthenticationRequests])
+@GenerateMocks([UserManagementRepository,UserManagementRequests])
 void main() {
-    late LoginBloc loginBloc;
+    late UserManagementBloc loginBloc;
     late MockAuthRepository mockAuthRepository;
     setUp(() {
       mockAuthRepository = MockAuthRepository();
@@ -76,7 +76,7 @@ void main() {
       when(mockAuthRepository.signUp(username:"err" ,password: " ",date_of_birth: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")).thenThrow(Exception("Invalid Credentials"));
 
 
-      loginBloc = LoginBloc(authRepository:mockAuthRepository);
+      loginBloc = UserManagementBloc(userManagementRepository:mockAuthRepository);
     });
 
     tearDown(() {
@@ -84,7 +84,7 @@ void main() {
     });
 
     test("Initial State is <LoginInitState()>", () {
-      expect(loginBloc.state, LoginInitState());
+      expect(loginBloc.state, InitState());
     });
 
 
@@ -93,9 +93,9 @@ void main() {
 
 
 
-    blocTest<LoginBloc,LoginStates>("Login Success State is Emitted after Loading when a success response is returned from Login Event", build: ()=>loginBloc,
+    blocTest<UserManagementBloc,UserManagementStates>("Login Success State is Emitted after Loading when a success response is returned from Login Event", build: ()=>loginBloc,
     act: (bloc)=>bloc.add(LoginButtonPressed(username:" " ,password: " ")),
-    expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
+    expect: ()=>[LoadingState(),LoginSuccessState(UserModel.fromJson({
       "id":"",
       "name" : "",
       "username" : "" ,
@@ -116,15 +116,15 @@ void main() {
     }))]
     );
 
-    blocTest<LoginBloc,LoginStates>("Login Failure State is Emitted when an exception is thrown due to wrong response",build: ()=>loginBloc,
+    blocTest<UserManagementBloc,UserManagementStates>("Login Failure State is Emitted when an exception is thrown due to wrong response",build: ()=>loginBloc,
         act: (bloc)=>bloc.add(LoginButtonPressed(username: "err",password: " ")),
-        expect: ()=>[LoginLoadingState(),LoginFailureState(errorMessage: "wrong Credentials")]
+        expect: ()=>[LoadingState(),LoginFailureState(errorMessage: "wrong Credentials")]
     );
 
 
-    blocTest<LoginBloc,LoginStates>("SignUp Success State is Emitted after Loading when a success response is returned for SignUp event", build: ()=>loginBloc,
+    blocTest<UserManagementBloc,UserManagementStates>("SignUp Success State is Emitted after Loading when a success response is returned for SignUp event", build: ()=>loginBloc,
         act: (bloc)=>bloc.add(SignupButtonPressed(username:" " ,password: " ",date: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")),
-        expect: ()=>[LoginLoadingState(),LoginSuccessState(UserModel.fromJson({
+        expect: ()=>[LoadingState(),LoginSuccessState(UserModel.fromJson({
           "id":"",
           "name" : "",
           "username" : "" ,
@@ -145,9 +145,9 @@ void main() {
         }))]
     );
 
-    blocTest<LoginBloc,LoginStates>("Signup Failure State is Emitted when an exception is thrown due to wrong response", build: ()=>loginBloc,
+    blocTest<UserManagementBloc,UserManagementStates>("Signup Failure State is Emitted when an exception is thrown due to wrong response", build: ()=>loginBloc,
         act: (bloc)=>bloc.add(SignupButtonPressed(username:"err" ,password: " ",date: "2022-04-23T15:48:54.813Z",email: " ",gender: " ",name: " ")),
-        expect: ()=>[LoginLoadingState(),SignupFailureState(errorMessage: " Invalid Credentials")]
+        expect: ()=>[LoadingState(),SignupFailureState(errorMessage: " Invalid Credentials")]
     );
 
 }

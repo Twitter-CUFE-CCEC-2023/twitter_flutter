@@ -5,14 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
-import 'package:twitter_flutter/blocs/UpdatePasswordStates/updatepassword_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
-import 'package:twitter_flutter/repositories/authentication/auth_repository.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/repositories/user_management_repository.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
-import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart';
+import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart';
 import 'package:twitter_flutter/utils/Web%20Services/edit_profile/edit_profile_request.dart';
-import 'package:twitter_flutter/utils/Web%20Services/edit_profile/update_password_request.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/screens/authentication/login_password.dart';
@@ -29,11 +26,7 @@ import 'package:twitter_flutter/screens/profile/edit_profile.dart';
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
-import 'package:twitter_flutter/utils/Web Services/authentication/authentication_requests.dart';
-import 'blocs/UpdatePasswordStates/updatepassword_bloc.dart';
 import 'package:twitter_flutter/repositories/profile_management/profile_repository.dart';
-import 'package:twitter_flutter/utils/Web Services/edit_profile/update_password_request.dart';
-import 'models/objects/user.dart';
 
 void main() {
   // To set the status bar to be transparent and text in status bar to be dark
@@ -65,16 +58,13 @@ class _TwitterState extends State<Twitter> {
   final EditProfileBloc editProfileBloc =
       EditProfileBloc(profileRepository: ProfileRepository(profileReq: EditProfileRequests()));
   final InternetCubit internetCubit = InternetCubit(Connectivity());
-  final LoginBloc loginBloc = LoginBloc(
-      authRepository: AuthRepository(authReq: AuthenticationRequests()));
-  final UpdatePasswordBloc updatePasswordBloc =
-      UpdatePasswordBloc(updateapasswordrequests: UpdatePasswordRequests());
+  final UserManagementBloc userManagementBloc = UserManagementBloc(
+      userManagementRepository: UserManagementRepository(userManagementRequests: UserManagementRequests()));
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: loginBloc),
-        BlocProvider.value(value: updatePasswordBloc),
+        BlocProvider.value(value: userManagementBloc),
         BlocProvider.value(value: internetCubit),
         BlocProvider.value(value: editProfileBloc),
       ],
@@ -121,8 +111,7 @@ class _TwitterState extends State<Twitter> {
   void dispose() {
     // TODO: implement dispose
     internetCubit.close();
-    loginBloc.close();
-    updatePasswordBloc.close();
+    userManagementBloc.close();
     editProfileBloc.close();
     super.dispose();
   }

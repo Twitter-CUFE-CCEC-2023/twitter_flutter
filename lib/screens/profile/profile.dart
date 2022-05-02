@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/media.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/tweets.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/tweets_and_replies.dart';
-import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
-import '../../blocs/loginStates/login_bloc.dart';
-import '../utility_screens/opened_image.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
-import 'package:twitter_flutter/screens/profile/edit_profile.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import '../utility_screens/opened_image.dart';
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
   static const route = "/userProfile";
@@ -31,7 +28,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<LoginBloc>().state;
+    var state = context.watch<UserManagementBloc>().state;
 
     if (state is LoginSuccessState) {
       userData = state.userdata;

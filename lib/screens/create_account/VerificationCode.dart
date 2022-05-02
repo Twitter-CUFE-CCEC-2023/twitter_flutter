@@ -7,9 +7,9 @@ import 'package:twitter_flutter/screens/profile_management/your_account.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 
 
@@ -176,7 +176,7 @@ fontSize: size ,
                 decoration: InputDecoration(hintText: 'Verification code',hintStyle: textStyle(0.0192 * fontSizeMultiplier[0] * screenHeight)
                 ),
               ),
-            BlocListener<LoginBloc, LoginStates>(
+            BlocListener<UserManagementBloc, UserManagementStates>(
                 listenWhen: (prevState, currentState) =>
                 currentState is VerificationSuccessState ||
                     currentState is VerificationFailureState,
@@ -188,7 +188,7 @@ fontSize: size ,
                           YourAccount.route,
                               (Route<dynamic> route) => false);
                     } on Exception catch (e) {
-                      context.read<LoginBloc>().add(StartEvent());
+                      context.read<UserManagementBloc>().add(StartEvent());
                     }
                   } else if (state is LoginFailureState) {
                     setState(() {
@@ -203,7 +203,7 @@ fontSize: size ,
                 onPressed: nextActive
                     ? () {
                   int VerificationCode = int.parse(_codefield.text);
-                  context.read<LoginBloc>().add(
+                  context.read<UserManagementBloc>().add(
                       VerificationButtonPressed(
                           verificationCode: VerificationCode));
                 }

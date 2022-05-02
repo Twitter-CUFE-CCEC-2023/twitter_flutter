@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
-class AuthenticationRequests {
-  Future<String> Login({username, password}) async {
+class UserManagementRequests {
+  Future<String> login({username, password}) async {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonEncode(<String,dynamic>{
@@ -12,12 +12,6 @@ class AuthenticationRequests {
       "password": password,
       "remember_me" : true
     });
-
-    //TODO:Josn-Server-auth request body format to be deleted upon deployment
-    // var body = jsonEncode(<String, String>{
-    //   "email": username ?? _email_or_username,
-    //   "password": password ?? _password
-    // });
 
     http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/login"),
         body: body, headers: headers);
@@ -69,14 +63,6 @@ class AuthenticationRequests {
   Future<String> Verification({id,verification_code}) async {
     var headers = {'Content-Type': 'application/json'};
 
-    //TODO:Correct post request body to be used upon deployment
-    /*var body = jsonEncode(<String,dynamic>{
-      "email_or_username": _email_or_username,
-      "password": _password,
-      "remember_me" : _remember_me
-    });*/
-
-    //TODO:Josn-Server-auth request body format to be deleted upon deployment
     var body = jsonEncode(<String, String?>{
       "id": id ,
       "verification_code": verification_code
@@ -99,5 +85,42 @@ class AuthenticationRequests {
     }
   }
 
+  Future<String> UpdatePassword(
+      {required New_Password, required Old_Password}) async {
+    var pref = await SharedPreferences.getInstance();
+    String? accessToken = pref.getString("access_token");
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + accessToken!
+    };
+
+    var body = jsonEncode(<String, String>{
+      "old_password": Old_Password,
+      "new_password": New_Password
+    });
+
+    http.Response res = await http.put(
+        Uri.parse("$ENDPOINT/auth/update-password"),
+        body: body,
+        headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Unauthorized");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+  Future<String> editProfile(){
+    //TODO Complete edit profile Request
+    return Future.delayed(Duration.zero).then((_) => "null");
+    //return data.user
+  }
 
 }

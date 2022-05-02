@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/screens/profile/edit_profile.dart';
-import '../../blocs/loginStates/login_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 
 class PreEditProfile extends StatelessWidget {
   const PreEditProfile({Key? key}) : super(key: key);
@@ -11,7 +10,7 @@ class PreEditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<LoginBloc>().state;
+    var state = context.watch<UserManagementBloc>().state;
     if (state is LoginSuccessState) {
       return FutureBuilder(
         future: _editProfile(state, context),

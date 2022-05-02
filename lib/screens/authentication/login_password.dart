@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_bloc.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_events.dart';
-import 'package:twitter_flutter/blocs/loginStates/login_states.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import '../../utils/common_listners/network_listner.dart';
@@ -69,7 +69,7 @@ class _LoginPasswordState extends State<LoginPassword> {
   Widget build(BuildContext context) {
     double imageMultiplier;
     username = ModalRoute.of(context)!.settings.arguments as String;
-    return BlocConsumer<LoginBloc, LoginStates>(
+    return BlocConsumer<UserManagementBloc, UserManagementStates>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
             try {
@@ -79,7 +79,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                       (Route<dynamic> route) => false);
             } on Exception catch (e) {
               context
-                  .read<LoginBloc>()
+                  .read<UserManagementBloc>()
                   .add(StartEvent());
             }
           } else if (state is LoginFailureState) {
@@ -90,7 +90,7 @@ class _LoginPasswordState extends State<LoginPassword> {
           }
         },
         builder: (context, state) {
-          if (state is LoginLoadingState) {
+          if (state is LoadingState) {
             return Container(
               color: Colors.lightBlue,
               child: SpinKitFadingCircle(
@@ -225,7 +225,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                                             FocusManager.instance.primaryFocus
                                                 ?.unfocus();
                                             String password = controller.text;
-                                            context.read<LoginBloc>().add(
+                                            context.read<UserManagementBloc>().add(
                                                 LoginButtonPressed(
                                                     username: username,
                                                     password: password));

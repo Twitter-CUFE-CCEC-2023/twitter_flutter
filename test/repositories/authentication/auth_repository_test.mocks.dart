@@ -5,7 +5,7 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:twitter_flutter/utils/Web%20Services/authentication/authentication_requests.dart'
+import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart'
     as _i2;
 
 // ignore_for_file: type=lint
@@ -22,13 +22,13 @@ import 'package:twitter_flutter/utils/Web%20Services/authentication/authenticati
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAuthenticationRequests extends _i1.Mock
-    implements _i2.AuthenticationRequests {
+    implements _i2.UserManagementRequests {
   MockAuthenticationRequests() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<String> Login({dynamic username, dynamic password}) =>
+  _i3.Future<String> login({dynamic username, dynamic password}) =>
       (super.noSuchMethod(
           Invocation.method(
               #Login, [], {#username: username, #password: password}),

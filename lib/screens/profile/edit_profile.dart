@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_states.dart';
-import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_events.dart';
-import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 
 class EditProfile extends StatefulWidget {
   static String route = '/EditProfile';
@@ -190,7 +190,7 @@ class editprofile extends State<EditProfile> {
         child: Scaffold(
           appBar: AppBar(
             actions: <Widget>[
-              BlocListener<EditProfileBloc, EditProfileStates>(
+              BlocListener<UserManagementBloc, UserManagementStates>(
                 listenWhen: (previous, current) =>
                     current is EditProfileSuccessState ||
                     current is EditProfileFailureState,
@@ -200,7 +200,7 @@ class editprofile extends State<EditProfile> {
                       Navigator.pushNamedAndRemoveUntil(context, '/HomePage',
                           (Route<dynamic> route) => false);
                     } on Exception catch (e) {
-                      context.read<EditProfileBloc>().add(StartEvent());
+                      context.read<UserManagementBloc>().add(StartEvent());
                     }
                   } else if (state is EditProfileFailureState) {}
                 },
@@ -211,7 +211,7 @@ class editprofile extends State<EditProfile> {
                   ),
                   onPressed: nextActive
                       ? () {
-                          context.read<EditProfileBloc>().add(
+                          context.read<UserManagementBloc>().add(
                               EditProfileButtonPressed(
                                   birth_date: birth_date.toIso8601String(),
                                   name: _namefield.text,
