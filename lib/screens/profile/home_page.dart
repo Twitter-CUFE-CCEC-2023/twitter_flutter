@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var bloc = context.watch<UserManagementBloc>();
 
-    if (bloc.state is LoginSuccessState || bloc.state is SignupSuccessState) {
+    if (bloc.state is LoginSuccessState || bloc.state is VerificationSuccessState) {
       userData = bloc.userdata;
     } else {
       return FutureBuilder(

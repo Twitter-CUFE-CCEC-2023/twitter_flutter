@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
+import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/profile_management/your_account.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -185,14 +186,13 @@ class verificationcode extends State<VerificationCode> {
                   listener: (context, state) {
                     if (state is VerificationSuccessState) {
                       try {
+                        var bloc = context.watch<UserManagementBloc>();
                         Navigator.pushNamedAndRemoveUntil(context,
-                            YourAccount.route, (Route<dynamic> route) => false);
+                            HomePage.route, (Route<dynamic> route) => false);
                       } on Exception catch (e) {
                         context.read<UserManagementBloc>().add(StartEvent());
                       }
-                    } else if (state is LoginFailureState) {
-                      setState(() {});
-                    }
+                    } else if (state is VerificationFailureState) {}
                   },
                   child: TextButton(
                     style: TextButton.styleFrom(

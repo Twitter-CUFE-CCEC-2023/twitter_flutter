@@ -5,10 +5,10 @@ import 'mediaModel.dart';
 class Tweet extends Equatable {
   late int id;
   late String content;
-  late int user_id;
+  late int user_id; //not present
   late int likes_count;
   late int retweets_count;
-  late int quotes_tweets_count;
+  late int quotes_tweets_count; //quotes_count
   late int replies_count;
   late DateTime created_at;
   late bool isLiked;

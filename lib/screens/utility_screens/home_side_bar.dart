@@ -21,7 +21,7 @@ class HomeSideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var bloc = context.watch<UserManagementBloc>();
 
-    if (bloc.state is LoginSuccessState) {
+    if (bloc.state is LoginSuccessState || bloc.state is VerificationSuccessState) {
       userData = bloc.userdata;
     } else {
       return FutureBuilder(

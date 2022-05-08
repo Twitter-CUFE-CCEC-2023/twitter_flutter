@@ -71,8 +71,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
           listener: (context, state) {
             if (state is SignupSuccessState) {
              try {
-                Navigator.pushNamedAndRemoveUntil(context, VerificationCode.route,
-                        (Route<dynamic> route) => false);
+                Navigator.pushNamed(context, VerificationCode.route);
               } on Exception catch (e) {
                 context.read<UserManagementBloc>().add(StartEvent());
               }

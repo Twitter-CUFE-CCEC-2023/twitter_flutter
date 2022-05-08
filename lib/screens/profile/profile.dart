@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
+import 'package:twitter_flutter/screens/profile/edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/media.dart';
@@ -14,6 +15,7 @@ import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import '../utility_screens/opened_image.dart';
+
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
   static const route = "/userProfile";
@@ -26,15 +28,27 @@ class _UserProfileState extends State<UserProfile> {
   late UserModel userData;
   late SharedPreferences pref;
 
+  Future<void> _faildAuthentication(context) async {
+    await Future.delayed(Duration(seconds: 0)).then((value) =>
+        Navigator.pushNamedAndRemoveUntil(
+            context, StartingPage.route, (route) => false));
+  }
+
   @override
   Widget build(BuildContext context) {
     var bloc = context.watch<UserManagementBloc>();
 
-    if (bloc.state is LoginSuccessState || bloc.state is SignupSuccessState) {
+    if (bloc.state is LoginSuccessState ||
+        bloc.state is VerificationSuccessState) {
       userData = bloc.userdata;
     } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, StartingPage.route, (route) => false);
+      return FutureBuilder(
+          builder: (context, _) {
+            return Container(
+              color: Colors.lightBlue,
+            );
+          },
+          future: _faildAuthentication(context));
       //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
     var orientation = MediaQuery.of(context).orientation;
@@ -68,7 +82,8 @@ class _UserProfileState extends State<UserProfile> {
                       OutlinedButton(
                         child: const Text("Edit Profile"),
                         style: outlinedButtonsStyle,
-                        onPressed: () => Navigator.pushNamed(context, PreEditProfile.route),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, PreEditProfile.route),
                       ),
                     ],
                   ),
@@ -84,7 +99,7 @@ class _UserProfileState extends State<UserProfile> {
                   username: userData.username,
                   birthday: userData.birth_date.day,
                   birthmonth: DateFormat('MMMM')
-                      .format(DateTime(0,userData.birth_date.month)),
+                      .format(DateTime(0, userData.birth_date.month)),
                   birthyear: userData.birth_date.year,
                   followers: userData.followers_count,
                   following: userData.following_count,
@@ -140,9 +155,9 @@ class _UserProfileState extends State<UserProfile> {
                 return GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Container(
-                        height: 0.97 * MediaQuery.of(context).size.height,
-                        color: Color(0xDFFFFFFF),
-                        child: FABActions(),
+                      height: 0.97 * MediaQuery.of(context).size.height,
+                      color: Color(0xDFFFFFFF),
+                      child: FABActions(),
                     ));
               },
               context: context,
@@ -273,10 +288,6 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       fit: StackFit.expand,
       clipBehavior: Clip.none,
       children: [
-        _buildCoverPhoto(
-            context: context,
-            imageUrl: coverImageURL,
-            shrinkOffset: shrinkOffset),
         _buildBarIcon(
             top: 14,
             icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -297,6 +308,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
+        _buildCoverPhoto(
+            context: context,
+            imageUrl: coverImageURL,
+            shrinkOffset: shrinkOffset),
         _buildBarIcon(
             top: 14,
             icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -407,11 +422,13 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       child: Opacity(
         opacity: (1 - shrinkOffset / expandedHeight),
         child: GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      OpenedImage(imageURL: profileImageURL))),
+          onTap: () => profileImageURL.toString().isNotEmpty
+              ? Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          OpenedImage(imageURL: profileImageURL)))
+              : Navigator.pushNamed(context, PreEditProfile.route),
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.blue,
@@ -445,29 +462,41 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       required double shrinkOffset}) {
     return Opacity(
       opacity: 1 - shrinkOffset / expandedHeight,
-      child: Image.network(
-        imageUrl,
-        loadingBuilder: (context, image, loadingProgress) {
-          if (loadingProgress == null) {
-            return image;
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.lightBlue,
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
+      child: imageUrl.toString().isNotEmpty
+          ? GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OpenedImage(imageURL: imageUrl))),
+              child: Image.network(
+                imageUrl,
+                loadingBuilder: (context, image, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return image;
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.lightBlue,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  }
+                },
+                errorBuilder: (context, object, stackTrace) => Container(
+                  color: Colors.lightBlue,
+                ),
+                fit: BoxFit.cover,
               ),
-            );
-          }
-        },
-        errorBuilder: (context, object, stackTrace) => Container(
-          color: Colors.lightBlue,
-        ),
-        fit: BoxFit.cover,
-      ),
+            )
+          : GestureDetector(
+              onTap: () => Navigator.pushNamed(context, PreEditProfile.route),
+              child: Container(
+                color: Colors.lightBlue,
+              ),
+            ),
     );
   }
-
 }
