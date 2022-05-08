@@ -6,9 +6,12 @@ import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
+import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import '../../utils/common_listners/network_listner.dart';
 import 'package:twitter_flutter/widgets/authentication/bottom_sheet.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets/authentication/constants.dart';
 
 class CreateAccount4 extends StatefulWidget {
   const CreateAccount4({Key? key}) : super(key: key);
@@ -66,9 +69,9 @@ class _CreateAccount4State extends State<CreateAccount4> {
       }
       return BlocConsumer<UserManagementBloc,UserManagementStates>(
           listener: (context, state) {
-            if (state is LoginSuccessState) {
-              try {
-                Navigator.pushNamedAndRemoveUntil(context, '/HomePage',
+            if (state is SignupSuccessState) {
+             try {
+                Navigator.pushNamedAndRemoveUntil(context, VerificationCode.route,
                         (Route<dynamic> route) => false);
               } on Exception catch (e) {
                 context.read<UserManagementBloc>().add(StartEvent());
@@ -232,12 +235,8 @@ class _CreateAccount4State extends State<CreateAccount4> {
                         }
                       : null,
                   child: const Text("next"),
-                  style: ButtonStyle(
-                      shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(18.0))))),
+                  style: elevatedButtonsStyle
+              ),
             ),
           ),
         ),

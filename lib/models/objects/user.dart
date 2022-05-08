@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
-  late String id;
-  late String name;
-  late String username;
-  late String email;
-  late String profile_image_url;
-  late String cover_image_url;
-  late String bio;
-  late String website;
-  late String location;
-  late DateTime created_at;
-  late bool isVerified;
+  late String id = "";
+  late String name = "";
+  late String username = "";
+  late String email = "";
+  late String profile_image_url = "";
+  late String cover_image_url = "";
+  late String bio = "";
+  late String website = "";
+  late String location = "";
+  late DateTime created_at = DateTime.now();
+  late bool isVerified = false;
   //late String role;
-  late int followers_count;
-  late int following_count;
-  late int tweets_count;
-  late int likes_count;
-  late bool isBanned;
-  late DateTime birth_date;
+  late int followers_count = 0;
+  late int following_count = 0;
+  late int tweets_count = 0;
+  late int likes_count = 0;
+  late bool isBanned = false;
+  late DateTime birth_date = DateTime.now();
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];

@@ -212,8 +212,7 @@ class createaccount2 extends State<CreateAccount2> {
                 child: SizedBox(
                   width: 80,
                   height: 45,
-                  child: RaisedButton(
-                    color: Colors.black,
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/CreateAccount3',
                           arguments: data);
@@ -225,6 +224,7 @@ class createaccount2 extends State<CreateAccount2> {
                         fontSize: 18,
                       ),
                     ),
+                    style: elevatedButtonsStyle,
                   ),
                 ),
               ),

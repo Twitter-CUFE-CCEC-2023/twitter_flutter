@@ -11,15 +11,26 @@ class HomeSideBar extends StatelessWidget {
   final padding = const EdgeInsets.symmetric(horizontal: 10);
   late UserModel userData;
 
+  Future<void> _faildAuthentication(context) async {
+    await Future.delayed(Duration(seconds: 0)).then((value) =>
+        Navigator.pushNamedAndRemoveUntil(
+            context, StartingPage.route, (route) => false));
+  }
+
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<UserManagementBloc>().state;
+    var bloc = context.watch<UserManagementBloc>();
 
-    if (state is LoginSuccessState) {
-      userData = state.userdata;
+    if (bloc.state is LoginSuccessState) {
+      userData = bloc.userdata;
     } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, StartingPage.route, (route) => false);
+      return FutureBuilder(
+          builder: (context, _) {
+            return Container(
+              color: Colors.lightBlue,
+            );
+          },
+          future: _faildAuthentication(context));
     }
     return Drawer(
       child: ListView(

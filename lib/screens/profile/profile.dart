@@ -28,10 +28,10 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<UserManagementBloc>().state;
+    var bloc = context.watch<UserManagementBloc>();
 
-    if (state is LoginSuccessState) {
-      userData = state.userdata;
+    if (bloc.state is LoginSuccessState || bloc.state is SignupSuccessState) {
+      userData = bloc.userdata;
     } else {
       Navigator.pushNamedAndRemoveUntil(
           context, StartingPage.route, (route) => false);

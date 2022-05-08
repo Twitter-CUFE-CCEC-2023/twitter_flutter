@@ -46,6 +46,8 @@ class UserManagementRequests {
     http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/signup"),
         body: body, headers: headers);
 
+    print(res.body);
+
     int statusCode = res.statusCode;
     if (statusCode == 200) {
       return res.body;

@@ -6,6 +6,8 @@ import '../../utils/common_listners/network_listner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+import '../../widgets/authentication/constants.dart';
+
 class CreateAccount1 extends StatefulWidget {
   const CreateAccount1({Key? key}) : super(key: key);
   static String route = '/CreateAccount1';
@@ -280,12 +282,8 @@ class _CreateAccount1State extends State<CreateAccount1> {
                           }
                         : null,
                     child: const Text("next"),
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(18.0))))),
+                    style: elevatedButtonsStyle,
+                ),
               ),
             ),
           ),

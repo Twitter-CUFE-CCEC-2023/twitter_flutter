@@ -117,15 +117,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> _faildAuthentication(context) async {
+    await Future.delayed(Duration(seconds: 0)).then((value) =>
+        Navigator.pushNamedAndRemoveUntil(
+            context, StartingPage.route, (route) => false));
+  }
+
   @override
   Widget build(BuildContext context) {
-    var state = context.watch<UserManagementBloc>().state;
+    var bloc = context.watch<UserManagementBloc>();
 
-    if (state is LoginSuccessState) {
-      userData = state.userdata;
+    if (bloc.state is LoginSuccessState || bloc.state is SignupSuccessState) {
+      userData = bloc.userdata;
     } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, StartingPage.route, (route) => false);
+      return FutureBuilder(
+          builder: (context, _) {
+            return Container(
+              color: Colors.lightBlue,
+            );
+          },
+          future: _faildAuthentication(context));
+
       //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
 

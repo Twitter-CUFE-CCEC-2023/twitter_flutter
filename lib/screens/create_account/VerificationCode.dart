@@ -12,7 +12,6 @@ import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 
-
 class VerificationCode extends StatefulWidget {
   static String route = '/VerificationCode';
 
@@ -35,41 +34,40 @@ class verificationcode extends State<VerificationCode> {
       });
     });
   }
-    bool DisableButton() {
-      if (_codefield.text.isEmpty) {
-        return false;
-      } else {
-        return true;
-      }
+
+  bool DisableButton() {
+    if (_codefield.text.isEmpty) {
+      return false;
+    } else {
+      return true;
     }
+  }
 
-
- Widget logoBottmBar ({required double width,required double height,required double size }){
-
-return ButtonBar(
-children: [
-ClipRRect(
-borderRadius: BorderRadius.circular(5000),
-child: SizedBox(
-width: width ,
-height: height,
-child: RaisedButton(
-color: Colors.black,
-onPressed: () {},
-child: Text(
-'Next',
-style: TextStyle(
-color: Colors.white,
-fontSize: size ,
-),
-),
-),
-),
-),
-],
-);
-}
-
+  Widget logoBottmBar(
+      {required double width, required double height, required double size}) {
+    return ButtonBar(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5000),
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: ElevatedButton(
+              onPressed: DisableButton() ? () {} : null,
+              child: Text(
+                'Next',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: size,
+                ),
+              ),
+              style: elevatedButtonsStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   AppBar logoAppBar({required double height, required double imageMultiplier}) {
     return AppBar(
@@ -134,18 +132,20 @@ fontSize: size ,
 
       return SafeArea(
           child: Scaffold(
-
         appBar: logoAppBar(
             height: screenHeight, imageMultiplier: imageMultiplier[0]),
-              bottomNavigationBar:logoBottmBar(width: screenWidth*0.192, height: sizedBoxHeightMultiplier[0] *0.05*screenHeight, size: sizedBoxHeightMultiplier[0] *0.0192*screenHeight),
+        bottomNavigationBar: logoBottmBar(
+            width: screenWidth * 0.192,
+            height: sizedBoxHeightMultiplier[0] * 0.05 * screenHeight,
+            size: sizedBoxHeightMultiplier[0] * 0.0192 * screenHeight),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
                 left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                    Widget>[
               Message(
                   message: 'We sent you a code',
                   fontSize: 0.038 * fontSizeMultiplier[0] * screenHeight, // 30
@@ -173,50 +173,48 @@ fontSize: size ,
                 ],
                 controller: _codefield,
                 maxLines: 1,
-                decoration: InputDecoration(hintText: 'Verification code',hintStyle: textStyle(0.0192 * fontSizeMultiplier[0] * screenHeight)
-                ),
+                decoration: InputDecoration(
+                    hintText: 'Verification code',
+                    hintStyle: textStyle(
+                        0.0192 * fontSizeMultiplier[0] * screenHeight)),
               ),
-            BlocListener<UserManagementBloc, UserManagementStates>(
-                listenWhen: (prevState, currentState) =>
-                currentState is VerificationSuccessState ||
-                    currentState is VerificationFailureState,
-                listener: (context, state) {
-                  if (state is VerificationSuccessState) {
-                    try {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          YourAccount.route,
-                              (Route<dynamic> route) => false);
-                    } on Exception catch (e) {
-                      context.read<UserManagementBloc>().add(StartEvent());
+              BlocListener<UserManagementBloc, UserManagementStates>(
+                  listenWhen: (prevState, currentState) =>
+                      currentState is VerificationSuccessState ||
+                      currentState is VerificationFailureState,
+                  listener: (context, state) {
+                    if (state is VerificationSuccessState) {
+                      try {
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            YourAccount.route, (Route<dynamic> route) => false);
+                      } on Exception catch (e) {
+                        context.read<UserManagementBloc>().add(StartEvent());
+                      }
+                    } else if (state is LoginFailureState) {
+                      setState(() {});
                     }
-                  } else if (state is LoginFailureState) {
-                    setState(() {
-                    });
-                  }
-                },
-                child:
-              TextButton(
-                style:
-                    TextButton.styleFrom(primary: Colors.grey // Disable color
+                  },
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        primary: Colors.grey // Disable color
                         ),
-                onPressed: nextActive
-                    ? () {
-                  int VerificationCode = int.parse(_codefield.text);
-                  context.read<UserManagementBloc>().add(
-                      VerificationButtonPressed(
-                          verificationCode: VerificationCode));
-                }
-                  :null,
-                  child:
-                  Text(
-                    "Didn't receive email?",
-                    style: TextStyle(color: Colors.blue,
-                      fontSize: 0.0172 * fontSizeMultiplier[0] * screenHeight,
+                    onPressed: nextActive
+                        ? () {
+                            int VerificationCode = int.parse(_codefield.text);
+                            context.read<UserManagementBloc>().add(
+                                VerificationButtonPressed(
+                                    verificationCode: VerificationCode));
+                          }
+                        : null,
+                    child: Text(
+                      "Didn't receive email?",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 0.0172 * fontSizeMultiplier[0] * screenHeight,
+                      ),
                     ),
-                ),
-    )
-            )]),
+                  ))
+            ]),
           ),
         ),
       ));

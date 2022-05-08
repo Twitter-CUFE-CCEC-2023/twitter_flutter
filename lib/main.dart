@@ -102,6 +102,8 @@ class _TwitterState extends State<Twitter> {
           PreEditProfile.route: (context) => const PreEditProfile(),
 
           ChangePassword.route: (context) => const ChangePassword(),
+
+          VerificationCode.route : (context) => const VerificationCode()
         },
       ),
     );
