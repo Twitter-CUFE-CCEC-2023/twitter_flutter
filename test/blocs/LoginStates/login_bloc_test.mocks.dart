@@ -2,13 +2,14 @@
 // in twitter_flutter/test/blocs/LoginStates/login_bloc_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i6;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:twitter_flutter/models/authentication/user_authentication_model.dart'
     as _i3;
+import 'package:twitter_flutter/models/objects/user.dart' as _i4;
 import 'package:twitter_flutter/repositories/user_management_repository.dart'
-    as _i4;
+    as _i5;
 import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart'
     as _i2;
 
@@ -22,40 +23,45 @@ import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.da
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeAuthenticationRequests_0 extends _i1.Fake
+class _FakeUserManagementRequests_0 extends _i1.Fake
     implements _i2.UserManagementRequests {}
 
 class _FakeUserAuthenticationModel_1 extends _i1.Fake
     implements _i3.UserAuthenticationModel {}
 
-/// A class which mocks [AuthRepository].
+class _FakeUserModel_2 extends _i1.Fake implements _i4.UserModel {}
+
+/// A class which mocks [UserManagementRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthRepository extends _i1.Mock implements _i4.UserManagementRepository {
-  MockAuthRepository() {
+class MockUserManagementRepository extends _i1.Mock
+    implements _i5.UserManagementRepository {
+  MockUserManagementRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i2.UserManagementRequests get userManagementRequests =>
-      (super.noSuchMethod(Invocation.getter(#authReq),
-              returnValue: _FakeAuthenticationRequests_0())
+      (super.noSuchMethod(Invocation.getter(#userManagementRequests),
+              returnValue: _FakeUserManagementRequests_0())
           as _i2.UserManagementRequests);
   @override
-  set userManagementRequests(_i2.UserManagementRequests? _authReq) =>
-      super.noSuchMethod(Invocation.setter(#authReq, _authReq),
+  set userManagementRequests(
+          _i2.UserManagementRequests? _userManagementRequests) =>
+      super.noSuchMethod(
+          Invocation.setter(#userManagementRequests, _userManagementRequests),
           returnValueForMissingStub: null);
   @override
-  _i5.Future<_i3.UserAuthenticationModel> login(
+  _i6.Future<_i3.UserAuthenticationModel> login(
           {dynamic username, dynamic password}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #login, [], {#username: username, #password: password}),
               returnValue: Future<_i3.UserAuthenticationModel>.value(
                   _FakeUserAuthenticationModel_1()))
-          as _i5.Future<_i3.UserAuthenticationModel>);
+          as _i6.Future<_i3.UserAuthenticationModel>);
   @override
-  _i5.Future<_i3.UserAuthenticationModel> signUp(
+  _i6.Future<_i3.UserAuthenticationModel> signUp(
           {dynamic name,
           dynamic password,
           dynamic email,
@@ -73,35 +79,57 @@ class MockAuthRepository extends _i1.Mock implements _i4.UserManagementRepositor
               }),
               returnValue: Future<_i3.UserAuthenticationModel>.value(
                   _FakeUserAuthenticationModel_1()))
-          as _i5.Future<_i3.UserAuthenticationModel>);
+          as _i6.Future<_i3.UserAuthenticationModel>);
   @override
-  _i5.Future<_i3.UserAuthenticationModel> verify(
-          {dynamic id, dynamic verification_code}) =>
+  _i6.Future<_i3.UserAuthenticationModel> verify(
+          {dynamic email_or_username, dynamic verificationCode}) =>
       (super.noSuchMethod(
-              Invocation.method(#verification, [],
-                  {#id: id, #verification_code: verification_code}),
+              Invocation.method(#verify, [], {
+                #email_or_username: email_or_username,
+                #verificationCode: verificationCode
+              }),
               returnValue: Future<_i3.UserAuthenticationModel>.value(
                   _FakeUserAuthenticationModel_1()))
-          as _i5.Future<_i3.UserAuthenticationModel>);
+          as _i6.Future<_i3.UserAuthenticationModel>);
+  @override
+  _i6.Future<String> updatePassword(
+          {dynamic New_Password, dynamic Old_Password}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updatePassword, [],
+              {#New_Password: New_Password, #Old_Password: Old_Password}),
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
+  @override
+  _i6.Future<_i4.UserModel> editProfile() =>
+      (super.noSuchMethod(Invocation.method(#editProfile, []),
+              returnValue: Future<_i4.UserModel>.value(_FakeUserModel_2()))
+          as _i6.Future<_i4.UserModel>);
+  @override
+  _i6.Future<_i4.UserModel> getUserProfile(
+          {dynamic username, dynamic access_token}) =>
+      (super.noSuchMethod(
+              Invocation.method(#getUserProfile, [],
+                  {#username: username, #access_token: access_token}),
+              returnValue: Future<_i4.UserModel>.value(_FakeUserModel_2()))
+          as _i6.Future<_i4.UserModel>);
 }
 
-/// A class which mocks [AuthenticationRequests].
+/// A class which mocks [UserManagementRequests].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthenticationRequests extends _i1.Mock
+class MockUserManagementRequests extends _i1.Mock
     implements _i2.UserManagementRequests {
-  MockAuthenticationRequests() {
+  MockUserManagementRequests() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<String> login({dynamic username, dynamic password}) =>
+  _i6.Future<String> login({dynamic username, dynamic password}) =>
       (super.noSuchMethod(
           Invocation.method(
-              #Login, [], {#username: username, #password: password}),
-          returnValue: Future<String>.value('')) as _i5.Future<String>);
+              #login, [], {#username: username, #password: password}),
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
   @override
-  _i5.Future<String> signUp(
+  _i6.Future<String> signUp(
           {dynamic name,
           dynamic email,
           dynamic username,
@@ -117,11 +145,47 @@ class MockAuthenticationRequests extends _i1.Mock
             #password: password,
             #birth_date: birth_date
           }),
-          returnValue: Future<String>.value('')) as _i5.Future<String>);
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
   @override
-  _i5.Future<String> Verification({dynamic id, dynamic verification_code}) =>
+  _i6.Future<String> Verification(
+          {dynamic email_or_username, dynamic verificationCode}) =>
       (super.noSuchMethod(
-          Invocation.method(#Verification, [],
-              {#id: id, #verification_code: verification_code}),
-          returnValue: Future<String>.value('')) as _i5.Future<String>);
+          Invocation.method(#Verification, [], {
+            #email_or_username: email_or_username,
+            #verificationCode: verificationCode
+          }),
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
+  @override
+  _i6.Future<String> UpdatePassword(
+          {dynamic New_Password, dynamic Old_Password}) =>
+      (super.noSuchMethod(
+          Invocation.method(#UpdatePassword, [],
+              {#New_Password: New_Password, #Old_Password: Old_Password}),
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
+  @override
+  _i6.Future<String> editProfile(
+          {dynamic Name,
+          dynamic Location,
+          dynamic Website,
+          dynamic Bio,
+          dynamic Month_Day_Access,
+          dynamic Year_Access,
+          dynamic Birth_Date}) =>
+      (super.noSuchMethod(
+          Invocation.method(#editProfile, [], {
+            #Name: Name,
+            #Location: Location,
+            #Website: Website,
+            #Bio: Bio,
+            #Month_Day_Access: Month_Day_Access,
+            #Year_Access: Year_Access,
+            #Birth_Date: Birth_Date
+          }),
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
+  @override
+  _i6.Future<String> getUserProfile({String? access_token, String? username}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getUserProfile, [],
+              {#access_token: access_token, #username: username}),
+          returnValue: Future<String>.value('')) as _i6.Future<String>);
 }

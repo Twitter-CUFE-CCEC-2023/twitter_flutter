@@ -186,7 +186,6 @@ class verificationcode extends State<VerificationCode> {
                   listener: (context, state) {
                     if (state is VerificationSuccessState) {
                       try {
-                        var bloc = context.watch<UserManagementBloc>();
                         Navigator.pushNamedAndRemoveUntil(context,
                             HomePage.route, (Route<dynamic> route) => false);
                       } on Exception catch (e) {

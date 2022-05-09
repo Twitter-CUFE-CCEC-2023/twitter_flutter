@@ -15,10 +15,6 @@ class UserAuthenticationModel extends Equatable{
     token_expiration_date = DateTime.parse(json["token_expiration_date"]);
     user = UserModel.fromJson(json["user"]);
 
-    /*//TODO:Josn Server Response format to be deleted upon deployment
-    message=" ";
-    access_token = json["accessToken"];
-    token_expiration_date = DateTime(0)*/
   }
 
   UserAuthenticationModel.fromJsonSignUp(Map<String, dynamic> json) {
@@ -30,6 +26,5 @@ class UserAuthenticationModel extends Equatable{
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [message,access_token,token_expiration_date,user];
 }
