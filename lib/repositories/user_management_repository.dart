@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:twitter_flutter/models/authentication/user_authentication_model.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
@@ -37,9 +36,9 @@ class UserManagementRepository {
     }
   }
 
-  Future<UserAuthenticationModel> verify({id,verification_code}) async {
+  Future<UserAuthenticationModel> verify({email_or_username,verificationCode}) async {
     try {
-      String verificationData = await userManagementRequests.Verification(id:id,verification_code:verification_code);
+      String verificationData = await userManagementRequests.Verification(email_or_username:email_or_username,verificationCode:verificationCode);
       return UserAuthenticationModel.fromJsonSignUp(jsonDecode(verificationData));
     } on Exception catch (e) {
       throw Exception(e);
@@ -57,10 +56,21 @@ class UserManagementRepository {
       throw Exception(e);
     }
   }
-
+//TODO complete edit profile request
   Future<UserModel> editProfile() async {
     String data = await userManagementRequests.editProfile();
     return UserModel.fromJson(jsonDecode(data));
   }
 
+  //TODO add email verification request
+
+
+  Future<UserModel> getUserProfile({required username,required access_token}) async {
+    try {
+      String data = await userManagementRequests.getUserProfile(username: username,access_token: access_token);
+      return UserModel.fromJson(jsonDecode(data)['user']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
 }
