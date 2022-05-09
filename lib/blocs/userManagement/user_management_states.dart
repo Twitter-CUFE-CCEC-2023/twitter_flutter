@@ -26,7 +26,6 @@ class LoginFailureState extends UserManagementStates {
   List<Object?> get props => [errorMessage];
 }
 
-
 class VerificationSuccessState extends UserManagementStates {
   final dynamic userdata;
   VerificationSuccessState(this.userdata);
@@ -55,31 +54,50 @@ class SignupFailureState extends UserManagementStates {
   List<Object?> get props => [errorMessage];
 }
 
-class UpdatePasswordSuccessState extends UserManagementStates{
+class UpdatePasswordSuccessState extends UserManagementStates {
   final String succesMessage;
   UpdatePasswordSuccessState({required this.succesMessage});
   @override
-  List<Object?> get props =>[succesMessage];
+  List<Object?> get props => [succesMessage];
 }
 
-class UpdatePasswordFailureState extends UserManagementStates{
+class UpdatePasswordFailureState extends UserManagementStates {
   final String failureMessage;
   UpdatePasswordFailureState({required this.failureMessage});
   @override
-  List<Object?> get props =>[failureMessage];
+  List<Object?> get props => [failureMessage];
 }
 
 class EditProfileSuccessState extends UserManagementStates {
   final dynamic userdata;
   EditProfileSuccessState(this.userdata);
   @override
-  List<Object?> get props =>[userdata];
+  List<Object?> get props => [userdata];
 }
-
 
 class EditProfileFailureState extends UserManagementStates {
   final String failureMessage;
   EditProfileFailureState({required this.failureMessage});
   @override
   List<Object?> get props => [failureMessage];
+}
+
+class LoadProfileSuccessState extends UserManagementStates {
+  final dynamic userdata;
+  LoadProfileSuccessState(this.userdata);
+  @override
+  List<Object?> get props => [userdata];
+}
+
+class LoadProfileFailureState extends UserManagementStates {
+  final String errorMessage;
+  LoadProfileFailureState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+class LogoutSuccessState extends UserManagementStates {
+  LogoutSuccessState();
+  @override
+  List<Object?> get props => [];
 }
