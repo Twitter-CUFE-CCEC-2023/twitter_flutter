@@ -19,7 +19,9 @@ class _TweetsState extends State<Tweets> {
   Widget build(BuildContext context) {
     var userbloc = context.read<UserManagementBloc>();
     var tweetbloc = context.read<TweetsManagementBloc>();
-    tweetbloc.add(UserProfileTweetsTabOpen(username: userbloc.userdata.username,access_token: userbloc.access_token));
+    tweetbloc.add(UserProfileTweetsTabOpen(
+        username: userbloc.userdata.username,
+        access_token: userbloc.access_token));
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
         builder: (context, state) {
       if (state is TweetsLoadingState) {
@@ -33,17 +35,22 @@ class _TweetsState extends State<Tweets> {
         List<Widget> tweetsList = [];
         for (TweetModel currentTweet
             in tweetbloc.LoggedUserTweetsWithoutReplies) {
-          tweetsList.add(tweet(
-            screenWidth: ScreenWidth,
-            screenHeight: ScreenHeight,
-            CommentCount: currentTweet.replies_count,
-            imageCount: currentTweet.media.length,
-            likeCount: currentTweet.likes_count,
-            retweetCount: currentTweet.retweets_count,
-            user_Name: user.username,
-            userProfilePicture: user.profile_image_url,
-            tweet_Text: currentTweet.content,
-          ));
+          tweetsList.add(
+            tweet(
+                screenWidth: ScreenWidth,
+                screenHeight: ScreenHeight,
+                CommentCount: currentTweet.replies_count,
+                imageCount: currentTweet.media.length,
+                likeCount: currentTweet.likes_count,
+                retweetCount: currentTweet.retweets_count,
+                user_Name: user.username,
+                userProfilePicture: user.profile_image_url,
+                tweet_Text: currentTweet.content,
+                is_retweeted: currentTweet.is_retweeted,
+                is_quoted: currentTweet.is_quoted,
+                is_liked: currentTweet.is_liked,
+                media: currentTweet.media),
+          );
         }
         return ListView(
           children: tweetsList,

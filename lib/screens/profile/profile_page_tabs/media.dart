@@ -16,19 +16,20 @@ class _MediaState extends State<Media> {
     return Container(
       child: ListView(
         children: [
-          tweet(
-              userProfilePicture:
-                  "https://www.howfamous.is/celebrity/chris-hemsworth/200/220.jpg?lang=en",
-              user_Name: "Chris",
-              screenHeight: screenHeight,
-              screenWidth: screenWidth,
-              imageCount: 1,
-              CommentCount: 300,
-              retweetCount: 40,
-              likeCount: 77,
-              tweet_Text: "Stay tuned for the new thor movie!",
-              imageOne:
-                  "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg"),
+          //   tweet(
+          //       userProfilePicture:
+          //           "https://www.howfamous.is/celebrity/chris-hemsworth/200/220.jpg?lang=en",
+          //       user_Name: "Chris",
+          //       screenHeight: screenHeight,
+          //       screenWidth: screenWidth,
+          //       imageCount: 1,
+          //       CommentCount: 300,
+          //       retweetCount: 40,
+          //       likeCount: 77,
+          //       tweet_Text: "Stay tuned for the new thor movie!",
+          //       imageOne:
+          //           "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg"),
+          //
         ],
       ),
     );

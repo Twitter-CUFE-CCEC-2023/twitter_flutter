@@ -12,11 +12,11 @@ Widget tweet(
     required int likeCount,
     required double screenWidth,
     required double screenHeight,
+    required bool is_liked,
+    required bool is_retweeted,
+    required bool is_quoted,
     String? tweet_Text,
-    String? imageOne,
-    String? imageTwo,
-    String? imageThree,
-    String? imageFour}) {
+    required List<MediaModel> media}) {
   return Column(
     children: [
       Row(
@@ -35,21 +35,19 @@ Widget tweet(
                     child: tweetText(tweet_Text, screenHeight),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
-                    child: tweetImage(imageCount,
-                        imageOne: imageOne,
-                        imageTwo: imageTwo,
-                        imageThree: imageThree,
-                        imageFour: imageFour,
-                        screenWidth: screenWidth,
-                        screenHeight: screenHeight),
-                  ),
+                      padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
+                      child: tweetMedia(media,
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight)),
                   tweetButtons(
                       like_count: likeCount,
                       commentCount: CommentCount,
                       retweetCount: retweetCount,
                       screenHeight: screenHeight,
-                      screenWidth: screenWidth),
+                      screenWidth: screenWidth,
+                      is_liked: is_liked,
+                      is_quoted: is_quoted,
+                      is_retweeted: is_retweeted),
                 ],
               ),
             ),
@@ -117,10 +115,11 @@ Widget tweetButtons({
       LikeButton(
         animationDuration: const Duration(milliseconds: 0),
         likeCount: retweetCount,
+        isLiked: is_retweeted,
         likeBuilder: (bool isLiked) {
           return Icon(
             FontAwesomeIcons.retweet,
-            color: is_retweeted ? Colors.green : Colors.grey,
+            color: isLiked ? Colors.green : Colors.grey,
             size: 0.0256 * screenHeight,
           );
         },
@@ -130,10 +129,11 @@ Widget tweetButtons({
       ),
       LikeButton(
         likeCount: like_count,
+        isLiked: is_liked,
         likeBuilder: (bool isLiked) {
           return Icon(
             FontAwesomeIcons.solidHeart,
-            color: is_liked ? Colors.red : Colors.grey,
+            color: isLiked ? Colors.red : Colors.grey,
             size: 0.0256 * screenHeight,
           );
         },
