@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../models/objects/mediaModel.dart';
 
 Widget tweet(
     {required String userProfilePicture,
@@ -148,6 +149,119 @@ Widget tweetButtons(
       ),
     ],
   );
+}
+
+// TODO: add condition for image and videos
+Widget tweetMedia(List<MediaModel> media,
+    {required double screenWidth, required double screenHeight}) {
+  if (media.isEmpty) {
+    return Container();
+  } else if (media.length == 1) {
+    return oneImage(media[0].path, 0.01536 * screenHeight,
+        0.01536 * screenHeight, 0.01536 * screenHeight, 0.01536 * screenHeight);
+  } else if (media.length == 2) {
+    return Container(
+      width: 1.019 * screenWidth, //400
+      height: 0.205 * screenHeight, //160
+      child: Row(
+        children: <Widget>[
+          oneImage(media[0].path, 0.01536 * screenHeight, 0,
+              0.01536 * screenHeight, 0,
+              imageWidth: 0.356 * screenWidth,
+              imageHeight: 0.205 * screenHeight), // 140  160
+          const SizedBox(
+            width: 3,
+          ),
+          oneImage(media[1].path, 0, 0.01536 * screenHeight, 0,
+              0.01536 * screenHeight,
+              imageWidth: 0.356 * screenWidth,
+              imageHeight: 0.205 * screenHeight), // 140 160
+        ],
+      ),
+    );
+  } else if (media.length == 3) {
+    return Container(
+      width: 1.019 * screenWidth, //400
+      height: 0.205 * screenHeight, //160
+      child: Row(
+        children: <Widget>[
+          oneImage(media[0].path, 0.01536 * screenHeight, 0,
+              0.01536 * screenHeight, 0,
+              imageWidth: 0.382 * screenWidth,
+              imageHeight: 0.205 * screenHeight), //150 160
+          const SizedBox(
+            width: 3,
+          ),
+          Container(
+            width: 0.326 * screenWidth, //128
+            height: 0.205 * screenHeight, //160
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                oneImage(media[1].path, 0, 0.01536 * screenHeight, 0, 0,
+                    imageWidth: 0.326 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight), //128 78
+                const SizedBox(
+                  height: 3,
+                ),
+                oneImage(media[2].path, 0, 0, 0, 0.01536 * screenHeight,
+                    imageWidth: 0.326 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight), // 128 78
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  } else {
+    return Container(
+      width: 1.019 * screenWidth,
+      height: 0.205 * screenHeight,
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 0.356 * screenWidth,
+            height: 0.205 * screenHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                oneImage(media[0].path, 0.01536 * screenHeight, 0, 0, 0,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
+                const SizedBox(
+                  height: 3,
+                ),
+                oneImage(media[1].path, 0, 0, 0.01536 * screenHeight, 0,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 3,
+          ),
+          Container(
+            width: 0.356 * screenWidth,
+            height: 0.205 * screenHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                oneImage(media[2].path, 0, 0.01536 * screenHeight, 0, 0,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
+                const SizedBox(
+                  height: 3,
+                ),
+                oneImage(media[3].path, 0, 0, 0, 0.01536 * screenHeight,
+                    imageWidth: 0.356 * screenWidth,
+                    imageHeight: 0.0999 * screenHeight),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 Widget tweetImage(int count,
