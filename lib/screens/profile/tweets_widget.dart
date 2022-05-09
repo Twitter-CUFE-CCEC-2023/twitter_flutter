@@ -87,12 +87,16 @@ Widget tweetText(String? tweetText, double screenHeight) {
   }
 }
 
-Widget tweetButtons(
-    {required int like_count,
-    required int retweetCount,
-    required int commentCount,
-    required double screenHeight,
-    required double screenWidth}) {
+Widget tweetButtons({
+  required int like_count,
+  required int retweetCount,
+  required int commentCount,
+  required double screenHeight,
+  required double screenWidth,
+  required bool is_liked,
+  required bool is_retweeted,
+  required bool is_quoted,
+}) {
   return Row(
     children: <Widget>[
       LikeButton(
@@ -115,7 +119,7 @@ Widget tweetButtons(
         likeBuilder: (bool isLiked) {
           return Icon(
             FontAwesomeIcons.retweet,
-            color: isLiked ? Colors.green : Colors.grey,
+            color: is_retweeted ? Colors.green : Colors.grey,
             size: 0.0256 * screenHeight,
           );
         },
@@ -128,7 +132,7 @@ Widget tweetButtons(
         likeBuilder: (bool isLiked) {
           return Icon(
             FontAwesomeIcons.solidHeart,
-            color: isLiked ? Colors.red : Colors.grey,
+            color: is_liked ? Colors.red : Colors.grey,
             size: 0.0256 * screenHeight,
           );
         },
