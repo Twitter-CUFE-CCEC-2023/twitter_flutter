@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
-import 'package:twitter_flutter/screens/profile/edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/media.dart';
@@ -56,97 +57,74 @@ class _UserProfileState extends State<UserProfile> {
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate: MySliverAppBar(
-                  coverImageURL: userData.cover_image_url,
-                  profileImageURL: userData.profile_image_url,
-                  name: userData.name,
-                  tweetCount: userData.tweets_count,
-                  expandedHeight: orientation == Orientation.portrait
-                      ? 0.35 * width
-                      : 0.625 * height),
-              pinned: true,
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.only(top: 3),
-                color: Colors.white,
-                child: SizedBox(
-                    child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        child: const Text("Edit Profile"),
-                        style: outlinedButtonsStyle,
-                        onPressed: () =>
-                            Navigator.pushNamed(context, PreEditProfile.route),
-                      ),
-                    ],
-                  ),
-                )),
+        body: DefaultTabController(
+          length: 4,
+          child: CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                delegate: MySliverAppBar(
+                    coverImageURL: userData.cover_image_url,
+                    profileImageURL: userData.profile_image_url,
+                    name: userData.name,
+                    tweetCount: userData.tweets_count,
+                    expandedHeight: orientation == Orientation.portrait
+                        ? 0.35 * width
+                        : 0.625 * height),
+                pinned: true,
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                color: Colors.white,
-                child: SizedBox(
-                    child: _buildUserData(
-                  name: userData.name,
-                  username: userData.username,
-                  birthday: userData.birth_date.day,
-                  birthmonth: DateFormat('MMMM')
-                      .format(DateTime(0, userData.birth_date.month)),
-                  birthyear: userData.birth_date.year,
-                  followers: userData.followers_count,
-                  following: userData.following_count,
-                  joinMonth: DateFormat('MMMM')
-                      .format(DateTime(0, userData.created_at.month)),
-                  joinYear: userData.created_at.year,
-                )),
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.only(top: 3),
+                  color: Colors.white,
+                  child: SizedBox(
+                      child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        OutlinedButton(
+                          child: const Text("Edit Profile"),
+                          style: outlinedButtonsStyle,
+                          onPressed: () =>
+                              Navigator.pushNamed(context, PreEditProfile.route),
+                        ),
+                      ],
+                    ),
+                  )),
+                ),
               ),
-            ),
-            SliverFillRemaining(
-              hasScrollBody: true,
-              child: DefaultTabController(
-                length: 4,
+              SliverToBoxAdapter(
+                child: Container(
+                  color: Colors.white,
+                  child: SizedBox(
+                      child: _buildUserData(
+                    name: userData.name,
+                    username: userData.username,
+                    birthday: userData.birth_date.day,
+                    birthmonth: DateFormat('MMMM')
+                        .format(DateTime(0, userData.birth_date.month)),
+                    birthyear: userData.birth_date.year,
+                    followers: userData.followers_count,
+                    following: userData.following_count,
+                    joinMonth: DateFormat('MMMM')
+                        .format(DateTime(0, userData.created_at.month)),
+                    joinYear: userData.created_at.year,
+                  )),
+                ),
+              ),
+
+              showSliverAppBar(),
+
+              SliverFillRemaining(
+                hasScrollBody: true,
                 child: Scaffold(
-                  appBar: TabBar(
-                    isScrollable: true,
-                    labelPadding: EdgeInsets.symmetric(horizontal: 20),
-                    tabs: [
-                      Tab(
-                          child: Text(
-                        "Tweets",
-                        style: TextStyle(color: Colors.black),
-                      )),
-                      Tab(
-                          child: Text(
-                        "Tweets & replies",
-                        style: TextStyle(color: Colors.black),
-                      )),
-                      Tab(
-                          child: Text(
-                        "Media",
-                        style: TextStyle(color: Colors.black),
-                      )),
-                      Tab(
-                          child: Text(
-                        "Likes",
-                        style: TextStyle(color: Colors.black),
-                      )),
-                    ],
-                  ),
                   body: TabBarView(
                     children: [Tweets(), TweetsAndReplies(), Media(), Likes()],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -350,12 +328,13 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
     );
   }
 
+
   @override
   double get maxExtent => expandedHeight;
   @override
   double get minExtent => kToolbarHeight;
   @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 
   double profileImageSize(BuildContext context, double opacityFactor,
       double shrinkOffset, double maxSize,
@@ -500,3 +479,43 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
     );
   }
 }
+
+//test
+SliverAppBar showSliverAppBar() {
+  return SliverAppBar(
+    leading: Icon(null),
+    leadingWidth: 0,
+    backgroundColor: Colors.white,
+    floating: false,
+    pinned: true,
+    snap: false,
+    toolbarHeight: 50,
+    title: TabBar(
+      isScrollable: true,
+      labelPadding: EdgeInsets.symmetric(horizontal: 20),
+      tabs: [
+        Tab(
+            child: Text(
+              "Tweets",
+              style: TextStyle(color: Colors.black),
+            )),
+        Tab(
+            child: Text(
+              "Tweets & replies",
+              style: TextStyle(color: Colors.black ),
+            )),
+        Tab(
+            child: Text(
+              "Media",
+              style: TextStyle(color: Colors.black),
+            )),
+        Tab(
+            child: Text(
+              "Likes",
+              style: TextStyle(color: Colors.black),
+            )),
+      ],
+    ),
+  );
+}
+
