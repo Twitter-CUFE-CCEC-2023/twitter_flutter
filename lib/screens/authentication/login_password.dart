@@ -93,7 +93,9 @@ class _LoginPasswordState extends State<LoginPassword> {
           if (state is LoadingState) {
             return Container(
               color: Colors.lightBlue,
-              child: SpinKitFadingCircle(
+              child: SpinKitRing(
+                lineWidth: 6.0,
+                size: 70.0,
                 color: Colors.white,
               ),
             );
