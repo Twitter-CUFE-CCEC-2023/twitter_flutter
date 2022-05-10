@@ -4,8 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
