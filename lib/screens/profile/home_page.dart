@@ -204,31 +204,58 @@ class _HomePageState extends State<HomePage> {
                   print("refreshing");
                   return Future.delayed(const Duration(seconds: 2));
                 },
-                child: ListView(
-                  children: [
-                    tweet(
-                      userProfilePicture:
-                          "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
-                      user_Name: "Johnny",
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth,
-                      imageCount: 0,
-                      CommentCount: 2,
-                      retweetCount: 4,
-                      likeCount: 7,
-                      tweet_Text: "Hello guys, How are you?",
-                      is_quoted: true,
-                      is_liked: true,
-                      is_retweeted: false,
-                      media: [
-                        MediaModel(
-                            path:
-                                "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
-                            media: ".jpg",
-                            message: "hello",
-                            media_id: 23),
-                      ],
-                    ),
+                child: ListView.builder(
+                    itemCount: 1,
+                    itemBuilder: (listViewContext, index) {
+                      return tweet(
+                        userProfilePicture:
+                            "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
+                        user_Name: "Johnny",
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        imageCount: 0,
+                        CommentCount: 2,
+                        retweetCount: 4,
+                        likeCount: 7,
+                        tweet_Text: "Hello guys, How are you?",
+                        is_quoted: true,
+                        is_liked: true,
+                        is_retweeted: false,
+                        media: [
+                          MediaModel(
+                              path:
+                                  "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
+                              media: ".jpg",
+                              message: "hello",
+                              media_id: 23),
+                        ],
+                      );
+                    }
+                    // child: ListView(
+                    //   children: [
+                    //     tweet(
+                    //       userProfilePicture:
+                    //           "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
+                    //       user_Name: "Johnny",
+                    //       screenHeight: screenHeight,
+                    //       screenWidth: screenWidth,
+                    //       imageCount: 0,
+                    //       CommentCount: 2,
+                    //       retweetCount: 4,
+                    //       likeCount: 7,
+                    //       tweet_Text: "Hello guys, How are you?",
+                    //       is_quoted: true,
+                    //       is_liked: true,
+                    //       is_retweeted: false,
+                    //       media: [
+                    //         MediaModel(
+                    //             path:
+                    //                 "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
+                    //             media: ".jpg",
+                    //             message: "hello",
+                    //             media_id: 23),
+                    //       ],
+                    //     ),
 
                     // tweet(
                     //     userProfilePicture:
@@ -308,8 +335,8 @@ class _HomePageState extends State<HomePage> {
                     //   imageOne:
                     //       "https://c.tenor.com/EWiHVwPUEOoAAAAC/coxa-among-us.gif",
                     // ),
-                  ],
-                ),
+
+                    ),
               ),
             ),
             bottomNavigationBar: Bottom(

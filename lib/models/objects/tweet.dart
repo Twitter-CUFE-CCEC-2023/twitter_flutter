@@ -70,14 +70,14 @@ class ReplyTweetModel extends TweetModel {
       ];
 }
 
-class TweetWithRepliesModel{
+class TweetWithRepliesModel {
   late TweetModel tweet;
   late List<ReplyTweetModel> replies;
 
-  TweetWithRepliesModel.fromJson(Map<String, dynamic> json)
-  {
+  TweetWithRepliesModel.fromJson(Map<String, dynamic> json) {
     tweet = TweetModel.fromJson(json);
-    replies = (json['replies'] as List).map((i) => ReplyTweetModel.fromJson(i)).toList();
+    replies = (json['replies'] as List)
+        .map((i) => ReplyTweetModel.fromJson(i))
+        .toList();
   }
-
 }
