@@ -40,16 +40,6 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     var userBloc = context.watch<UserManagementBloc>();
-    var tweetsBloc = context.watch<TweetsManagementBloc>();
-
-    if(tweetsBloc.state is SuccessPostingTweet){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Tweet posted successfully"), duration: Duration(seconds: 2),));
-    }
-    else if(tweetsBloc.state is FailurePostingTweet){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to post tweet"), duration: Duration(seconds: 2),));
-    }
 
     if (userBloc.state is LoginSuccessState ||
         userBloc.state is VerificationSuccessState) {
