@@ -136,9 +136,12 @@ class _TweetWidgetState extends State<TweetWidget> {
           onTap: (f) {
             var tweetBloc = context.read<TweetsManagementBloc>();
             var userBloc = context.read<UserManagementBloc>();
-            if (tweetBloc.state is! ProcessingTweetLike){
+            //print(tweetBloc.state);
+            //if (tweetBloc.state is! ProcessingTweetLike){
+              //print(tweetBloc.state);
+              print("like");
               tweetBloc.add(LikeButtonPressed(access_token: userBloc.access_token  , tweet_id: widget.tweetData.id, isLiked: widget.tweetData.is_liked));
-            }
+            //}
             widget.tweetData.is_liked = !widget.tweetData.is_liked;
             widget.tweetData.likes_count = widget.tweetData.is_liked ? widget.tweetData.likes_count + 1 : widget.tweetData.likes_count - 1;
             return Future.value(widget.tweetData.is_liked);
@@ -434,7 +437,7 @@ class _TweetWidgetState extends State<TweetWidget> {
       padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
       child: CircleAvatar(
         radius: 0.0358 * screenHeight, //20
-        backgroundImage: NetworkImage(
+        backgroundImage: profilePicture.isEmpty? null : NetworkImage(
           profilePicture,
         ),
       ),

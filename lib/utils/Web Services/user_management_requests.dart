@@ -60,11 +60,11 @@ class UserManagementRequests {
     }
   }
 
-  Future<String> Verification({email_or_username, verificationCode}) async {
+  Future<String> Verification({required email_or_username, required verificationCode}) async {
     var headers = {'Content-Type': 'application/json'};
 
-    var body = jsonEncode(<String, String?>{
-      "email_or_username": verificationCode,
+    var body = jsonEncode(<String, dynamic>{
+      "email_or_username": email_or_username,
       "verificationCode": verificationCode
     });
 
@@ -74,7 +74,9 @@ class UserManagementRequests {
         headers: headers);
 
     int statusCode = res.statusCode;
+    print (res.body);
     if (statusCode == 200) {
+
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");

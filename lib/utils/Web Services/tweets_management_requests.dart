@@ -68,7 +68,7 @@ class TweetsManagementRequests {
     http.Response res = await http.post(Uri.parse("$ENDPOINT/status/like"),
         headers: headers, body: body);
 
-    print(res.body);
+    //print(res.body);
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {

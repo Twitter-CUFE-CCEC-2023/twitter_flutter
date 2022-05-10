@@ -36,10 +36,11 @@ class UserManagementRepository {
     }
   }
 
-  Future<UserAuthenticationModel> verify({email_or_username,verificationCode}) async {
+  Future<UserModel> verify({required email_or_username,required verificationCode}) async {
     try {
       String verificationData = await userManagementRequests.Verification(email_or_username:email_or_username,verificationCode:verificationCode);
-      return UserAuthenticationModel.fromJsonSignUp(jsonDecode(verificationData));
+      //print(verificationData);
+      return UserModel.fromJson(jsonDecode(verificationData)["user"]);
     } on Exception catch (e) {
       throw Exception(e);
     }

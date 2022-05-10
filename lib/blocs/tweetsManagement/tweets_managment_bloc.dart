@@ -9,7 +9,7 @@ import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 class TweetsManagementBloc
     extends Bloc<TweetsManagementEvents, TweetsManagementStates> {
   late TweetsManagementRepository tweetsManagementRepository;
-  late List<TweetModel> LoggedUserTweetsWithoutReplies;
+  late List<TweetModel> LoggedUserTweetsWithoutReplies = [];
   late List<TweetModel> homeTweets = [];
   TweetsManagementBloc({required this.tweetsManagementRepository})
       : super(TweetsIntialState()) {
@@ -57,6 +57,7 @@ class TweetsManagementBloc
     try {
       var tweets = await tweetsManagementRepository.getLoggedUserTweets(
           access_token: event.access_token, username: event.username);
+      LoggedUserTweetsWithoutReplies.clear();
       LoggedUserTweetsWithoutReplies = tweets;
       //print(tweets);
       emit(SuccessLoadingUserProfileTweetsTab());
@@ -84,7 +85,7 @@ class TweetsManagementBloc
   void _onLikeButtonPressed(
       LikeButtonPressed event, Emitter<TweetsManagementStates> emit) async {
     try {
-      // emit(ProcessingTweetLike());
+       //emit(ProcessingTweetLike());
       if (!event.isLiked) {
         var tweet = await tweetsManagementRepository.likeTweet(
             access_token: event.access_token, tweet_id: event.tweet_id);

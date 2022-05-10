@@ -27,10 +27,9 @@ class LoginFailureState extends UserManagementStates {
 }
 
 class VerificationSuccessState extends UserManagementStates {
-  final dynamic userdata;
-  VerificationSuccessState(this.userdata);
+  VerificationSuccessState();
   @override
-  List<Object?> get props => [userdata];
+  List<Object?> get props => [];
 }
 
 class VerificationFailureState extends UserManagementStates {

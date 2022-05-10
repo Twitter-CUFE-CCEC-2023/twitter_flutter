@@ -47,15 +47,17 @@ class FailurePostingTweet extends TweetsManagementStates {
   List<Object?> get props => [];
 }
 
+class ProcessingTweetLike extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
+
 class TweetLikeSuccess extends TweetsManagementStates {
   @override
   List<Object?> get props => [];
 }
 
-class ProcessingTweetLike extends TweetsManagementStates {
-  @override
-  List<Object?> get props => [];
-}
+
 
 class TweetLikeFailure extends TweetsManagementStates {
   @override

@@ -107,9 +107,8 @@ class UserManagementBloc
     emit(LoadingState());
     try {
       var data = await userManagementRepository.verify(
-          verificationCode: event.verificationCode);
-      userdata = data.user;
-      emit(VerificationSuccessState(data.user));
+          verificationCode: event.verificationCode,email_or_username: userdata.username);
+      emit(VerificationSuccessState());
     } on Exception catch (e) {
       emit(VerificationFailureState(
           errorMessage: e.toString().replaceAll("Exception:", "")));
@@ -172,11 +171,10 @@ class UserManagementBloc
       // pref.remove("access_token");
       // pref.remove("username");
       // pref.remove("token_expiration_date");
-
       var box = await Boxes.openUserBox();
       print("logout event");
       print(box.get("user")?.username);
-      //box.delete("user");
+      box.delete("user");
       box.close();
       emit(LogoutSuccessState());
     } on Exception catch (e) {

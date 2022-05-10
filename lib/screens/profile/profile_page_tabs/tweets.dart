@@ -4,6 +4,7 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dar
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import '../../../models/objects/tweet.dart';
 import 'package:twitter_flutter/widgets/tweet.dart';
 
@@ -18,13 +19,19 @@ class _TweetsState extends State<Tweets> {
   List<Widget> tweetsList = [];
   @override
   Widget build(BuildContext context) {
+
     var userbloc = context.read<UserManagementBloc>();
     var tweetbloc = context.read<TweetsManagementBloc>();
+
+    if(tweetbloc.LoggedUserTweetsWithoutReplies.isEmpty || userbloc.state is LoginSuccessState){
+      tweetbloc.LoggedUserTweetsWithoutReplies.clear();
     tweetbloc.add(UserProfileTweetsTabOpen(
         username: userbloc.userdata.username,
         access_token: userbloc.access_token));
+    }
 
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
+      buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
       if (state is TweetsLoadingState) {
         return const Center(
@@ -43,7 +50,8 @@ class _TweetsState extends State<Tweets> {
         );
       } else
         return Container();
-    }, listener: (context, state) {
+    },
+      listener: (context, state) {
       if (state is FailureLoadingUserProfileTweetsTab) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -51,6 +59,7 @@ class _TweetsState extends State<Tweets> {
           ),
         );
       }
-    });
+    },
+    );
   }
 }
