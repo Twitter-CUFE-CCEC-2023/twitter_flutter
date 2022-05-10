@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:twitter_flutter/screens/profile/home_page.dart';
+import 'package:twitter_flutter/screens/profile/profile.dart';
 import 'dart:io';
 
 import '../../../blocs/tweetsManagement/tweets_management_events.dart';
@@ -47,25 +49,12 @@ class _PostTweetState extends State<PostTweet> {
     var userBloc = context.read<UserManagementBloc>();
     var TweetBloc = context.read<TweetsManagementBloc>();
 
-    return BlocConsumer<TweetsManagementBloc,TweetsManagementStates>(listener: (context, state) {
-      if (state is SuccessPostingTweet) {
-        Navigator.pop(context);
-      } else if (state is FailurePostingTweet) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(state.errorMessage),
-        ));
+    return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
+        listener: (context, state) {
+      if (state is TweetsLoadingState) {
+        Navigator.popUntil(context, (route) => HomePage.route == route.settings.name);
       }
     }, builder: (context, state) {
-      // if (state is TweetsLoadingState) {
-      //   return Container(
-      //     color: Colors.lightBlue,
-      //     child: SpinKitRing(
-      //       lineWidth: 6.0,
-      //       size: 70.0,
-      //       color: Colors.white,
-      //     ),
-      //   );
-      // }
       return SafeArea(
         child: Scaffold(
           appBar: AppBar(
