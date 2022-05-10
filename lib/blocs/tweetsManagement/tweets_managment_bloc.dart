@@ -8,10 +8,43 @@ class TweetsManagementBloc
     extends Bloc<TweetsManagementEvents, TweetsManagementStates> {
   late TweetsManagementRepository tweetsManagementRepository;
   late List<TweetModel> LoggedUserTweetsWithoutReplies;
+  late List<TweetModel> homeTweets;
   TweetsManagementBloc({required this.tweetsManagementRepository})
       : super(TweetsIntialState()) {
     on<UserProfileTweetsTabOpen>(_onUserProfileTweetsTabOpen);
     on<PostTweetButtonPressed>(_onPostTweetButtonPressed);
+    on<IntialHomePage>(_onIntialTweetFetching);
+    on<OnRefresh>(_onTweetFetching);
+  }
+  void _onIntialTweetFetching(
+      IntialHomePage event, Emitter<TweetsManagementStates> emit) async {
+    emit(TweetsLoadingState());
+    try {
+      var tweets = await tweetsManagementRepository.fetchTweets(
+          access_token: event.access_token, count: event.count);
+      for (var tweet in tweets) {
+        homeTweets.add(tweet);
+      }
+      emit(TweetsFetchingSuccess(tweets: tweets));
+    } on Exception catch (e) {
+      emit(TweetsFetchingFailed(
+          errorMessage: e.toString().replaceAll("Exception: ", "")));
+    }
+  }
+
+  void _onTweetFetching(
+      OnRefresh event, Emitter<TweetsManagementStates> emit) async {
+    try {
+      var tweets = await tweetsManagementRepository.fetchTweets(
+          access_token: event.access_token, count: event.count);
+      for (var tweet in tweets) {
+        homeTweets.add(tweet);
+      }
+      emit(TweetsFetchingSuccess(tweets: tweets));
+    } on Exception catch (e) {
+      emit(TweetsFetchingFailed(
+          errorMessage: e.toString().replaceAll("Exception: ", "")));
+    }
   }
 
   void _onUserProfileTweetsTabOpen(UserProfileTweetsTabOpen event,

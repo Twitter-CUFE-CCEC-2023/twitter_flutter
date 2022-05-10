@@ -1,37 +1,47 @@
 import 'package:equatable/equatable.dart';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 
-abstract class TweetsManagementStates extends Equatable{}
+abstract class TweetsManagementStates extends Equatable {}
 
 class TweetsIntialState extends TweetsManagementStates {
   @override
   List<Object?> get props => [];
-
 }
 
-class TweetsLoadingState extends TweetsManagementStates{
+class TweetsLoadingState extends TweetsManagementStates {
   List<Object?> get props => [];
 }
 
-
-class SuccessLoadingUserProfileTweetsTab extends TweetsManagementStates{
+class TweetsFetchingSuccess extends TweetsManagementStates {
+  List<TweetModel> tweets;
+  TweetsFetchingSuccess({required this.tweets});
   List<Object?> get props => [];
 }
 
-class FailureLoadingUserProfileTweetsTab extends TweetsManagementStates{
+class TweetsFetchingFailed extends TweetsManagementStates {
+  String errorMessage;
+  TweetsFetchingFailed({required this.errorMessage});
+  List<Object?> get props => [];
+}
+
+class SuccessLoadingUserProfileTweetsTab extends TweetsManagementStates {
+  List<Object?> get props => [];
+}
+
+class FailureLoadingUserProfileTweetsTab extends TweetsManagementStates {
   String errorMessage;
   FailureLoadingUserProfileTweetsTab({required this.errorMessage});
   List<Object?> get props => [];
 }
 
-class SuccessPostingTweet extends TweetsManagementStates{
+class SuccessPostingTweet extends TweetsManagementStates {
   TweetModel tweet;
   String message;
   SuccessPostingTweet({required this.tweet, required this.message});
   List<Object?> get props => [];
 }
 
-class FailurePostingTweet extends TweetsManagementStates{
+class FailurePostingTweet extends TweetsManagementStates {
   String errorMessage;
   FailurePostingTweet({required this.errorMessage});
   List<Object?> get props => [];

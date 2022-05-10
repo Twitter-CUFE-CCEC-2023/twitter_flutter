@@ -29,6 +29,33 @@ class TweetsManagementRequests {
     }
   }
 
+  Future<String> fetchTweets(
+      {required String access_token, required int count}) async {
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+
+    var body = jsonEncode(<String, dynamic>{"count": count});
+
+    http.Response res = await http.post(Uri.parse("$ENDPOINT/home"),
+        headers: headers, body: body);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
   Future<String> likeTweet(
       {required String access_token, required String tweet_id}) async {
     var headers = {
@@ -89,7 +116,10 @@ class TweetsManagementRequests {
     }
   }
 
-  Future<String> postTweet({required String access_token, required String content,List<int>? mediaIds}) async {
+  Future<String> postTweet(
+      {required String access_token,
+      required String content,
+      List<int>? mediaIds}) async {
     var headers = {
       'Authorization': 'Bearer $access_token',
       'Content-Type': 'application/json'
@@ -100,8 +130,10 @@ class TweetsManagementRequests {
 
     //      "media_ids": mediaIds ?? []
 
-    http.Response res = await http.post(Uri.parse("$ENDPOINT/status/tweet/post"),
-        headers: headers, body: body);
+    http.Response res = await http.post(
+        Uri.parse("$ENDPOINT/status/tweet/post"),
+        headers: headers,
+        body: body);
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {
@@ -117,7 +149,4 @@ class TweetsManagementRequests {
       throw Exception("Undefined Error");
     }
   }
-
-
-
 }

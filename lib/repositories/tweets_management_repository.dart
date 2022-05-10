@@ -7,6 +7,19 @@ class TweetsManagementRepository {
   late TweetsManagementRequests tweetsManagementRequests;
   TweetsManagementRepository({required this.tweetsManagementRequests});
 
+  Future<List<TweetModel>> fetchTweets(
+      {required String access_token, required int count}) async {
+    try {
+      String tweets = await tweetsManagementRequests.fetchTweets(
+          access_token: access_token, count: count);
+      return (jsonDecode(tweets)["tweets"] as List)
+          .map((i) => TweetModel.fromJson(i))
+          .toList();
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<List<TweetModel>> getLoggedUserTweets(
       {required String access_token,
       required String username,
@@ -24,7 +37,7 @@ class TweetsManagementRepository {
   }
 
   Future<ReplyTweetModel> likeTweet(
-  {required String access_token, required String tweet_id} ) async {
+      {required String access_token, required String tweet_id}) async {
     try {
       String tweetData = await tweetsManagementRequests.likeTweet(
           access_token: access_token, tweet_id: tweet_id);
@@ -35,7 +48,10 @@ class TweetsManagementRepository {
     }
   }
 
-  Future<TweetModel> postTweet({required String access_token, required String content,List<int>? mediaIds}) async {
+  Future<TweetModel> postTweet(
+      {required String access_token,
+      required String content,
+      List<int>? mediaIds}) async {
     try {
       String tweetData = await tweetsManagementRequests.postTweet(
           access_token: access_token, content: content, mediaIds: mediaIds);
@@ -57,7 +73,4 @@ class TweetsManagementRepository {
       throw Exception(e);
     }
   }
-
-
-
 }
