@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twitter_flutter/screens/profile/timeline_util_screens/postTweet.dart';
+
 
 
 class FABActions extends StatelessWidget {
-  const FABActions({Key? key}) : super(key: key);
+  FABActions({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class FABActions extends StatelessWidget {
                 child:Text("Tweet",style: TextStyle(fontSize: 18),),
               ),
               FloatingActionButton(
-                onPressed: () => print("Tweet pressed"),
+                onPressed: () => Navigator.pushNamed(context, PostTweet.route),
                 child: FaIcon(FontAwesomeIcons.featherPointed),
               ),
             ],

@@ -11,6 +11,7 @@ import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/repositories/user_management_repository.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
+import 'package:twitter_flutter/screens/profile/timeline_util_screens/postTweet.dart';
 import 'package:twitter_flutter/utils/Web%20Services/tweets_management_requests.dart';
 import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
@@ -114,6 +115,8 @@ class _TwitterState extends State<Twitter> {
           ChangePassword.route: (context) => const ChangePassword(),
 
           VerificationCode.route: (context) => const VerificationCode(),
+
+          PostTweet.route : (context) => const PostTweet(),
         },
       ),
     );

@@ -59,7 +59,6 @@ class TweetModel extends Equatable {
 class ReplyTweetModel extends TweetModel {
   late UserModel user;
 
-
   ReplyTweetModel.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     user = json['user'];
   }

@@ -14,7 +14,7 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.getLoggedUserTweets(
           access_token: access_token, username: username, replies: replies);
-      print(tweetData);
+      //print(tweetData);
       return (jsonDecode(tweetData)["tweets"] as List)
           .map((i) => TweetModel.fromJson(i))
           .toList();
@@ -22,4 +22,42 @@ class TweetsManagementRepository {
       throw Exception(e);
     }
   }
+
+  Future<ReplyTweetModel> likeTweet(
+  {required String access_token, required String tweet_id} ) async {
+    try {
+      String tweetData = await tweetsManagementRequests.likeTweet(
+          access_token: access_token, tweet_id: tweet_id);
+      //print(tweetData);
+      return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<ReplyTweetModel> PostTweet({required String access_token, required String content,List<int>? mediaIds}) async {
+    try {
+      String tweetData = await tweetsManagementRequests.postTweet(
+          access_token: access_token, content: content, mediaIds: mediaIds);
+      //print(tweetData);
+      return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<ReplyTweetModel> unlikeTweet(
+      {required String access_token, required String tweet_id}) async {
+    try {
+      String tweetData = await tweetsManagementRequests.unlikeTweet(
+          access_token: access_token, tweet_id: tweet_id);
+      //print(tweetData);
+      return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
+
 }
