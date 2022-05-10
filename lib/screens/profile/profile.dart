@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
@@ -37,11 +39,21 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var bloc = context.watch<UserManagementBloc>();
+    var userBloc = context.watch<UserManagementBloc>();
+    var tweetsBloc = context.watch<TweetsManagementBloc>();
 
-    if (bloc.state is LoginSuccessState ||
-        bloc.state is VerificationSuccessState) {
-      userData = bloc.userdata;
+    if(tweetsBloc.state is SuccessPostingTweet){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Tweet posted successfully"), duration: Duration(seconds: 2),));
+    }
+    else if(tweetsBloc.state is FailurePostingTweet){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to post tweet"), duration: Duration(seconds: 2),));
+    }
+
+    if (userBloc.state is LoginSuccessState ||
+        userBloc.state is VerificationSuccessState) {
+      userData = userBloc.userdata;
     } else {
       return FutureBuilder(
           builder: (context, _) {

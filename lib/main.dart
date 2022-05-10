@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
-import 'package:twitter_flutter/blocs/tweetsStates/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/repositories/user_management_repository.dart';
@@ -31,6 +28,7 @@ import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'models/hive models/logged_user.dart';
 
 void main() async {
