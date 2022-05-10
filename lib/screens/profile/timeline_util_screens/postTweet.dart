@@ -29,6 +29,9 @@ class _PostTweetState extends State<PostTweet> {
     if (image != null) {
       setState(() {
         _images.add(File(image.path));
+        if(_images.length >= 1 && _imagesToUpload.length <= 4) {
+          _imagesToUpload.add(File(image.path));
+        }
       });
     }
   }
@@ -45,6 +48,12 @@ class _PostTweetState extends State<PostTweet> {
   }
 
   @override
+  void dispose() {
+    _tweetTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var userBloc = context.read<UserManagementBloc>();
     var TweetBloc = context.read<TweetsManagementBloc>();
@@ -52,7 +61,8 @@ class _PostTweetState extends State<PostTweet> {
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
         listener: (context, state) {
       if (state is TweetsLoadingState) {
-        Navigator.popUntil(context, (route) => HomePage.route == route.settings.name);
+        Navigator.popUntil(
+            context, (route) => HomePage.route == route.settings.name);
       }
     }, builder: (context, state) {
       return SafeArea(
@@ -69,7 +79,7 @@ class _PostTweetState extends State<PostTweet> {
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 16, top: 12, bottom: 8),
+                padding: const EdgeInsets.only(right: 16, top: 16, bottom: 6),
                 child: ElevatedButton(
                   onPressed: !tweetEmpty
                       ? () {
@@ -169,73 +179,78 @@ class _PostTweetState extends State<PostTweet> {
                   ],
                 ),
               ),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: _imagesToUpload.isEmpty
-                              ? [
-                                    _buildButtonCard(
-                                      ImageSource.camera,
-                                      Icon(
-                                        Icons.camera_alt_outlined,
-                                        size: 35,
-                                        color: Colors.lightBlue,
-                                      ),
-                                    ),
-                                  ] +
-                                  _images
-                                      .map((image) => _buildImageCard(image))
-                                      .toList() +
-                                  [
-                                    _buildButtonCard(
-                                      ImageSource.gallery,
-                                      Icon(
-                                        Icons.image_outlined,
-                                        size: 35,
-                                        color: Colors.lightBlue,
-                                      ),
-                                    ),
-                                  ]
-                              : []),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          IconButton(
-                              onPressed: () async =>
-                                  await pickImage(ImageSource.gallery),
-                              icon: Icon(Icons.image_outlined,
-                                  size: 30, color: Colors.lightBlue)),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Icon(Icons.gif_box_outlined,
-                              size: 30, color: Colors.lightBlue),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Icon(Icons.bar_chart_outlined,
-                              size: 30, color: Colors.lightBlue),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Icon(Icons.location_on_outlined,
-                              size: 30, color: Colors.lightBlue),
-                        ],
-                      ),
-                    ),
-                  ]),
             ],
+          ),
+          bottomNavigationBar: Transform.translate(
+            offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: _imagesToUpload.isEmpty
+                          ? [
+                                _buildButtonCard(
+                                  ImageSource.camera,
+                                  Icon(
+                                    Icons.camera_alt_outlined,
+                                    size: 35,
+                                    color: Colors.lightBlue,
+                                  ),
+                                ),
+                              ] +
+                              _images
+                                  .map((image) => _buildImageCard(image))
+                                  .toList() +
+                              [
+                                _buildButtonCard(
+                                  ImageSource.gallery,
+                                  Icon(
+                                    Icons.image_outlined,
+                                    size: 35,
+                                    color: Colors.lightBlue,
+                                  ),
+                                ),
+                              ]
+                          : []),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      IconButton(
+                          onPressed: () async =>
+                              await pickImage(ImageSource.gallery),
+                          icon: Icon(Icons.image_outlined,
+                              size: 30, color: Colors.lightBlue)),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Icon(Icons.gif_box_outlined,
+                          size: 30, color: Colors.lightBlue),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Icon(Icons.bar_chart_outlined,
+                          size: 30, color: Colors.lightBlue),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Icon(Icons.location_on_outlined,
+                          size: 30, color: Colors.lightBlue),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
