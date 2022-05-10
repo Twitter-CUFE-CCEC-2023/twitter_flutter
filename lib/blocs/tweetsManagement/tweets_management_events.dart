@@ -32,3 +32,14 @@ class OnRefresh extends TweetsManagementEvents {
   OnRefresh({required this.access_token, required this.count});
   List<Object?> get props => [access_token, count];
 }
+
+class LikeButtonPressed extends TweetsManagementEvents {
+  String access_token;
+  String tweet_id;
+  bool isLiked;
+  LikeButtonPressed(
+      {required this.access_token,
+      required this.tweet_id,
+      required this.isLiked});
+  List<Object?> get props => [access_token, tweet_id, isLiked];
+}

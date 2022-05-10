@@ -5,7 +5,7 @@ import '../../models/objects/mediaModel.dart';
 import '../models/objects/tweet.dart';
 
 class Tweet {
-  late TweetModel tweetData;
+  late ReplyTweetModel tweetData;
 
   Tweet({required this.tweetData});
 

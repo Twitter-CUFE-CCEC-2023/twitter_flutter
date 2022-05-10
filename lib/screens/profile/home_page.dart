@@ -134,7 +134,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var bloc = context.watch<UserManagementBloc>();
 
-
     if (bloc.state is LoginSuccessState ||
         bloc.state is VerificationSuccessState) {
       userData = bloc.userdata;
@@ -149,12 +148,15 @@ class _HomePageState extends State<HomePage> {
 
       //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
+    print(bloc.access_token);
     var timeLineBloc = context.read<TweetsManagementBloc>();
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
-    timeLineBloc.add(OnRefresh(access_token: bloc.access_token, count: 10));
+    timeLineBloc
+        .add(IntialHomePage(access_token: bloc.access_token, count: 10));
+
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
         listener: (context, state) {
       if (state is TweetsFetchingFailed) {
@@ -166,103 +168,108 @@ class _HomePageState extends State<HomePage> {
       }
     }, builder: (context, state) {
       if (state is TweetsLoadingState) {
-        return Center(
-          child: CircularProgressIndicator(),
+        return Container(
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
         );
       }
       return Container(
-        color: Colors.white,
-        child: SafeArea(
-          child: Scaffold(
-            key: scaffoldKey,
-            drawer: HomeSideBar(),
-            appBar: logoAppBar(
-              height: screenHeight,
-              imageMultiplier: imageMultiplier[0],
-              context: context,
-              imageUrl: (userData.profile_image_url != "")
-                  ? userData.profile_image_url
-                  : "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
-            ),
-            backgroundColor: Colors.white,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  builder: (context) {
-                    return GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                          height: 0.97 * MediaQuery.of(context).size.height,
-                          color: Color(0xDFFFFFFF),
-                          child: FABActions(),
-                        ));
-                  },
-                  context: context,
-                  backgroundColor: Colors.white24,
-                  isDismissible: true,
-                  isScrollControlled: true,
-                );
-              },
-              child: Icon(Icons.add),
-            ),
-            body: GestureDetector(
-              onPanUpdate: ((details) {
-                if (details.delta.dx > 5) {
-                  scaffoldKey.currentState?.openDrawer();
-                }
-              }),
-              child: RefreshIndicator(
-                onRefresh: () {
-                  print("refreshing");
-                  return Future.delayed(const Duration(seconds: 2));
+          color: Colors.white,
+          child: SafeArea(
+            child: Scaffold(
+              key: scaffoldKey,
+              drawer: HomeSideBar(),
+              appBar: logoAppBar(
+                height: screenHeight,
+                imageMultiplier: imageMultiplier[0],
+                context: context,
+                imageUrl: (userData.profile_image_url != "")
+                    ? userData.profile_image_url
+                    : "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
+              ),
+              backgroundColor: Colors.white,
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    builder: (context) {
+                      return GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            height: 0.97 * MediaQuery.of(context).size.height,
+                            color: Color(0xDFFFFFFF),
+                            child: FABActions(),
+                          ));
+                    },
+                    context: context,
+                    backgroundColor: Colors.white24,
+                    isDismissible: true,
+                    isScrollControlled: true,
+                  );
                 },
-                child: BlocListener<TweetsManagementBloc,TweetsManagementStates>(
-                  listener: (context, state) {
-                    if(state is SuccessPostingTweet){
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Tweet posted successfully"), duration: Duration(seconds: 2),));
-                    }
-                    else if(state is FailurePostingTweet){
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Failed to post tweet"), duration: Duration(seconds: 2),));
-                    }
+                child: Icon(Icons.add),
+              ),
+              body: GestureDetector(
+                onPanUpdate: ((details) {
+                  if (details.delta.dx > 5) {
+                    scaffoldKey.currentState?.openDrawer();
+                  }
+                }),
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    print("refreshing");
+                    return Future.delayed(const Duration(seconds: 2));
                   },
-                  child: ListView(
-                    children: [
-                      tweet(
-                        userProfilePicture:
-                            "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
-                        user_Name: "Johnny",
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
-                        imageCount: 0,
-                        CommentCount: 2,
-                        retweetCount: 4,
-                        likeCount: 7,
-                        tweet_Text: "Hello guys, How are you?",
-                        is_quoted: true,
-                        is_liked: true,
-                        is_retweeted: false,
-                        media: [
-                          MediaModel(
-                              path:
-                                  "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
-                              media: ".jpg",
-                              message: "hello",
-                              media_id: 23),
-                        ],
-                      ),
-                    ],
+                  child: BlocListener<TweetsManagementBloc,
+                      TweetsManagementStates>(
+                    listener: (context, state) {
+                      if (state is SuccessPostingTweet) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Tweet posted successfully"),
+                          duration: Duration(seconds: 2),
+                        ));
+                      } else if (state is FailurePostingTweet) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Failed to post tweet"),
+                          duration: Duration(seconds: 2),
+                        ));
+                      }
+                    },
+                    child: ListView.builder(
+                        itemCount: 1,
+                        itemBuilder: (listViewContext, index) {
+                          return tweet(
+                            userProfilePicture:
+                                "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
+                            user_Name: "Johnny",
+                            screenHeight: screenHeight,
+                            screenWidth: screenWidth,
+                            imageCount: 0,
+                            CommentCount: 2,
+                            retweetCount: 4,
+                            likeCount: 7,
+                            tweet_Text: "Hello guys, How are you?",
+                            is_quoted: true,
+                            is_liked: true,
+                            is_retweeted: false,
+                            media: [
+                              MediaModel(
+                                  path:
+                                      "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
+                                  media: ".jpg",
+                                  message: "hello",
+                                  media_id: 23),
+                            ],
+                          );
+                        }),
                   ),
                 ),
               ),
-              
-            ),
               bottomNavigationBar: Bottom(
                   height: screenHeight, imageMultiplier: imageMultiplier[0]),
-          ),
-        )
-      );
+            ),
+          ));
     });
   }
 }

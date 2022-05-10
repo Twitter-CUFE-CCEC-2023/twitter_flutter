@@ -36,10 +36,8 @@ class TweetsManagementRequests {
       'Content-Type': 'application/json'
     };
 
-    var body = jsonEncode(<String, dynamic>{"count": count});
-
-    http.Response res = await http.post(Uri.parse("$ENDPOINT/home"),
-        headers: headers, body: body);
+    http.Response res = await http.get(Uri.parse("$ENDPOINT/home?count=$count"),
+        headers: headers);
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {

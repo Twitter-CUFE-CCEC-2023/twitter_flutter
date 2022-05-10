@@ -8,7 +8,7 @@ class TweetsManagementBloc
     extends Bloc<TweetsManagementEvents, TweetsManagementStates> {
   late TweetsManagementRepository tweetsManagementRepository;
   late List<TweetModel> LoggedUserTweetsWithoutReplies;
-  late List<TweetModel> homeTweets;
+  late List<TweetModel> homeTweets = [];
   TweetsManagementBloc({required this.tweetsManagementRepository})
       : super(TweetsIntialState()) {
     on<UserProfileTweetsTabOpen>(_onUserProfileTweetsTabOpen);
@@ -23,6 +23,7 @@ class TweetsManagementBloc
       var tweets = await tweetsManagementRepository.fetchTweets(
           access_token: event.access_token, count: event.count);
       for (var tweet in tweets) {
+        //print(tweet);
         homeTweets.add(tweet);
       }
       emit(TweetsFetchingSuccess(tweets: tweets));

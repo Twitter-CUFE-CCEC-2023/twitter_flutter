@@ -46,3 +46,8 @@ class FailurePostingTweet extends TweetsManagementStates {
   FailurePostingTweet({required this.errorMessage});
   List<Object?> get props => [];
 }
+
+class TweetLikeSuccess extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
