@@ -35,12 +35,12 @@ class TweetsManagementRepository {
     }
   }
 
-  Future<ReplyTweetModel> PostTweet({required String access_token, required String content,List<int>? mediaIds}) async {
+  Future<TweetModel> postTweet({required String access_token, required String content,List<int>? mediaIds}) async {
     try {
       String tweetData = await tweetsManagementRequests.postTweet(
           access_token: access_token, content: content, mediaIds: mediaIds);
       //print(tweetData);
-      return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+      return TweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);
     }
