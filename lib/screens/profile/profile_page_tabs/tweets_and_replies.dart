@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../tweets_widget.dart';
+
 
 class TweetsAndReplies extends StatefulWidget {
   const TweetsAndReplies({Key? key}) : super(key: key);

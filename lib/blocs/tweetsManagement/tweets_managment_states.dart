@@ -51,3 +51,18 @@ class TweetLikeSuccess extends TweetsManagementStates {
   @override
   List<Object?> get props => [];
 }
+
+class ProcessingTweetLike extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class TweetLikeFailure extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class TweetUnlikeSuccess extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}

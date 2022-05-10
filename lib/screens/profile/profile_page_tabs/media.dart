@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../tweets_widget.dart';
 
 class Media extends StatefulWidget {
   const Media({Key? key}) : super(key: key);

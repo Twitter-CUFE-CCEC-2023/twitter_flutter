@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
@@ -15,6 +17,7 @@ class TweetsManagementBloc
     on<PostTweetButtonPressed>(_onPostTweetButtonPressed);
     on<IntialHomePage>(_onIntialTweetFetching);
     on<OnRefresh>(_onTweetFetching);
+    on<LikeButtonPressed>(_onLikeButtonPressed);
   }
   void _onIntialTweetFetching(
       IntialHomePage event, Emitter<TweetsManagementStates> emit) async {
@@ -75,6 +78,24 @@ class TweetsManagementBloc
     } on Exception catch (e) {
       emit(FailurePostingTweet(
           errorMessage: e.toString().replaceAll("Exception: ", "")));
+    }
+  }
+
+  void _onLikeButtonPressed(
+      LikeButtonPressed event, Emitter<TweetsManagementStates> emit) async {
+    try {
+      // emit(ProcessingTweetLike());
+      if (!event.isLiked) {
+        var tweet = await tweetsManagementRepository.likeTweet(
+            access_token: event.access_token, tweet_id: event.tweet_id);
+        //emit(TweetLikeSuccess());
+      } else {
+        var tweet = await tweetsManagementRepository.unlikeTweet(
+            access_token: event.access_token, tweet_id: event.tweet_id);
+        //emit(TweetUnlikeSuccess());
+      }
+    } on Exception catch (e) {
+      //emit(TweetLikeFailure());
     }
   }
 }

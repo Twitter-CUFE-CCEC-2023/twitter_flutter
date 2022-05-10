@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../tweets_widget.dart';
 
 class Likes extends StatefulWidget {
   const Likes({Key? key}) : super(key: key);

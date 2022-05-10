@@ -50,7 +50,6 @@ class _UserProfileState extends State<UserProfile> {
             );
           },
           future: _faildAuthentication(context));
-      //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
     var orientation = MediaQuery.of(context).orientation;
     var width = MediaQuery.of(context).size.width;

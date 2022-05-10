@@ -5,7 +5,7 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.d
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import '../../../models/objects/tweet.dart';
-import '../tweets_widget.dart';
+import 'package:twitter_flutter/widgets/tweet.dart';
 
 class Tweets extends StatefulWidget {
   const Tweets({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class Tweets extends StatefulWidget {
 }
 
 class _TweetsState extends State<Tweets> {
+  List<Widget> tweetsList = [];
   @override
   Widget build(BuildContext context) {
     var userbloc = context.read<UserManagementBloc>();
@@ -22,35 +23,20 @@ class _TweetsState extends State<Tweets> {
     tweetbloc.add(UserProfileTweetsTabOpen(
         username: userbloc.userdata.username,
         access_token: userbloc.access_token));
+
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
         builder: (context, state) {
       if (state is TweetsLoadingState) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       } else if (state is SuccessLoadingUserProfileTweetsTab) {
         var user = userbloc.userdata;
-        double ScreenWidth = MediaQuery.of(context).size.width;
-        double ScreenHeight = MediaQuery.of(context).size.height;
-        List<Widget> tweetsList = [];
         for (TweetModel currentTweet
             in tweetbloc.LoggedUserTweetsWithoutReplies) {
-          tweetsList.add(
-            tweet(
-                screenWidth: ScreenWidth,
-                screenHeight: ScreenHeight,
-                CommentCount: currentTweet.replies_count,
-                imageCount: currentTweet.media.length,
-                likeCount: currentTweet.likes_count,
-                retweetCount: currentTweet.retweets_count,
-                user_Name: user.username,
-                userProfilePicture: user.profile_image_url,
-                tweet_Text: currentTweet.content,
-                is_retweeted: currentTweet.is_retweeted,
-                is_quoted: currentTweet.is_quoted,
-                is_liked: currentTweet.is_liked,
-                media: currentTweet.media),
-          );
+          tweetsList.add(TweetWidget(
+            tweetData: ReplyTweetModel.copy(currentTweet, user),
+          ));
         }
         return ListView(
           children: tweetsList,

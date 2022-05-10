@@ -67,7 +67,7 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.unlikeTweet(
           access_token: access_token, tweet_id: tweet_id);
-      //print(tweetData);
+      print(tweetData);
       return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);

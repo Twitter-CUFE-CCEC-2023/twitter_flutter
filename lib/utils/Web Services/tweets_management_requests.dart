@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class TweetsManagementRequests {
+
   Future<String> getLoggedUserTweets(
       {required String access_token,
       required String username,
@@ -67,9 +68,11 @@ class TweetsManagementRequests {
     http.Response res = await http.post(Uri.parse("$ENDPOINT/status/like"),
         headers: headers, body: body);
 
+    print(res.body);
+
     int statusCode = res.statusCode;
     if (statusCode == 200) {
-      //print(res.body);
+      print(res.body);
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");

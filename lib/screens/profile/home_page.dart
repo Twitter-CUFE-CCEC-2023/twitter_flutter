@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -7,14 +8,12 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dar
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/mediaModel.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
-import 'package:twitter_flutter/screens/profile/tweets_widget.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
-
 import '../../blocs/tweetsManagement/tweets_managment_bloc.dart';
 import '../../blocs/tweetsManagement/tweets_managment_states.dart';
 
@@ -244,29 +243,31 @@ class _HomePageState extends State<HomePage> {
                       return ListView.builder(
                           itemCount: 1,
                           itemBuilder: (listViewContext, index) {
-                            return tweet(
-                              userProfilePicture:
-                                  "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
-                              user_Name: "Johnny",
-                              screenHeight: screenHeight,
-                              screenWidth: screenWidth,
-                              imageCount: 0,
-                              CommentCount: 2,
-                              retweetCount: 4,
-                              likeCount: 7,
-                              tweet_Text: "Hello guys, How are you?",
-                              is_quoted: true,
-                              is_liked: true,
-                              is_retweeted: false,
-                              media: [
-                                MediaModel(
-                                    path:
-                                        "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
-                                    media: ".jpg",
-                                    message: "hello",
-                                    media_id: 23),
-                              ],
-                            );
+                            return Container();
+                            // return tweet(
+                            //
+                            //   // userProfilePicture:
+                            //   //     "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
+                            //   // user_Name: "Johnny",
+                            //   screenHeight: screenHeight,
+                            //   screenWidth: screenWidth,
+                            //   imageCount: 0,
+                            //   CommentCount: 2,
+                            //   retweetCount: 4,
+                            //   likeCount: 7,
+                            //   tweet_Text: "Hello guys, How are you?",
+                            //   is_quoted: true,
+                            //   is_liked: true,
+                            //   is_retweeted: false,
+                            //   media: [
+                            //     MediaModel(
+                            //         path:
+                            //             "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
+                            //         media: ".jpg",
+                            //         message: "hello",
+                            //         media_id: 23),
+                            //   ],
+                            // );
                           });
                     }
                   ),
