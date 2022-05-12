@@ -36,6 +36,24 @@ class TweetsManagementRepository {
     }
   }
 
+
+  Future<List<ReplyTweetModel>> getLoggedUserLikedTweets(
+      {required String access_token,
+        required String username,
+        int? count = 10}) async {
+    try {
+      String tweetData = await tweetsManagementRequests.getLoggedUserLikedTweets(
+          access_token: access_token, username: username, count: count);
+      return (jsonDecode(tweetData)["tweets"] as List)
+          .map((i) => ReplyTweetModel.fromJson(i))
+          .toList();
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
+
   Future<ReplyTweetModel> likeTweet(
       {required String access_token, required String tweet_id}) async {
     try {

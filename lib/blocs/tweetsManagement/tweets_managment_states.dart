@@ -34,6 +34,16 @@ class FailureLoadingUserProfileTweetsTab extends TweetsManagementStates {
   List<Object?> get props => [];
 }
 
+class SuccessLoadingUserProfileLikedTweetsTab extends TweetsManagementStates {
+  List<Object?> get props => [];
+}
+
+class FailureLoadingUserProfileLikedTweetsTab extends TweetsManagementStates {
+  String errorMessage;
+  FailureLoadingUserProfileLikedTweetsTab({required this.errorMessage});
+  List<Object?> get props => [];
+}
+
 class SuccessPostingTweet extends TweetsManagementStates {
   TweetModel tweet;
   String message;

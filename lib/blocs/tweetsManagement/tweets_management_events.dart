@@ -10,6 +10,14 @@ class UserProfileTweetsTabOpen extends TweetsManagementEvents {
   List<Object?> get props => [access_token, username];
 }
 
+class UserProfileLikedTweetsTabOpen extends TweetsManagementEvents {
+  String access_token;
+  String username;
+  UserProfileLikedTweetsTabOpen(
+      {required this.access_token, required this.username});
+  List<Object?> get props => [access_token, username];
+}
+
 class PostTweetButtonPressed extends TweetsManagementEvents {
   String access_token;
   String tweet_content;

@@ -142,6 +142,7 @@ class _TweetWidgetState extends State<TweetWidget> {
               print("like");
               tweetBloc.add(LikeButtonPressed(access_token: userBloc.access_token  , tweet_id: widget.tweetData.id, isLiked: widget.tweetData.is_liked));
             //}
+            userBloc.turn = 0;
             widget.tweetData.is_liked = !widget.tweetData.is_liked;
             widget.tweetData.likes_count = widget.tweetData.is_liked ? widget.tweetData.likes_count + 1 : widget.tweetData.likes_count - 1;
             return Future.value(widget.tweetData.is_liked);

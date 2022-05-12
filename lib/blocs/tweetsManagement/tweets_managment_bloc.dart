@@ -10,6 +10,7 @@ class TweetsManagementBloc
     extends Bloc<TweetsManagementEvents, TweetsManagementStates> {
   late TweetsManagementRepository tweetsManagementRepository;
   late List<TweetModel> LoggedUserTweetsWithoutReplies = [];
+  late List<ReplyTweetModel> LoggedUserLikedTweets = [];
   late List<TweetModel> homeTweets = [];
   TweetsManagementBloc({required this.tweetsManagementRepository})
       : super(TweetsIntialState()) {
@@ -18,6 +19,7 @@ class TweetsManagementBloc
     on<IntialHomePage>(_onIntialTweetFetching);
     on<OnRefresh>(_onTweetFetching);
     on<LikeButtonPressed>(_onLikeButtonPressed);
+    on<UserProfileLikedTweetsTabOpen>(_onUserProfileLikedTweetsTabOpen);
   }
   void _onIntialTweetFetching(
       IntialHomePage event, Emitter<TweetsManagementStates> emit) async {
@@ -63,6 +65,21 @@ class TweetsManagementBloc
       emit(SuccessLoadingUserProfileTweetsTab());
     } on Exception catch (e) {
       emit(FailureLoadingUserProfileTweetsTab(
+          errorMessage: e.toString().replaceAll("Exception: ", "")));
+    }
+  }
+
+  void _onUserProfileLikedTweetsTabOpen(UserProfileLikedTweetsTabOpen event,
+      Emitter<TweetsManagementStates> emit) async {
+    emit(TweetsLoadingState());
+    try {
+      var tweets = await tweetsManagementRepository.getLoggedUserLikedTweets(
+          access_token: event.access_token, username: event.username,count: 10);
+      LoggedUserLikedTweets.clear();
+      LoggedUserLikedTweets = tweets;
+      emit(SuccessLoadingUserProfileLikedTweetsTab());
+    } on Exception catch (e) {
+      emit(FailureLoadingUserProfileLikedTweetsTab(
           errorMessage: e.toString().replaceAll("Exception: ", "")));
     }
   }

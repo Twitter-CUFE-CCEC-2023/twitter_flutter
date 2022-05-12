@@ -23,12 +23,13 @@ class _TweetsState extends State<Tweets> {
     var userbloc = context.read<UserManagementBloc>();
     var tweetbloc = context.read<TweetsManagementBloc>();
 
-    if(tweetbloc.LoggedUserTweetsWithoutReplies.isEmpty || userbloc.state is LoginSuccessState){
+    //if(tweetbloc.LoggedUserTweetsWithoutReplies.isEmpty || userbloc.turn == 0){
+      //userbloc.turn+=1;
       tweetbloc.LoggedUserTweetsWithoutReplies.clear();
     tweetbloc.add(UserProfileTweetsTabOpen(
         username: userbloc.userdata.username,
         access_token: userbloc.access_token));
-    }
+    //}
 
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
       buildWhen: (previous, current) => previous != current,

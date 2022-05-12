@@ -12,6 +12,7 @@ class UserManagementBloc
     extends Bloc<UserManagementEvents, UserManagementStates> {
   late UserModel userdata;
   late String access_token;
+  late int turn = 0;
   UserManagementRepository userManagementRepository;
   UserManagementBloc({required this.userManagementRepository})
       : super(InitState()) {
@@ -171,6 +172,7 @@ class UserManagementBloc
       // pref.remove("access_token");
       // pref.remove("username");
       // pref.remove("token_expiration_date");
+      turn =0;
       var box = await Boxes.openUserBox();
       print("logout event");
       print(box.get("user")?.username);
