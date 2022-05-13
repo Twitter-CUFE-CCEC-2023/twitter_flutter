@@ -12,7 +12,7 @@ import '../models/objects/tweet.dart';
 
 class TweetWidget extends StatefulWidget {
   late ReplyTweetModel tweetData;
-   TweetWidget({Key? key,required this.tweetData}) : super(key: key);
+  TweetWidget({Key? key, required this.tweetData}) : super(key: key);
   @override
   State<TweetWidget> createState() => _TweetWidgetState();
 }
@@ -27,7 +27,8 @@ class _TweetWidgetState extends State<TweetWidget> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            tweetProfilePicture(widget.tweetData.user.profile_image_url, screenHeight),
+            tweetProfilePicture(
+                widget.tweetData.user.profile_image_url, screenHeight),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
@@ -45,14 +46,15 @@ class _TweetWidgetState extends State<TweetWidget> {
                             screenWidth: screenWidth,
                             screenHeight: screenHeight)),
                     tweetButtons(
-                        like_count: widget.tweetData.likes_count,
-                        commentCount: widget.tweetData.quotes_count,
-                        retweetCount: widget.tweetData.retweets_count,
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
-                        is_liked: widget.tweetData.is_liked,
-                        is_quoted: widget.tweetData.is_quoted,
-                        is_retweeted: widget.tweetData.is_retweeted,),
+                      like_count: widget.tweetData.likes_count,
+                      commentCount: widget.tweetData.quotes_count,
+                      retweetCount: widget.tweetData.retweets_count,
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth,
+                      is_liked: widget.tweetData.is_liked,
+                      is_quoted: widget.tweetData.is_quoted,
+                      is_retweeted: widget.tweetData.is_retweeted,
+                    ),
                   ],
                 ),
               ),
@@ -138,13 +140,18 @@ class _TweetWidgetState extends State<TweetWidget> {
             var userBloc = context.read<UserManagementBloc>();
             //print(tweetBloc.state);
             //if (tweetBloc.state is! ProcessingTweetLike){
-              //print(tweetBloc.state);
-              print("like");
-              tweetBloc.add(LikeButtonPressed(access_token: userBloc.access_token  , tweet_id: widget.tweetData.id, isLiked: widget.tweetData.is_liked));
+            //print(tweetBloc.state);
+            print("like");
+            tweetBloc.add(LikeButtonPressed(
+                access_token: userBloc.access_token,
+                tweet_id: widget.tweetData.id,
+                isLiked: widget.tweetData.is_liked));
             //}
             userBloc.turn = 0;
             widget.tweetData.is_liked = !widget.tweetData.is_liked;
-            widget.tweetData.likes_count = widget.tweetData.is_liked ? widget.tweetData.likes_count + 1 : widget.tweetData.likes_count - 1;
+            widget.tweetData.likes_count = widget.tweetData.is_liked
+                ? widget.tweetData.likes_count + 1
+                : widget.tweetData.likes_count - 1;
             return Future.value(widget.tweetData.is_liked);
           },
           likeCount: like_count,
@@ -291,127 +298,6 @@ class _TweetWidgetState extends State<TweetWidget> {
     }
   }
 
-  Widget tweetImage(int count,
-      {required double screenWidth,
-        required double screenHeight,
-        String? imageOne,
-        String? imageTwo,
-        String? imageThree,
-        String? imageFour}) {
-    if (count == 0) {
-      return Container();
-    } else if (count == 1) {
-      return oneImage(
-          imageOne ?? "",
-          0.01536 * screenHeight,
-          0.01536 * screenHeight,
-          0.01536 * screenHeight,
-          0.01536 * screenHeight); // 12,12,12,12
-    } else if (count == 2) {
-      return Container(
-        width: 1.019 * screenWidth, //400
-        height: 0.205 * screenHeight, //160
-        child: Row(
-          children: <Widget>[
-            oneImage(imageOne ?? "", 0.01536 * screenHeight, 0,
-                0.01536 * screenHeight, 0,
-                imageWidth: 0.356 * screenWidth,
-                imageHeight: 0.205 * screenHeight), // 140  160
-            const SizedBox(
-              width: 3,
-            ),
-            oneImage(imageTwo ?? "", 0, 0.01536 * screenHeight, 0,
-                0.01536 * screenHeight,
-                imageWidth: 0.356 * screenWidth,
-                imageHeight: 0.205 * screenHeight), // 140 160
-          ],
-        ),
-      );
-    } else if (count == 3) {
-      return Container(
-        width: 1.019 * screenWidth, //400
-        height: 0.205 * screenHeight, //160
-        child: Row(
-          children: <Widget>[
-            oneImage(imageOne ?? "", 0.01536 * screenHeight, 0,
-                0.01536 * screenHeight, 0,
-                imageWidth: 0.382 * screenWidth,
-                imageHeight: 0.205 * screenHeight), //150 160
-            const SizedBox(
-              width: 3,
-            ),
-            Container(
-              width: 0.326 * screenWidth, //128
-              height: 0.205 * screenHeight, //160
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  oneImage(imageTwo ?? "", 0, 0.01536 * screenHeight, 0, 0,
-                      imageWidth: 0.326 * screenWidth,
-                      imageHeight: 0.0999 * screenHeight), //128 78
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  oneImage(imageThree ?? "", 0, 0, 0, 0.01536 * screenHeight,
-                      imageWidth: 0.326 * screenWidth,
-                      imageHeight: 0.0999 * screenHeight), // 128 78
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container(
-        width: 1.019 * screenWidth,
-        height: 0.205 * screenHeight,
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: 0.356 * screenWidth,
-              height: 0.205 * screenHeight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  oneImage(imageOne ?? "", 0.01536 * screenHeight, 0, 0, 0,
-                      imageWidth: 0.356 * screenWidth,
-                      imageHeight: 0.0999 * screenHeight),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  oneImage(imageTwo ?? "", 0, 0, 0.01536 * screenHeight, 0,
-                      imageWidth: 0.356 * screenWidth,
-                      imageHeight: 0.0999 * screenHeight),
-                ],
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Container(
-              width: 0.356 * screenWidth,
-              height: 0.205 * screenHeight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  oneImage(imageThree ?? "", 0, 0.01536 * screenHeight, 0, 0,
-                      imageWidth: 0.356 * screenWidth,
-                      imageHeight: 0.0999 * screenHeight),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  oneImage(imageFour ?? "", 0, 0, 0, 0.01536 * screenHeight,
-                      imageWidth: 0.356 * screenWidth,
-                      imageHeight: 0.0999 * screenHeight),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   Widget oneImage(String imageUrl, double topLeftClip, double topRightClip,
       double bottomLeftClip, double bottomRightClip,
       {double? imageWidth, double? imageHeight}) {
@@ -438,12 +324,12 @@ class _TweetWidgetState extends State<TweetWidget> {
       padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
       child: CircleAvatar(
         radius: 0.0358 * screenHeight, //20
-        backgroundImage: profilePicture.isEmpty? null : NetworkImage(
-          profilePicture,
-        ),
+        backgroundImage: profilePicture.isEmpty
+            ? null
+            : NetworkImage(
+                profilePicture,
+              ),
       ),
     );
   }
-
 }
-
