@@ -14,7 +14,7 @@ class TweetsManagementBloc
   late List<TweetModel> homeTweets = [];
   TweetsManagementBloc({required this.tweetsManagementRepository})
       : super(TweetsIntialState()) {
-    on<UserProfileTweetsTabOpen>(_onUserProfileTweetsTabOpen);
+    //on<UserProfileTweetsTabOpen>(_onUserProfileTweetsTabOpen);
     on<PostTweetButtonPressed>(_onPostTweetButtonPressed);
     on<IntialHomePage>(_onIntialTweetFetching);
     on<OnRefresh>(_onTweetFetching);
@@ -53,37 +53,48 @@ class TweetsManagementBloc
     }
   }
 
-  void _onUserProfileTweetsTabOpen(UserProfileTweetsTabOpen event,
-      Emitter<TweetsManagementStates> emit) async {
-    emit(TweetsLoadingState());
-    try {
-      var tweets = await tweetsManagementRepository.getLoggedUserTweets(
-          access_token: event.access_token, username: event.username);
-      LoggedUserTweetsWithoutReplies.clear();
-      LoggedUserTweetsWithoutReplies = tweets;
-      //print(tweets);
-      emit(SuccessLoadingUserProfileTweetsTab());
-    } on Exception catch (e) {
-      emit(FailureLoadingUserProfileTweetsTab(
-          errorMessage: e.toString().replaceAll("Exception: ", "")));
-    }
-  }
+  // void _onUserProfileTweetsTabOpen(UserProfileTweetsTabOpen event,
+  //     Emitter<TweetsManagementStates> emit) async {
+  //   emit(TweetsLoadingState());
+  //   try {
+  //     var tweets = await tweetsManagementRepository.getLoggedUserTweets(
+  //         access_token: event.access_token, username: event.username);
+  //     LoggedUserTweetsWithoutReplies.clear();
+  //     LoggedUserTweetsWithoutReplies = tweets;
+  //     //print(tweets);
+  //     emit(SuccessLoadingUserProfileTweetsTab());
+  //   } on Exception catch (e) {
+  //     if (e.toString().contains("Undefined")) {
+  //       emit(SuccessLoadingUserProfileLikedTweetsTab());
+  //       print("printing cached data on error response --t");
+  //     } else {
+  //       emit(FailureLoadingUserProfileTweetsTab(
+  //           errorMessage: e.toString().replaceAll("Exception: ", "")));
+  //     }
+  //   }
+  // }
 
   void _onUserProfileLikedTweetsTabOpen(UserProfileLikedTweetsTabOpen event,
       Emitter<TweetsManagementStates> emit) async {
     emit(TweetsLoadingState());
     try {
       var tweets = await tweetsManagementRepository.getLoggedUserLikedTweets(
-          access_token: event.access_token, username: event.username,count: 10);
+          access_token: event.access_token,
+          username: event.username,
+          count: 10);
       LoggedUserLikedTweets.clear();
       LoggedUserLikedTweets = tweets;
       emit(SuccessLoadingUserProfileLikedTweetsTab());
     } on Exception catch (e) {
-      emit(FailureLoadingUserProfileLikedTweetsTab(
-          errorMessage: e.toString().replaceAll("Exception: ", "")));
+      if (e.toString().contains("Undefined")) {
+        emit(SuccessLoadingUserProfileLikedTweetsTab());
+        print("printing cached data on error response --lt");
+      } else {
+        emit(FailureLoadingUserProfileLikedTweetsTab(
+            errorMessage: e.toString().replaceAll("Exception: ", "")));
+      }
     }
   }
-
   void _onPostTweetButtonPressed(PostTweetButtonPressed event,
       Emitter<TweetsManagementStates> emit) async {
     emit(TweetsLoadingState());

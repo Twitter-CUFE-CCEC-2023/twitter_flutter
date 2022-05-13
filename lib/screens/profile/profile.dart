@@ -17,7 +17,7 @@ import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import '../utility_screens/opened_image.dart';
 
-class UserProfile extends StatefulWidget {
+class UserProfile extends StatefulWidget  {
   const UserProfile({Key? key}) : super(key: key);
   static const route = "/userProfile";
 
