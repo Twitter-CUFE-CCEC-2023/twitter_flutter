@@ -13,7 +13,7 @@ class TweetsLoadingState extends TweetsManagementStates {
 }
 
 class TweetsFetchingSuccess extends TweetsManagementStates {
-  List<TweetModel> tweets;
+  List<ReplyTweetModel> tweets;
   TweetsFetchingSuccess({required this.tweets});
   List<Object?> get props => [];
 }
@@ -66,8 +66,6 @@ class TweetLikeSuccess extends TweetsManagementStates {
   @override
   List<Object?> get props => [];
 }
-
-
 
 class TweetLikeFailure extends TweetsManagementStates {
   @override

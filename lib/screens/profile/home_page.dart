@@ -7,6 +7,7 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/mediaModel.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
@@ -14,6 +15,7 @@ import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
+import 'package:twitter_flutter/widgets/tweet.dart';
 import '../../blocs/tweetsManagement/tweets_managment_bloc.dart';
 import '../../blocs/tweetsManagement/tweets_managment_states.dart';
 
@@ -147,18 +149,13 @@ class _HomePageState extends State<HomePage> {
 
       //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
-    print(bloc.access_token);
     var timeLineBloc = context.read<TweetsManagementBloc>();
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
-
-    // timeLineBloc
-    //     .add(IntialHomePage(access_token: bloc.access_token, count: 10));
-
-
-
+    late List<TweetWidget> tweets = [];
+    timeLineBloc.add(IntialHomePage(access_token: bloc.access_token, count: 5));
 
     return Container(
         color: Colors.white,
@@ -203,8 +200,10 @@ class _HomePageState extends State<HomePage> {
               }),
               child: RefreshIndicator(
                 onRefresh: () {
-                  print("refreshing");
-                  return Future.delayed(const Duration(seconds: 0));
+                  timeLineBloc.add(
+                      OnRefresh(access_token: bloc.access_token, count: 5));
+                  print(timeLineBloc.newTweets);
+                  return Future.delayed(const Duration(seconds: 1));
                 },
                 child:
                     BlocListener<TweetsManagementBloc, TweetsManagementStates>(
@@ -221,56 +220,34 @@ class _HomePageState extends State<HomePage> {
                       ));
                     }
                   },
-                  child: BlocConsumer<TweetsManagementBloc,TweetsManagementStates>(
-                    listener: (context, state) {
-                      if (state is TweetsFetchingFailed) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.errorMessage),
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context,state) {
-                      if(state is TweetsLoadingState){ //TODO: add loading state Specific to home page timeLine
-                        return Container(
-                          color: Colors.white,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      return ListView.builder(
-                          itemCount: 1,
-                          itemBuilder: (listViewContext, index) {
-                            return Container();
-                            // return tweet(
-                            //
-                            //   // userProfilePicture:
-                            //   //     "https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2017/03/28/Local-Politics/Images/Supreme_Court_Gorsuch_Moments_22084-70c71-0668.jpg?t=20170517",
-                            //   // user_Name: "Johnny",
-                            //   screenHeight: screenHeight,
-                            //   screenWidth: screenWidth,
-                            //   imageCount: 0,
-                            //   CommentCount: 2,
-                            //   retweetCount: 4,
-                            //   likeCount: 7,
-                            //   tweet_Text: "Hello guys, How are you?",
-                            //   is_quoted: true,
-                            //   is_liked: true,
-                            //   is_retweeted: false,
-                            //   media: [
-                            //     MediaModel(
-                            //         path:
-                            //             "https://m.media-amazon.com/images/I/81xPLSOkvJL._SS500_.jpg",
-                            //         media: ".jpg",
-                            //         message: "hello",
-                            //         media_id: 23),
-                            //   ],
-                            // );
-                          });
+                  child: BlocConsumer<TweetsManagementBloc,
+                      TweetsManagementStates>(listener: (context, state) {
+                    if (state is TweetsFetchingFailed) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.errorMessage),
+                        ),
+                      );
                     }
-                  ),
+                  }, builder: (context, state) {
+                    if (state is TweetsLoadingState) {
+                      //TODO: add loading state Specific to home page timeLine
+                      return Container(
+                        color: Colors.white,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+
+                    if (state is TweetsFetchingSuccess) {
+                      for (var tweet in timeLineBloc.newTweets) {
+                        tweets.add(TweetWidget(tweetData: tweet));
+                      }
+                    }
+
+                    return ListView(children: tweets);
+                  }),
                 ),
               ),
             ),

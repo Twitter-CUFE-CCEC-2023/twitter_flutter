@@ -5,13 +5,15 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
+import 'package:twitter_flutter/screens/profile/profile_page_tabs/tweets.dart';
 
 class TweetsManagementBloc
     extends Bloc<TweetsManagementEvents, TweetsManagementStates> {
   late TweetsManagementRepository tweetsManagementRepository;
   late List<TweetModel> LoggedUserTweetsWithoutReplies = [];
   late List<ReplyTweetModel> LoggedUserLikedTweets = [];
-  late List<TweetModel> homeTweets = [];
+  late List<ReplyTweetModel> homeTweets = [];
+  late List<ReplyTweetModel> newTweets = [];
   TweetsManagementBloc({required this.tweetsManagementRepository})
       : super(TweetsIntialState()) {
     //on<UserProfileTweetsTabOpen>(_onUserProfileTweetsTabOpen);
@@ -27,8 +29,9 @@ class TweetsManagementBloc
     try {
       var tweets = await tweetsManagementRepository.fetchTweets(
           access_token: event.access_token, count: event.count);
+      newTweets = tweets;
+
       for (var tweet in tweets) {
-        //print(tweet);
         homeTweets.add(tweet);
       }
       emit(TweetsFetchingSuccess(tweets: tweets));
@@ -43,6 +46,7 @@ class TweetsManagementBloc
     try {
       var tweets = await tweetsManagementRepository.fetchTweets(
           access_token: event.access_token, count: event.count);
+      newTweets = tweets;
       for (var tweet in tweets) {
         homeTweets.add(tweet);
       }
@@ -113,7 +117,7 @@ class TweetsManagementBloc
   void _onLikeButtonPressed(
       LikeButtonPressed event, Emitter<TweetsManagementStates> emit) async {
     try {
-       //emit(ProcessingTweetLike());
+      //emit(ProcessingTweetLike());
       if (!event.isLiked) {
         var tweet = await tweetsManagementRepository.likeTweet(
             access_token: event.access_token, tweet_id: event.tweet_id);
