@@ -82,7 +82,7 @@ class _YourAccountState extends State<YourAccount> {
                 ),
               ),
               //TODO: Add account infromation root to the function call
-              buildItem(Icons.person_outlined, "Account Infromation", context,
+              buildItem(Icons.person_outlined, "Account Infromation", context,route: '/Account',
                   Text2:
                       "see infomation about your account, download an archive of your data or learn about your account deactivation options."),
               buildItem(Icons.https_outlined, "Change your password", context,

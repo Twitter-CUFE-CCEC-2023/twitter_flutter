@@ -7,6 +7,9 @@ import 'package:twitter_flutter/blocs/EditProfileStates/editprofile_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/user_management_repository.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password2.dart';
+import 'package:twitter_flutter/screens/profile/followers.dart';
+import 'package:twitter_flutter/screens/profile/following.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/utils/Web%20Services/user_management_requests.dart';
 import 'package:twitter_flutter/utils/Web%20Services/edit_profile/edit_profile_request.dart';
@@ -27,6 +30,19 @@ import 'package:twitter_flutter/screens/profile_management/change_password.dart'
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/repositories/profile_management/profile_repository.dart';
+import 'package:twitter_flutter/screens/profile_management/account_information.dart';
+import 'package:twitter_flutter/screens/profile_management/pre_user_name.dart';
+import 'package:twitter_flutter/screens/profile_management/change_email.dart';
+import 'package:twitter_flutter/screens/profile_management/change_phone.dart';
+import 'package:twitter_flutter/screens/profile_management/change_country.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password1.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password2.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password3.dart';
+import 'package:twitter_flutter/screens/profile/followers.dart';
+import 'package:twitter_flutter/screens/profile_management/change_country2.dart';
+import 'package:twitter_flutter/screens/profile_management/verify_password.dart';
+import 'package:twitter_flutter/screens/profile_management/verify_password2.dart';
+
 
 void main() {
   // To set the status bar to be transparent and text in status bar to be dark
@@ -81,6 +97,12 @@ class _TwitterState extends State<Twitter> {
 
           LoginPassword.route: (context) => const LoginPassword(),
 
+          ForgetPassword.route: (context) => const ForgetPassword(),
+
+          ForgetPassword2.route: (context) => const ForgetPassword2(),
+
+          ForgetPassword3.route: (context) => const ForgetPassword3(),
+
           HomePage.route: (context) => const HomePage(),
 
           CreateAccount1.route: (context) => const CreateAccount1(),
@@ -95,9 +117,29 @@ class _TwitterState extends State<Twitter> {
 
           Settings.route: (context) => const Settings(),
 
+          Account.route: (context) => const Account(),
+
+          PreUsername.route: (context) => const PreUsername(),
+
+          ChangeEmail.route: (context) => const ChangeEmail(),
+
+          VerifyPassword.route: (context) => const VerifyPassword(),
+
+          VerifyPassword2.route: (context) => const VerifyPassword2(),
+
+          ChangePhone.route: (context) => const ChangePhone(),
+
+          ChangeCountry.route: (context) => const ChangeCountry(),
+
+          ChangeCountry2.route: (context) => const ChangeCountry2(),
+
           TermsOfService.route: (context) => const TermsOfService(),
 
           UserProfile.route: (context) => const UserProfile(),
+
+          Following.route: (context) => const Following(),
+
+          Followers.route: (context) => const Followers(),
 
           PreEditProfile.route: (context) => const PreEditProfile(),
 
