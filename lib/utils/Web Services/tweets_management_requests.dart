@@ -51,7 +51,7 @@ class TweetsManagementRequests {
     } else if (statusCode == 500) {
       throw Exception("Server Error");
     } else {
-      throw Exception("Undefined Error");
+      throw Exception("${res.statusCode} ${res.body} Undefined Error from lt");
     }
   }
 
@@ -108,7 +108,7 @@ class TweetsManagementRequests {
     } else if (statusCode == 500) {
       throw Exception("Server Error");
     } else {
-      throw Exception("Undefined Error");
+      throw Exception("${res.statusCode} ${res.body} Undefined Error from like a tweet");
     }
   }
 
