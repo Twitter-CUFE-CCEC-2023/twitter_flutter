@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:like_button/like_button.dart';
@@ -22,50 +24,57 @@ class _TweetWidgetState extends State<TweetWidget> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            tweetProfilePicture(
-                widget.tweetData.user.profile_image_url, screenHeight),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    userName(widget.tweetData.user.username, screenHeight),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 13, 0),
-                      child: tweetText(widget.tweetData.content, screenHeight),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
-                        child: tweetMedia(widget.tweetData.media,
-                            screenWidth: screenWidth,
-                            screenHeight: screenHeight)),
-                    tweetButtons(
-                      like_count: widget.tweetData.likes_count,
-                      commentCount: widget.tweetData.quotes_count,
-                      retweetCount: widget.tweetData.retweets_count,
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth,
-                      is_liked: widget.tweetData.is_liked,
-                      is_quoted: widget.tweetData.is_quoted,
-                      is_retweeted: widget.tweetData.is_retweeted,
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, "/TapTweet",
+          arguments: widget.tweetData),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              GestureDetector(
+                child: tweetProfilePicture(
+                    widget.tweetData.user.profile_image_url, screenHeight),
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      userName(widget.tweetData.user.username, screenHeight),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 13, 0),
+                        child:
+                            tweetText(widget.tweetData.content, screenHeight),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
+                          child: tweetMedia(widget.tweetData.media,
+                              screenWidth: screenWidth,
+                              screenHeight: screenHeight)),
+                      tweetButtons(
+                        like_count: widget.tweetData.likes_count,
+                        commentCount: widget.tweetData.quotes_count,
+                        retweetCount: widget.tweetData.retweets_count,
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        is_liked: widget.tweetData.is_liked,
+                        is_quoted: widget.tweetData.is_quoted,
+                        is_retweeted: widget.tweetData.is_retweeted,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const Divider(
-          color: Colors.black26,
-          thickness: 0.8,
-        ),
-      ],
+            ],
+          ),
+          const Divider(
+            color: Colors.black26,
+            thickness: 0.8,
+          ),
+        ],
+      ),
     );
   }
 

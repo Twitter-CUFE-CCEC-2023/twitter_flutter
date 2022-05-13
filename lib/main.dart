@@ -82,7 +82,7 @@ class _TwitterState extends State<Twitter> {
         debugShowCheckedModeBanner: false,
         theme: generalTheme,
         useInheritedMediaQuery: true,
-        initialRoute: '/TapTweet',
+        initialRoute: '/',
         routes: {
           // When navigating to the starting page
           StartingPage.route: (context) => const StartingPage(),

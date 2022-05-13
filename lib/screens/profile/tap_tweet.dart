@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
 
 class TapTweet extends StatefulWidget {
   const TapTweet({Key? key}) : super(key: key);
@@ -8,10 +9,10 @@ class TapTweet extends StatefulWidget {
 }
 
 class _TapTweetState extends State<TapTweet> {
-  final usertest tweetData = usertest();
-
+  late ReplyTweetModel tweetData;
   @override
   Widget build(BuildContext context) {
+    tweetData = ModalRoute.of(context)?.settings.arguments as ReplyTweetModel;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -33,12 +34,13 @@ class _TapTweetState extends State<TapTweet> {
                     padding: const EdgeInsets.only(left: 10, right: 20),
                     child: tweetText(tweetData.content, screenHeight),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    child: tweetMedia(tweetData.media,
-                        screenWidth: screenWidth, screenHeight: screenHeight),
-                  ),
+                  // TODO: REMOVE HARDCODED
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //       vertical: 10, horizontal: 10),
+                  //   child: tweetMedia(tweetData.media,
+                  //       screenWidth: screenWidth, screenHeight: screenHeight),
+                  // ),
                 ]),
           ),
         ),
@@ -48,15 +50,15 @@ class _TapTweetState extends State<TapTweet> {
 
   Widget tweetbar(double screenHeight) {
     return ListTile(
-      leading: tweetProfilePicture(tweetData.profile_image_url, screenHeight),
+      leading: tweetProfilePicture(tweetData.user.profile_image_url, screenHeight),
       title: Text(
-        tweetData.name,
+        tweetData.user.name,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: Text(
-        "@" + tweetData.username,
+        "@" + tweetData.user.username,
         style: const TextStyle(
           color: Color.fromARGB(255, 85, 76, 76),
           fontSize: 15,
@@ -225,16 +227,16 @@ class _TapTweetState extends State<TapTweet> {
         return Progress == null
             ? child
             : const Center(
-              heightFactor: 1,
-              widthFactor: 1,
-              child: SizedBox(
-                width: 30,
-                height: 30,
-                child: CircularProgressIndicator(
-                  strokeWidth: 5,
+                heightFactor: 1,
+                widthFactor: 1,
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 5,
+                  ),
                 ),
-              ),
-            );
+              );
       }),
       fit: BoxFit.cover,
     );
