@@ -129,6 +129,7 @@ class _TwitterState extends State<Twitter> {
     internetCubit.close();
     userManagementBloc.close();
     tweetsManagementBloc.close();
+    tweetsTabCubit.close();
     super.dispose();
   }
 }
