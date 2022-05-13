@@ -30,6 +30,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'models/hive models/logged_user.dart';
+import 'package:twitter_flutter/screens/profile/tap_tweet.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,7 +82,7 @@ class _TwitterState extends State<Twitter> {
         debugShowCheckedModeBanner: false,
         theme: generalTheme,
         useInheritedMediaQuery: true,
-        initialRoute: '/',
+        initialRoute: '/TapTweet',
         routes: {
           // When navigating to the starting page
           StartingPage.route: (context) => const StartingPage(),
@@ -115,6 +116,8 @@ class _TwitterState extends State<Twitter> {
           VerificationCode.route: (context) => const VerificationCode(),
 
           PostTweet.route : (context) => const PostTweet(),
+
+          TapTweet.route : (context) => const TapTweet(),
         },
       ),
     );
