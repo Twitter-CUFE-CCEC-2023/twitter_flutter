@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class TweetsManagementRequests {
-
   Future<String> getLoggedUserTweets(
       {required String access_token,
       required String username,
@@ -28,11 +27,10 @@ class TweetsManagementRequests {
     }
   }
 
-
   Future<String> getLoggedUserLikedTweets(
       {required String access_token,
-        required String username,
-        int? count = 100}) async {
+      required String username,
+      int? count = 100}) async {
     var headers = {'Authorization': 'Bearer $access_token'};
 
     http.Response res = await http.get(
@@ -55,18 +53,19 @@ class TweetsManagementRequests {
   }
 
   Future<String> fetchTweets(
-      {required String access_token, required int count}) async {
+      {required String access_token,
+      required int count,
+      required int page}) async {
     var headers = {
       'Authorization': 'Bearer $access_token',
       'Content-Type': 'application/json'
     };
 
-    http.Response res = await http.get(Uri.parse("$ENDPOINT/home?count=$count"),
+    http.Response res = await http.get(Uri.parse("$ENDPOINT/home/$page/$count"),
         headers: headers);
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {
-      //print(res.body);
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
@@ -107,7 +106,8 @@ class TweetsManagementRequests {
     } else if (statusCode == 500) {
       throw Exception("Server Error");
     } else {
-      throw Exception("${res.statusCode} ${res.body} Undefined Error from like a tweet");
+      throw Exception(
+          "${res.statusCode} ${res.body} Undefined Error from like a tweet");
     }
   }
 
@@ -174,7 +174,4 @@ class TweetsManagementRequests {
       throw Exception("Undefined Error");
     }
   }
-
-
-
 }

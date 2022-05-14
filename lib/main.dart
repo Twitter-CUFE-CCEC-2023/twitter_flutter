@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweet_cubit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/repositories/user_management_repository.dart';
@@ -77,6 +78,7 @@ class _TwitterState extends State<Twitter> {
           tweetsManagementRequests: TweetsManagementRequests()));
   final TweetsTabCubit tweetsTabCubit = TweetsTabCubit();
   final LikedTweetsTabCubit likedTweetsTabCubit = LikedTweetsTabCubit();
+  final tweetCubit tweet_Cubit = tweetCubit();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -86,6 +88,7 @@ class _TwitterState extends State<Twitter> {
         BlocProvider.value(value: tweetsManagementBloc),
         BlocProvider.value(value: tweetsTabCubit),
         BlocProvider.value(value: likedTweetsTabCubit),
+        BlocProvider.value(value: tweet_Cubit),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -124,7 +127,7 @@ class _TwitterState extends State<Twitter> {
 
           VerificationCode.route: (context) => const VerificationCode(),
 
-          PostTweet.route : (context) => const PostTweet(),
+          PostTweet.route: (context) => const PostTweet(),
 
           TapTweet.route : (context) => const TapTweet(),
 
@@ -141,6 +144,7 @@ class _TwitterState extends State<Twitter> {
     tweetsManagementBloc.close();
     tweetsTabCubit.close();
     likedTweetsTabCubit.close();
+    tweet_Cubit.close();
     super.dispose();
   }
 }
