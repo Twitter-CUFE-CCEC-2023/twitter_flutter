@@ -4,11 +4,12 @@ import 'package:like_button/like_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
-import 'package:twitter_flutter/models/objects/user.dart';
-import '../../models/objects/mediaModel.dart';
-import '../blocs/userManagement/user_management_bloc.dart';
-import '../models/objects/tweet.dart';
+import 'package:twitter_flutter/models/objects/mediaModel.dart';
+import 'package:twitter_flutter/blocs/profileTabs/tweets_tab_cubit.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
+import 'package:twitter_flutter/blocs/profileTabs/tab_states.dart';
+
 
 class TweetWidget extends StatefulWidget {
   late ReplyTweetModel tweetData;
@@ -136,6 +137,7 @@ class _TweetWidgetState extends State<TweetWidget> {
         ),
         LikeButton(
           onTap: (f) {
+            var tweetsTabCubit = context.read<TweetsTabCubit>();
             var tweetBloc = context.read<TweetsManagementBloc>();
             var userBloc = context.read<UserManagementBloc>();
               print("like");
@@ -144,6 +146,8 @@ class _TweetWidgetState extends State<TweetWidget> {
             widget.tweetData.likes_count = widget.tweetData.is_liked
                 ? widget.tweetData.likes_count + 1
                 : widget.tweetData.likes_count - 1;
+            tweetsTabCubit.updateTweet(
+            tweet_id: widget.tweetData.id, Action: "like");
             return Future.value(widget.tweetData.is_liked);
           },
           likeCount: like_count,

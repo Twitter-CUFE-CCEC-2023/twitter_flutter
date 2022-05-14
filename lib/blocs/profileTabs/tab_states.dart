@@ -22,3 +22,7 @@ class TabRefreshingState extends TabStates {
   @override
   List<Object?> get props => [];
 }
+class LocalUpadteState extends TabStates {
+  @override
+  List<Object?> get props => [];
+}
