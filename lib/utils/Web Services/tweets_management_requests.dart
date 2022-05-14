@@ -6,12 +6,14 @@ class TweetsManagementRequests {
   Future<String> getLoggedUserTweets(
       {required String access_token,
       required String username,
+      int count = 20,
+      int page = 1,
       bool replies = false}) async {
     var headers = {'Authorization': 'Bearer $access_token'};
 
     http.Response res = await http.get(
         Uri.parse(
-            "$ENDPOINT/status/tweets/list/$username/1/10?include_replies=$replies"),
+            "$ENDPOINT/status/tweets/list/$username/$page/$count?include_replies=$replies"),
         headers: headers);
     int statusCode = res.statusCode;
     if (statusCode == 200) {
@@ -31,7 +33,7 @@ class TweetsManagementRequests {
       {required String access_token,
       required String username,
       page = 1,
-      int? count = 10}) async {
+      int? count = 20}) async {
     var headers = {'Authorization': 'Bearer $access_token'};
 
     http.Response res = await http.get(
