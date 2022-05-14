@@ -35,8 +35,9 @@ class _LikesState extends State<Likes> {
         return Future.value(null);
       },
       child: BlocBuilder<LikedTweetsTabCubit, TabStates>(
-        buildWhen: (previous, current) => current is! TabRefreshingState,
+        buildWhen: (previous, current) => current is! TabRefreshingState || current is! TabLoadingState,
         builder: (context, state) {
+          print(state);
           if (state is TabinitState) {
             var user = widget.userdata;
             likedTweetTabCubit.onInit(
@@ -53,9 +54,12 @@ class _LikesState extends State<Likes> {
           } else if (state is TabLoadSuccessState ||
               state is LocalUpadteState) {
             if (likedTweetTabCubit.username != widget.userdata.username) {
+              print(likedTweetTabCubit.username);
+              print(widget.userdata.username);
               likedTweetTabCubit.onNewUser(
                   access_token: userbloc.access_token,
                   username: widget.userdata.username);
+              print("username should be equal here");
               return Center(
                 child: CircularProgressIndicator(),
               );

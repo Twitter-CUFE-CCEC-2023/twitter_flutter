@@ -41,7 +41,7 @@ class TweetsManagementRepository {
   Future<List<ReplyTweetModel>> getLoggedUserLikedTweets(
       {required String access_token,
       required String username,
-      int? count = 100}) async {
+      int? count = 10}) async {
     try {
       String tweetData =
           await tweetsManagementRequests.getLoggedUserLikedTweets(

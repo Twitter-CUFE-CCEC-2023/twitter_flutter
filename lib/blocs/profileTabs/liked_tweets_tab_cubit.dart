@@ -16,8 +16,8 @@ class LikedTweetsTabCubit extends Cubit<TabStates> {
 
   void onInit({required access_token,required username}) async {
     try{
-      this.username = username;
       Tweets_List = await _repository.getLoggedUserLikedTweets(access_token: access_token, username: username);
+      this.username = username;
       Success(username);
     } on Exception{
       Error();

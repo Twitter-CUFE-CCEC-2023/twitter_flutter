@@ -24,6 +24,7 @@ class TweetsTabCubit extends Cubit<TabStates> {
   }
 
   void onNewUser({required access_token,required username}) async {
+    print(username);
     emit(TabLoadingState());
     try{
       Tweets_List = await _repository.getLoggedUserTweets(access_token: access_token, username: username);

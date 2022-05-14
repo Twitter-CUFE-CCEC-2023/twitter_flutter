@@ -40,6 +40,8 @@ class _VisitedUserProfileState extends State<VisitedUserProfile> {
   Widget build(BuildContext context) {
     var userBloc = context.watch<UserManagementBloc>();
 
+    print("VisitedUserProfile build");
+
     if (userBloc.state is LoginSuccessState ||
         userBloc.state is VerificationSuccessState) {
       userData = ModalRoute.of(context)?.settings.arguments as UserModel;

@@ -30,12 +30,12 @@ class TweetsManagementRequests {
   Future<String> getLoggedUserLikedTweets(
       {required String access_token,
       required String username,
-      int? count = 100}) async {
+      page = 1,
+      int? count = 10}) async {
     var headers = {'Authorization': 'Bearer $access_token'};
 
     http.Response res = await http.get(
-        Uri.parse(
-            "$ENDPOINT/liked/list/$username/1/10"),
+        Uri.parse("$ENDPOINT/liked/list/$username/$page/$count"),
         headers: headers);
     int statusCode = res.statusCode;
     if (statusCode == 200) {

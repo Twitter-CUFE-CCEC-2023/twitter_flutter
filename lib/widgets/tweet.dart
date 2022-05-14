@@ -35,6 +35,8 @@ class _TweetWidgetState extends State<TweetWidget> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  if(ModalRoute.of(context)!.settings.name == "/userProfile" || ModalRoute.of(context)!.settings.name == "/VisitedUserProfile")
+                    return;
                   if(widget.tweetData.user.id == context.read<UserManagementBloc>().userdata.id) {
                     Navigator.pushNamed(context, "/userProfile");
                   } else {
