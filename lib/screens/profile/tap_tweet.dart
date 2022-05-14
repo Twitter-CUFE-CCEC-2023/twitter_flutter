@@ -514,15 +514,13 @@ class DetailScreen extends StatelessWidget {
           },
         ),
       ),
-      body: GestureDetector(
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 45),
         child: Center(
           child: Image.network(
             imageUrl.toString(),
           ),
         ),
-        // onTap: () {
-        //   Navigator.pop(context);
-        // },
       ),
     );
   }
