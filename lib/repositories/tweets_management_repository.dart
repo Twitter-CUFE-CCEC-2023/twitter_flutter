@@ -43,7 +43,6 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.getLoggedUserLikedTweets(
           access_token: access_token, username: username, count: count);
-
       return (jsonDecode(tweetData)["tweets"] as List)
           .map((i) => ReplyTweetModel.fromJson(i))
           .toList();
@@ -57,7 +56,6 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.likeTweet(
           access_token: access_token, tweet_id: tweet_id);
-      //print(tweetData);
       return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);
@@ -71,7 +69,6 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.postTweet(
           access_token: access_token, content: content, mediaIds: mediaIds);
-      //print(tweetData);
       return TweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);

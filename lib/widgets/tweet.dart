@@ -34,6 +34,14 @@ class _TweetWidgetState extends State<TweetWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
+                onTap: () {
+                  if(widget.tweetData.user.id == context.read<UserManagementBloc>().userdata.id) {
+                    Navigator.pushNamed(context, "/userProfile");
+                  } else {
+                    Navigator.pushNamed(context, "/VisitedUserProfile",
+                        arguments: widget.tweetData.user);
+                  }
+                },
                 child: tweetProfilePicture(
                     widget.tweetData.user.profile_image_url, screenHeight),
               ),
@@ -156,7 +164,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                 ? widget.tweetData.likes_count + 1
                 : widget.tweetData.likes_count - 1;
             tweetsTabCubit.updateTweet(
-            tweet_id: widget.tweetData.id, Action: "like");
+            tweet_id: widget.tweetData.id, Action: "like",username: widget.tweetData.user.username);
             return Future.value(widget.tweetData.is_liked);
           },
           likeCount: like_count,
