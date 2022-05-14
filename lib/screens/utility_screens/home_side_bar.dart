@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 
 import '../../blocs/userManagement/user_management_bloc.dart';
@@ -72,9 +73,12 @@ class HomeSideBar extends StatelessWidget {
           style: const TextStyle(
               fontSize: 18, color: Color.fromARGB(255, 125, 119, 119))),
       onTap: () {
-        //Update Login Bloc to add LogOut State
-        Navigator.pushNamedAndRemoveUntil(
-            context, "/", (Route<dynamic> route) => false);
+        var bloc = context.read<UserManagementBloc>();
+        bloc.add(LogoutButtonPressed());
+        if(bloc.state is LogoutSuccessState) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, StartingPage.route, (route) => false);
+        }
       },
     );
   }

@@ -87,7 +87,9 @@ class _CreateAccount4State extends State<CreateAccount4> {
             {
               return Container(
                 color: Colors.lightBlue,
-                child: SpinKitFadingCircle(
+                child: SpinKitRing(
+                  lineWidth: 6.0,
+                  size: 70.0,
                   color: Colors.white,
                 ),
               );

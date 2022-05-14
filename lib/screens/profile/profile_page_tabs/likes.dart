@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import '../tweets_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/blocs/profileTabs/tab_states.dart';
+import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
+import 'package:twitter_flutter/widgets/tweet.dart';
 
 class Likes extends StatefulWidget {
   const Likes({Key? key}) : super(key: key);
@@ -9,34 +14,64 @@ class Likes extends StatefulWidget {
 }
 
 class _LikesState extends State<Likes> {
+  List<Widget> tweetsList = [];
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    return Container(
-        child: ListView(
-      children: [
-        tweet(
-            userProfilePicture:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQmyyuPaZzRHAIpnCtIWLhyIoghmcPu3dZxQ&usqp=CAU",
-            user_Name: "Activation",
-            screenHeight: screenHeight,
-            screenWidth: screenWidth,
-            imageCount: 4,
-            CommentCount: 20,
-            retweetCount: 40,
-            likeCount: 200,
-            tweet_Text:
-                "Check out the newest mapes in the game (new enemies added, new characters, and new guns)",
-            imageOne:
-                "https://cdn.vox-cdn.com/thumbor/v4CFyRhEvWB9Ct_YeP8tEH0i2xo=/0x0:1920x1080/1200x800/filters:focal(381x260:687x566)/cdn.vox-cdn.com/uploads/chorus_image/image/68764501/FirebaseZ2.0.jpg",
-            imageTwo:
-                "https://imageio.forbes.com/specials-images/imageserve/60e7537510a61c82e917781b/BOCW-Zombies-Story-So-Far-TOUT/960x0.jpg?fit=bounds&format=jpg&width=960",
-            imageThree:
-                "https://gamingintel.com/wp-content/uploads/2020/11/Black-Ops-Cold-War-New-Map-Vietnam-Zombies.jpg",
-            imageFour:
-                "https://charlieintel.com/wp-content/uploads/2021/06/mauer-der-toten-1.jpg"),
-      ],
-    ));
+    var userbloc = context.read<UserManagementBloc>();
+    var likedTweetsTabCubit = context.watch<LikedTweetsTabCubit>();
+    return RefreshIndicator(
+      onRefresh: ()  async {
+        var tempTweets = await likedTweetsTabCubit.Refresh(
+            access_token: userbloc.access_token,
+            username: userbloc.userdata.username);
+        likedTweetsTabCubit.Tweets_List.clear();
+        tweetsList.clear();
+        likedTweetsTabCubit.Tweets_List = tempTweets;
+        likedTweetsTabCubit.emit(TabLoadSuccessState());
+        return Future.value(null);
+      },
+      child: BlocBuilder<LikedTweetsTabCubit, TabStates>(
+        buildWhen: (previous, current) => current is! TabRefreshingState,
+        builder: (context, state) {
+          print(state);
+          if (state is TabinitState) {
+            var user = userbloc.userdata;
+            likedTweetsTabCubit.onInit(
+                access_token: userbloc.access_token, username: user.username);
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is TabLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is TabLoadSuccessState || state is LocalUpadteState) {
+            tweetsList.clear();
+            for (ReplyTweetModel currentTweet in likedTweetsTabCubit.Tweets_List) {
+              tweetsList.add(TweetWidget(
+                tweetData: currentTweet,
+              ));
+            }
+            return ListView(
+              children: tweetsList,
+            );
+          } else if (state is TabLoadFailureState) {
+            likedTweetsTabCubit.onInit(
+                access_token: userbloc.access_token,
+                username: userbloc.userdata.username);
+            return Stack(
+                children: [Center(
+                  child: CircularProgressIndicator(),
+                ),
+                  Center(
+                    child: Text('Failed to load tweets'),
+                  ),
+                ]
+            );
+          }
+          return Container();
+        },
+      ),
+    );
   }
 }

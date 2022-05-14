@@ -7,10 +7,10 @@ class UserManagementRequests {
   Future<String> login({username, password}) async {
     var headers = {'Content-Type': 'application/json'};
 
-    var body = jsonEncode(<String,dynamic>{
+    var body = jsonEncode(<String, dynamic>{
       "email_or_username": username,
       "password": password,
-      "remember_me" : true
+      "remember_me": true
     });
 
     http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/login"),
@@ -46,8 +46,6 @@ class UserManagementRequests {
     http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/signup"),
         body: body, headers: headers);
 
-    print(res.body);
-
     int statusCode = res.statusCode;
     if (statusCode == 200) {
       return res.body;
@@ -62,19 +60,23 @@ class UserManagementRequests {
     }
   }
 
-  Future<String> Verification({id,verification_code}) async {
+  Future<String> Verification({required email_or_username, required verificationCode}) async {
     var headers = {'Content-Type': 'application/json'};
 
-    var body = jsonEncode(<String, String?>{
-      "id": id ,
-      "verification_code": verification_code
+    var body = jsonEncode(<String, dynamic>{
+      "email_or_username": email_or_username,
+      "verificationCode": verificationCode
     });
 
-    http.Response res = await http.put(Uri.parse("$ENDPOINT/auth/login"),
-        body: body, headers: headers);
+    http.Response res = await http.put(
+        Uri.parse("$ENDPOINT/auth/verify-credentials"),
+        body: body,
+        headers: headers);
 
     int statusCode = res.statusCode;
+    print (res.body);
     if (statusCode == 200) {
+
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
@@ -119,10 +121,76 @@ class UserManagementRequests {
     }
   }
 
-  Future<String> editProfile(){
-    //TODO Complete edit profile Request
-    return Future.delayed(Duration.zero).then((_) => "null");
-    //return data.user
+  Future<String> editProfile(
+      {Name,
+      Location,
+      Website,
+      Bio,
+      Month_Day_Access,
+      Year_Access,
+      Birth_Date}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var pref = await SharedPreferences.getInstance();
+    String? accessToken = pref.getString("access_token");
+    var body = jsonEncode(<String, String>{
+      "access_token": accessToken!,
+      "name": Name,
+      "location": Location,
+      "website": Website,
+      "bio": Bio,
+      "birth_date": Birth_Date,
+      "month_day_access": Month_Day_Access,
+      "year_access": Year_Access,
+    });
+
+    http.Response res = await http.put(
+        Uri.parse("$ENDPOINT/user/update-profile"),
+        body: body,
+        headers: headers);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Unauthorized");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
   }
+
+  //return data.user
+
+  Future<String> getUserProfile(
+      {required String access_token, required String username}) async {
+    var pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + access_token
+    };
+
+    http.Response res =
+        await http.get(Uri.parse("$ENDPOINT/info/$username"), headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Unauthenticated");
+    } else if (statusCode == 404) {
+      throw Exception("User not found");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
 
 }

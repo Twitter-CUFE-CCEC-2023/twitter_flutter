@@ -41,6 +41,27 @@ class UserModel extends Equatable {
     isBanned = json["isBanned"];
   }
 
+  UserModel.copy(UserModel user) {
+    id = user.id;
+    name = user.name;
+    username = user.username;
+    email = user.email;
+    profile_image_url = user.profile_image_url;
+    cover_image_url = user.cover_image_url;
+    bio = user.bio;
+    website = user.website;
+    location = user.location;
+    created_at = user.created_at;
+    birth_date = user.birth_date;
+    isVerified = user.isVerified;
+    //role = user.role;
+    followers_count = user.followers_count;
+    following_count = user.following_count;
+    tweets_count = user.tweets_count;
+    likes_count = user.likes_count;
+    isBanned = user.isBanned;
+  }
+
   @override
   List<Object?> get props => [
         id,

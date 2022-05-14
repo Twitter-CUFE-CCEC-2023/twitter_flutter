@@ -20,4 +20,10 @@ class MediaModel extends Equatable {
         path,
         message,
       ];
+
+  MediaModel(
+      {required this.media_id,
+      required this.media,
+      required this.path,
+      required this.message});
 }
