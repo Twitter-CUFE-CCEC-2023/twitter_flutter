@@ -28,6 +28,9 @@ import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'blocs/tweetsManagement/tweets_managment_bloc.dart';
+import 'models/hive models/logged_user.dart';
+import 'package:twitter_flutter/screens/profile/tap_tweet.dart';
 import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/models/hive models/logged_user.dart';
@@ -121,6 +124,8 @@ class _TwitterState extends State<Twitter> {
           VerificationCode.route: (context) => const VerificationCode(),
 
           PostTweet.route : (context) => const PostTweet(),
+
+          TapTweet.route : (context) => const TapTweet(),
         },
       ),
     );
