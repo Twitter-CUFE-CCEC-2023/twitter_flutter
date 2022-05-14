@@ -34,6 +34,7 @@ class TweetsManagementBloc
       for (var tweet in tweets) {
         homeTweets.add(tweet);
       }
+
       emit(TweetsFetchingSuccess(tweets: tweets));
     } on Exception catch (e) {
       emit(TweetsFetchingFailed(
@@ -47,9 +48,11 @@ class TweetsManagementBloc
       var tweets = await tweetsManagementRepository.fetchTweets(
           access_token: event.access_token, count: event.count);
       newTweets = tweets;
+
       for (var tweet in tweets) {
         homeTweets.add(tweet);
       }
+      print("hi");
       emit(TweetsFetchingSuccess(tweets: tweets));
     } on Exception catch (e) {
       emit(TweetsFetchingFailed(

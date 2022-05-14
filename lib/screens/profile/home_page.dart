@@ -202,8 +202,8 @@ class _HomePageState extends State<HomePage> {
                 onRefresh: () {
                   timeLineBloc.add(
                       OnRefresh(access_token: bloc.access_token, count: 5));
-                  print(timeLineBloc.newTweets);
-                  return Future.delayed(const Duration(seconds: 1));
+
+                  return Future.delayed(const Duration(seconds: 10));
                 },
                 child:
                     BlocListener<TweetsManagementBloc, TweetsManagementStates>(
