@@ -12,6 +12,10 @@ class TweetsLoadingState extends TweetsManagementStates {
   List<Object?> get props => [];
 }
 
+class TweetsRefreshLoadingState extends TweetsManagementStates {
+  List<Object?> get props => [];
+}
+
 class TweetsFetchingSuccess extends TweetsManagementStates {
   List<ReplyTweetModel> tweets;
   TweetsFetchingSuccess({required this.tweets});

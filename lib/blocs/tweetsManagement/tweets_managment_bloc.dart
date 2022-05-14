@@ -26,9 +26,12 @@ class TweetsManagementBloc
   void _onIntialTweetFetching(
       IntialHomePage event, Emitter<TweetsManagementStates> emit) async {
     emit(TweetsLoadingState());
+
     try {
       var tweets = await tweetsManagementRepository.fetchTweets(
-          access_token: event.access_token, count: event.count);
+          access_token: event.access_token,
+          count: event.count,
+          page: event.page);
       newTweets = tweets;
 
       for (var tweet in tweets) {
@@ -46,13 +49,15 @@ class TweetsManagementBloc
       OnRefresh event, Emitter<TweetsManagementStates> emit) async {
     try {
       var tweets = await tweetsManagementRepository.fetchTweets(
-          access_token: event.access_token, count: event.count);
+          access_token: event.access_token,
+          count: event.count,
+          page: event.page);
       newTweets = tweets;
 
       for (var tweet in tweets) {
         homeTweets.add(tweet);
       }
-      print("hi");
+
       emit(TweetsFetchingSuccess(tweets: tweets));
     } on Exception catch (e) {
       emit(TweetsFetchingFailed(
@@ -102,6 +107,7 @@ class TweetsManagementBloc
       }
     }
   }
+
   void _onPostTweetButtonPressed(PostTweetButtonPressed event,
       Emitter<TweetsManagementStates> emit) async {
     emit(TweetsLoadingState());

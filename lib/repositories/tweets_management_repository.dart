@@ -8,10 +8,12 @@ class TweetsManagementRepository {
   TweetsManagementRepository({required this.tweetsManagementRequests});
 
   Future<List<ReplyTweetModel>> fetchTweets(
-      {required String access_token, required int count}) async {
+      {required String access_token,
+      required int count,
+      required int page}) async {
     try {
       String tweets = await tweetsManagementRequests.fetchTweets(
-          access_token: access_token, count: count);
+          access_token: access_token, count: count, page: page);
       return (jsonDecode(tweets)["tweets"] as List)
           .map((i) => ReplyTweetModel.fromJson(i))
           .toList();
@@ -41,8 +43,9 @@ class TweetsManagementRepository {
       required String username,
       int? count = 100}) async {
     try {
-      String tweetData = await tweetsManagementRequests.getLoggedUserLikedTweets(
-          access_token: access_token, username: username, count: count);
+      String tweetData =
+          await tweetsManagementRequests.getLoggedUserLikedTweets(
+              access_token: access_token, username: username, count: count);
 
       return (jsonDecode(tweetData)["tweets"] as List)
           .map((i) => ReplyTweetModel.fromJson(i))

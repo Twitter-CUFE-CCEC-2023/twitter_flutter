@@ -53,7 +53,6 @@ class TweetModel extends Equatable {
     media = other.media;
   }
 
-
   @override
   List<Object?> get props => [
         id,
@@ -81,7 +80,7 @@ class ReplyTweetModel extends TweetModel {
     user = UserModel.fromJson(json['user']);
   }
 
-  ReplyTweetModel.copy(TweetModel tweet,UserModel user) : super.copy(tweet) {
+  ReplyTweetModel.copy(TweetModel tweet, UserModel user) : super.copy(tweet) {
     this.user = UserModel.copy(user);
   }
 
@@ -98,6 +97,17 @@ class TweetWithRepliesModel {
 
   TweetWithRepliesModel.fromJson(Map<String, dynamic> json) {
     tweet = TweetModel.fromJson(json);
+    replies = (json['replies'] as List)
+        .map((i) => ReplyTweetModel.fromJson(i))
+        .toList();
+  }
+}
+
+class HomeTweetWithReplies {
+  late ReplyTweetModel tweet;
+  late List<ReplyTweetModel> replies;
+  HomeTweetWithReplies.fromJson(Map<String, dynamic> json) {
+    tweet = ReplyTweetModel.fromJson(json);
     replies = (json['replies'] as List)
         .map((i) => ReplyTweetModel.fromJson(i))
         .toList();

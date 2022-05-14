@@ -30,14 +30,18 @@ class PostTweetButtonPressed extends TweetsManagementEvents {
 class IntialHomePage extends TweetsManagementEvents {
   String access_token;
   int count;
-  IntialHomePage({required this.access_token, required this.count});
+  int page;
+  IntialHomePage(
+      {required this.access_token, required this.count, required this.page});
   List<Object?> get props => [access_token, count];
 }
 
 class OnRefresh extends TweetsManagementEvents {
   String access_token;
   int count;
-  OnRefresh({required this.access_token, required this.count});
+  int page;
+  OnRefresh(
+      {required this.access_token, required this.count, required this.page});
   List<Object?> get props => [access_token, count];
 }
 
