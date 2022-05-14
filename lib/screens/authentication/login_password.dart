@@ -9,6 +9,7 @@ import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import '../../utils/common_listners/network_listner.dart';
 import '../../widgets/authentication/appBar.dart';
+import 'forget_password1.dart';
 
 class LoginPassword extends StatefulWidget {
   static const String route = "/LoginPassword";
@@ -214,7 +215,8 @@ class _LoginPasswordState extends State<LoginPassword> {
                                 children: [
                                   OutlinedButton(
                                     onPressed: () {
-                                      //TODO:Forget Password Button
+                                      Navigator.pushNamed(
+                                          context, ForgetPassword.route);
                                     },
                                     child: const Text("Forget Password?"),
                                     style: outlinedButtonsStyle,
