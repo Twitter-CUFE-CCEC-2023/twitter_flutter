@@ -12,9 +12,8 @@ class TweetsManagementRequests {
 
     http.Response res = await http.get(
         Uri.parse(
-            "$ENDPOINT/status/tweets/list/$username?include_replies=$replies"),
+            "$ENDPOINT/status/tweets/list/$username/1/10?include_replies=$replies"),
         headers: headers);
-
     int statusCode = res.statusCode;
     if (statusCode == 200) {
       return res.body;
@@ -38,10 +37,11 @@ class TweetsManagementRequests {
 
     http.Response res = await http.get(
         Uri.parse(
-            "$ENDPOINT/liked/list/$username?count=$count"),
+            "$ENDPOINT/liked/list/$username/1/10"),
         headers: headers);
     int statusCode = res.statusCode;
     if (statusCode == 200) {
+      print(res.body);
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
