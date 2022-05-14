@@ -18,6 +18,7 @@ class UserModel extends Equatable {
   late int tweets_count = 0;
   late int likes_count = 0;
   late bool isBanned = false;
+  late bool is_followed = false;
   late DateTime birth_date = DateTime.now();
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -33,7 +34,7 @@ class UserModel extends Equatable {
     created_at = DateTime.parse(json["created_at"]);
     birth_date = DateTime.parse(json["birth_date"]);
     isVerified = json["isVerified"];
-    //role = json["role"];
+    is_followed = json["is_followed"] ?? false;
     followers_count = json["followers_count"];
     following_count = json["following_count"];
     tweets_count = json["tweets_count"];
@@ -54,7 +55,7 @@ class UserModel extends Equatable {
     created_at = user.created_at;
     birth_date = user.birth_date;
     isVerified = user.isVerified;
-    //role = user.role;
+    is_followed = user.is_followed;
     followers_count = user.followers_count;
     following_count = user.following_count;
     tweets_count = user.tweets_count;
@@ -80,6 +81,7 @@ class UserModel extends Equatable {
         tweets_count,
         likes_count,
         isBanned,
-        birth_date
+        birth_date,
+        is_followed
       ];
 }

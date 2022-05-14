@@ -83,7 +83,7 @@ class _VisitedUserProfileState extends State<VisitedUserProfile> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             OutlinedButton(
-                              child: const Text("Follow"),
+                              child: Text(userData.is_followed ? "Following" : "Follow"),
                               style: outlinedButtonsStyle,
                               onPressed: () => print("Send Follow Request"),
                             ),
@@ -118,7 +118,7 @@ class _VisitedUserProfileState extends State<VisitedUserProfile> {
                 hasScrollBody: true,
                 child: Scaffold(
                   body: TabBarView(
-                    children: [Tweets(userdata: userData), TweetsAndReplies(), Media(), Likes(userdata: userData,)],
+                    children: [Tweets(userdata: userData), TweetsAndReplies(userdata: userData), Media(), Likes(userdata: userData,)],
                   ),
                 ),
               ),
