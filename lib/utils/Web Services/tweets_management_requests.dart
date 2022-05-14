@@ -17,7 +17,6 @@ class TweetsManagementRequests {
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {
-      //print(res.body);
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
@@ -34,7 +33,7 @@ class TweetsManagementRequests {
   Future<String> getLoggedUserLikedTweets(
       {required String access_token,
         required String username,
-        int? count = 10}) async {
+        int? count = 100}) async {
     var headers = {'Authorization': 'Bearer $access_token'};
 
     http.Response res = await http.get(
@@ -51,7 +50,7 @@ class TweetsManagementRequests {
     } else if (statusCode == 500) {
       throw Exception("Server Error");
     } else {
-      throw Exception("Undefined Error");
+      throw Exception("${res.statusCode} ${res.body} Undefined Error from lt");
     }
   }
 
@@ -108,7 +107,7 @@ class TweetsManagementRequests {
     } else if (statusCode == 500) {
       throw Exception("Server Error");
     } else {
-      throw Exception("Undefined Error");
+      throw Exception("${res.statusCode} ${res.body} Undefined Error from like a tweet");
     }
   }
 

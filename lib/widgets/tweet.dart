@@ -1,14 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:like_button/like_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
-import 'package:twitter_flutter/models/objects/user.dart';
-import '../../models/objects/mediaModel.dart';
-import '../blocs/userManagement/user_management_bloc.dart';
-import '../models/objects/tweet.dart';
+import 'package:twitter_flutter/models/objects/mediaModel.dart';
+import 'package:twitter_flutter/blocs/profileTabs/tweets_tab_cubit.dart';
+import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
+import 'package:twitter_flutter/blocs/profileTabs/tab_states.dart';
+
 
 class TweetWidget extends StatefulWidget {
   late ReplyTweetModel tweetData;
@@ -22,50 +25,57 @@ class _TweetWidgetState extends State<TweetWidget> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            tweetProfilePicture(
-                widget.tweetData.user.profile_image_url, screenHeight),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    userName(widget.tweetData.user.username, screenHeight),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 13, 0),
-                      child: tweetText(widget.tweetData.content, screenHeight),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
-                        child: tweetMedia(widget.tweetData.media,
-                            screenWidth: screenWidth,
-                            screenHeight: screenHeight)),
-                    tweetButtons(
-                      like_count: widget.tweetData.likes_count,
-                      commentCount: widget.tweetData.quotes_count,
-                      retweetCount: widget.tweetData.retweets_count,
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth,
-                      is_liked: widget.tweetData.is_liked,
-                      is_quoted: widget.tweetData.is_quoted,
-                      is_retweeted: widget.tweetData.is_retweeted,
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, "/TapTweet",
+          arguments: widget.tweetData),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              GestureDetector(
+                child: tweetProfilePicture(
+                    widget.tweetData.user.profile_image_url, screenHeight),
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      userName(widget.tweetData.user.username, screenHeight),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 13, 0),
+                        child:
+                            tweetText(widget.tweetData.content, screenHeight),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
+                          child: tweetMedia(widget.tweetData.media,
+                              screenWidth: screenWidth,
+                              screenHeight: screenHeight)),
+                      tweetButtons(
+                        like_count: widget.tweetData.likes_count,
+                        commentCount: widget.tweetData.quotes_count,
+                        retweetCount: widget.tweetData.retweets_count,
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        is_liked: widget.tweetData.is_liked,
+                        is_quoted: widget.tweetData.is_quoted,
+                        is_retweeted: widget.tweetData.is_retweeted,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const Divider(
-          color: Colors.black26,
-          thickness: 0.8,
-        ),
-      ],
+            ],
+          ),
+          const Divider(
+            color: Colors.black26,
+            thickness: 0.8,
+          ),
+        ],
+      ),
     );
   }
 
@@ -136,22 +146,17 @@ class _TweetWidgetState extends State<TweetWidget> {
         ),
         LikeButton(
           onTap: (f) {
+            var tweetsTabCubit = context.read<TweetsTabCubit>();
             var tweetBloc = context.read<TweetsManagementBloc>();
             var userBloc = context.read<UserManagementBloc>();
-            //print(tweetBloc.state);
-            //if (tweetBloc.state is! ProcessingTweetLike){
-            //print(tweetBloc.state);
-            print("like");
-            tweetBloc.add(LikeButtonPressed(
-                access_token: userBloc.access_token,
-                tweet_id: widget.tweetData.id,
-                isLiked: widget.tweetData.is_liked));
-            //}
-            userBloc.turn = 0;
+              print("like");
+              tweetBloc.add(LikeButtonPressed(access_token: userBloc.access_token  , tweet_id: widget.tweetData.id, isLiked: widget.tweetData.is_liked));
             widget.tweetData.is_liked = !widget.tweetData.is_liked;
             widget.tweetData.likes_count = widget.tweetData.is_liked
                 ? widget.tweetData.likes_count + 1
                 : widget.tweetData.likes_count - 1;
+            tweetsTabCubit.updateTweet(
+            tweet_id: widget.tweetData.id, Action: "like");
             return Future.value(widget.tweetData.is_liked);
           },
           likeCount: like_count,

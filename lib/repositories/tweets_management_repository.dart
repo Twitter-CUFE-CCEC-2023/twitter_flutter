@@ -27,11 +27,11 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.getLoggedUserTweets(
           access_token: access_token, username: username, replies: replies);
-      //print(tweetData);
       return (jsonDecode(tweetData)["tweets"] as List)
           .map((i) => TweetModel.fromJson(i))
           .toList();
     } on Exception catch (e) {
+      print(e);
       throw Exception(e);
     }
   }
@@ -39,11 +39,11 @@ class TweetsManagementRepository {
   Future<List<ReplyTweetModel>> getLoggedUserLikedTweets(
       {required String access_token,
       required String username,
-      int? count = 10}) async {
+      int? count = 100}) async {
     try {
-      String tweetData =
-          await tweetsManagementRequests.getLoggedUserLikedTweets(
-              access_token: access_token, username: username, count: count);
+      String tweetData = await tweetsManagementRequests.getLoggedUserLikedTweets(
+          access_token: access_token, username: username, count: count);
+
       return (jsonDecode(tweetData)["tweets"] as List)
           .map((i) => ReplyTweetModel.fromJson(i))
           .toList();
