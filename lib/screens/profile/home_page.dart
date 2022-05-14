@@ -203,54 +203,72 @@ class _HomePageState extends State<HomePage> {
                   scaffoldKey.currentState?.openDrawer();
                 }
               }),
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await tweet_Cubit.Refresh(
-                      access_token: bloc.access_token,
-                      count: 3,
-                      page: tweet_Cubit.pageNumber);
-                  tweet_Cubit.pageNumber++;
+              child: BlocListener<TweetsManagementBloc, TweetsManagementStates>(
+                listenWhen: (previous, current) =>
+                    current is SuccessPostingTweet ||
+                    current is FailurePostingTweet,
+                listener: (context, state) {
+                  if (state is SuccessPostingTweet) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Failed to post tweet"),
+                      duration: Duration(seconds: 2),
+                    ));
+                  } else if (state is FailurePostingTweet) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Tweet posted successfully"),
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
                 },
-                child: BlocConsumer<tweetCubit, TweetsManagementStates>(
-                    buildWhen: (previous, current) =>
-                        current is! TweetsRefreshLoadingState,
-                    listener: (context, state) {
-                      if (state is TweetsFetchingFailed) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.errorMessage),
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is TweetsIntialState) {
-                        tweet_Cubit.onInit(
-                            access_token: bloc.access_token,
-                            count: 5,
-                            page: tweet_Cubit.pageNumber);
-                        tweet_Cubit.pageNumber++;
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is TweetsLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (state is TweetsFetchingSuccess) {
-                        for (var tweet in tweet_Cubit.homeList) {
-                          tweetsList.insert(0, TweetWidget(tweetData: tweet));
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await tweet_Cubit.Refresh(
+                        access_token: bloc.access_token,
+                        count: 3,
+                        page: tweet_Cubit.pageNumber);
+                    tweet_Cubit.pageNumber++;
+                  },
+                  child: BlocConsumer<tweetCubit, TweetsManagementStates>(
+                      buildWhen: (previous, current) =>
+                          current is! TweetsRefreshLoadingState,
+                      listener: (context, state) {
+                        if (state is TweetsFetchingFailed) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.errorMessage),
+                            ),
+                          );
                         }
-                      }
-                      return ListView.builder(
-                        reverse: true,
-                        itemCount: tweetsList.length,
-                        itemBuilder: (context, index) {
-                          return tweetsList[index];
-                        },
-                      );
-                    }),
+                      },
+                      builder: (context, state) {
+                        if (state is TweetsIntialState) {
+                          tweet_Cubit.onInit(
+                              access_token: bloc.access_token,
+                              count: 10,
+                              page: tweet_Cubit.pageNumber);
+                          tweet_Cubit.pageNumber++;
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is TweetsLoadingState) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (state is TweetsFetchingSuccess) {
+                          for (var tweet in tweet_Cubit.homeList) {
+                            tweetsList.insert(0, TweetWidget(tweetData: tweet));
+                          }
+                        }
+                        return ListView.builder(
+                          reverse: true,
+                          itemCount: tweetsList.length,
+                          itemBuilder: (context, index) {
+                            return tweetsList[index];
+                          },
+                        );
+                      }),
+                ),
               ),
             ),
             bottomNavigationBar: Bottom(
