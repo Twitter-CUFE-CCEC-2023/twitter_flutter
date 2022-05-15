@@ -1,47 +1,83 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
-import 'package:twitter_flutter/screens/authentication/Icons.dart';
-import 'package:twitter_flutter/screens/profile/search_page.dart';
+import 'package:twitter_flutter/screens/profile/search_page2.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
-import 'package:twitter_flutter/widgets/tweet.dart';
-import '../../blocs/tweetsManagement/tweets_managment_bloc.dart';
-import '../../blocs/tweetsManagement/tweets_managment_states.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-  static String route = '/HomePage';
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
+  static String route = '/SearchPage';
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchPageState extends State<SearchPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late UserModel userData;
+
+  Widget textfieldController({
+    required int lines,
+    required double width,
+    required TextEditingController controller,
+    required double fontSizeMultiplier,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+      child: SizedBox(
+          width: width*3/4,
+          height: 34,
+          child: TextFormField(
+            enabled: true,
+            controller: controller,
+            keyboardType: TextInputType.text,
+            maxLines: lines,
+            decoration: InputDecoration(
+              hintText: 'Search Twitter',
+                hintStyle: TextStyle(color: Colors.blue),
+                contentPadding: const EdgeInsets.all(5),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30))),
+          )),
+    );
+  }
 
 
   AppBar logoAppBar(
       {required double height,
-      required double imageMultiplier,
-      required BuildContext context,
-      required String imageUrl}) {
+        required double imageMultiplier,
+        required BuildContext context,
+        required String imageUrl}) {
     return AppBar(
       elevation: 0,
+      bottom: TabBar(
+        indicatorWeight: 3  ,
+      indicatorColor: Colors.lightBlue,
+      labelColor: Colors.blue,
+      unselectedLabelColor: Colors.blueGrey,
+      isScrollable: true,
+      labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+      tabs: [
+
+
+        Tab(text: 'For you',),
+        Tab(text: 'Trending',),
+        Tab(text: 'COVID-19',),
+        Tab(text: 'News',),
+        Tab(text: 'Sports',),
+        Tab(text: 'Entertainment',),
+      ],),
       actions: [
         IconButton(
           icon: Icon(
-            Icons.star_border,
+            Icons.settings_sharp,
+            color: Colors.blue,
             size: 0.038 * imageMultiplier * height,
           ),
           onPressed: () => {},
@@ -64,20 +100,34 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       backgroundColor: Colors.white,
-      title: Image.asset(
-        'assets/images/bluetwitterlogo64.png',
-        width: 0.083 * imageMultiplier * height, // 65
-        height: 0.083 * imageMultiplier * height, // 65
-        cacheHeight: 70,
-      ),
-    );
-  }
+      title: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+        child: Padding(
+      padding: const EdgeInsets.only(left: 10),
+        child:ClipRRect(
+          borderRadius: BorderRadius.circular(500),
+          child: SizedBox(
+              width: 3000,
+              height: 32,
+            child: ElevatedButton(onPressed: () {
+              Navigator.pushNamed(
+                  context, SearchPage2.route);},
 
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child:Text('Search Twitter',style: TextStyle(fontSize: 16,color: Colors.blueGrey),textAlign: TextAlign.start,),),
+              style: ButtonStyle(backgroundColor:
+                  MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {return Colors.grey.shade300;}),splashFactory:  NoSplash.splashFactory
+
+            )),
+
+    )))));
+  }
 
   Widget Message(
       {required String message,
-      required double fontSize,
-      required Color colors}) {
+        required double fontSize,
+        required Color colors}) {
     return AutoSizeText(
       message,
       style: TextStyle(fontSize: fontSize, color: colors),
@@ -108,15 +158,14 @@ class _HomePageState extends State<HomePage> {
 
       //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
-    var timeLineBloc = context.read<TweetsManagementBloc>();
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
-    late List<TweetWidget> tweets = [];
-    timeLineBloc.add(IntialHomePage(access_token: bloc.access_token, count: 5));
 
-    return Container(
+    return DefaultTabController(
+        length: 6,
+     child: Container(
         color: Colors.white,
         child: SafeArea(
           child: Scaffold(
@@ -151,67 +200,9 @@ class _HomePageState extends State<HomePage> {
               },
               child: Icon(Icons.add),
             ),
-            body: GestureDetector(
-              onPanUpdate: ((details) {
-                if (details.delta.dx > 5) {
-                  scaffoldKey.currentState?.openDrawer();
-                }
-              }),
-              child: RefreshIndicator(
-                onRefresh: () {
-                  timeLineBloc.add(
-                      OnRefresh(access_token: bloc.access_token, count: 5));
-
-                  return Future.delayed(const Duration(seconds: 10));
-                },
-                child:
-                    BlocListener<TweetsManagementBloc, TweetsManagementStates>(
-                  listener: (context, state) {
-                    if (state is SuccessPostingTweet) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Tweet posted successfully"),
-                        duration: Duration(seconds: 10),
-                      ));
-                    } else if (state is FailurePostingTweet) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Failed to post tweet"),
-                        duration: Duration(seconds: 2),
-                      ));
-                    }
-                  },
-                  child: BlocConsumer<TweetsManagementBloc,
-                      TweetsManagementStates>(listener: (context, state) {
-                    if (state is TweetsFetchingFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.errorMessage),
-                        ),
-                      );
-                    }
-                  }, builder: (context, state) {
-                    if (state is TweetsLoadingState) {
-                      //TODO: add loading state Specific to home page timeLine
-                      return Container(
-                        color: Colors.white,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-
-                    if (state is TweetsFetchingSuccess) {
-                      for (var tweet in timeLineBloc.newTweets) {
-                        tweets.add(TweetWidget(tweetData: tweet));
-                      }
-                    }
-
-                    return ListView(children: tweets);
-                  }),
-                ),
-              ),
-            ),
+            body: Column(),
 
           ),
-        ));
+        )));
   }
 }
