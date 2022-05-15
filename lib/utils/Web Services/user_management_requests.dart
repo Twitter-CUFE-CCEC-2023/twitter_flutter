@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
@@ -60,7 +61,8 @@ class UserManagementRequests {
     }
   }
 
-  Future<String> Verification({required email_or_username, required verificationCode}) async {
+  Future<String> Verification(
+      {required email_or_username, required verificationCode}) async {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonEncode(<String, dynamic>{
@@ -74,9 +76,8 @@ class UserManagementRequests {
         headers: headers);
 
     int statusCode = res.statusCode;
-    print (res.body);
+    print(res.body);
     if (statusCode == 200) {
-
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
@@ -192,5 +193,60 @@ class UserManagementRequests {
     }
   }
 
+  Future<String> getFollowingRequest(
+      {required String access_token,
+      required String username,
+      required int page,
+      required int count}) async {
+    var pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + access_token,
+    };
+    log(access_token+ username.toString() + page.toString() +  count.toString());
+    http.Response res = await http.get(
+        Uri.parse("$ENDPOINT/following/list/:$username/:$page/:$count"),
+        headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid user Id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
 
+   Future<String> getFollowersRequest(
+      {required String access_token,
+      required String username,
+      required int page,
+      required int count}) async {
+    var pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + access_token,
+    };
+    http.Response res = await http.get(
+        Uri.parse("$ENDPOINT/followers/list/:$username/:$page/:$count"),
+        headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid user Id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
 }

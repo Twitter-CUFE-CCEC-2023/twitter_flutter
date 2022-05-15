@@ -83,3 +83,13 @@ class UserModel extends Equatable {
         birth_date
       ];
 }
+
+class FollowModel {
+  late List<UserModel> followings;
+
+  FollowModel.fromJson(Map<String, dynamic> json) {
+    followings = (json['followings'] as List)
+        .map((i) => UserModel.fromJson(i))
+        .toList();
+  }
+}

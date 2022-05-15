@@ -1,6 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../blocs/userManagement/user_management_bloc.dart';
+import '../../models/objects/user.dart';
+import '../../repositories/user_management_repository.dart';
+import '../../utils/Web Services/user_management_requests.dart';
 class Followers extends StatefulWidget {
   static String route = '/Followers';
   const Followers({Key? key}) : super(key: key);
@@ -28,6 +36,9 @@ class followers extends State<Followers> {
   ];
 
 
+   UserManagementRepository repo = UserManagementRepository(
+      userManagementRequests: UserManagementRequests());
+      
 
 
   Widget Message(
@@ -42,6 +53,21 @@ class followers extends State<Followers> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    UserManagementBloc userBloc = context.read<UserManagementBloc>();
+
+    Future<FollowModel> model = call_getfollowers(userBloc);
+    model == null
+        ? log("model is null")
+        : log("model is not null");
+
+      // List[UserModel]
+      // each user model have username, name ,bio
+
+      // model[i].username , model[i].name , model[i].bio
+
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
@@ -101,7 +127,26 @@ class followers extends State<Followers> {
         ),
       );
       //);
-    });
+    }
+    
+    );
+    
+  }
+  
+  Future<FollowModel> call_getfollowers(UserManagementBloc bloc) {
+    late Future<FollowModel> replay;
+    try {
+      replay = repo.getFollowing(
+          access_token: bloc.access_token,
+          username: bloc.userdata.username,
+          page: 1,
+          count: 5);
+    } on Exception catch (e) {
+      SnackBar snackBar = SnackBar(
+        content: Text(e.toString()),
+      );
+    }
+    return replay;
   }
 
   userComponent({required User user}) {
