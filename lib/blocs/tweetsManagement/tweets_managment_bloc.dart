@@ -15,6 +15,7 @@ class TweetsManagementBloc
       : super(TweetsIntialState()) {
     on<PostTweetButtonPressed>(_onPostTweetButtonPressed);
     on<LikeButtonPressed>(_onLikeButtonPressed);
+    on<DeleteTweetButtonPressed>(_onDeleteTweetButtonPressed);
   }
 
   void _onPostTweetButtonPressed(PostTweetButtonPressed event,
@@ -47,6 +48,19 @@ class TweetsManagementBloc
       }
     } on Exception catch (e) {
       //emit(TweetLikeFailure());
+    }
+  }
+
+  void _onDeleteTweetButtonPressed(
+      DeleteTweetButtonPressed event, Emitter<TweetsManagementStates> emit) async {
+    try {
+      var tweet = await tweetsManagementRepository.deleteTweet(
+          access_token: event.access_token, tweet_id: event.tweet_id);
+      emit(TweetDeleteSuccess(
+          message: "Tweet deleted successfully",));
+    } on Exception catch (e) {
+      emit(TweetDeleteFailure(
+          errorMessage: e.toString().replaceAll("Exception: ", "")));
     }
   }
 }

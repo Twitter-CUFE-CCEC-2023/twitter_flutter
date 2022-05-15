@@ -55,3 +55,13 @@ class LikeButtonPressed extends TweetsManagementEvents {
       required this.isLiked});
   List<Object?> get props => [access_token, tweet_id, isLiked];
 }
+
+
+class DeleteTweetButtonPressed extends TweetsManagementEvents {
+  String access_token;
+  String tweet_id;
+  DeleteTweetButtonPressed(
+      {required this.access_token,
+      required this.tweet_id});
+  List<Object?> get props => [access_token, tweet_id];
+}

@@ -176,4 +176,33 @@ class TweetsManagementRequests {
       throw Exception("Undefined Error");
     }
   }
+
+  Future<String> deleteTweet(
+      {required String access_token, required String tweet_id}) async {
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+    var body = jsonEncode(<String, String>{
+      "id": tweet_id,
+    });
+
+    http.Response res = await http.delete(Uri.parse("$ENDPOINT/status/tweet/delete"),
+        headers: headers, body: body);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid tweet id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+ 
 }

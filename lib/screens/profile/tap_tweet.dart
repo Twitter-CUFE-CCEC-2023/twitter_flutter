@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,14 @@ class _TapTweetState extends State<TapTweet> {
     int retweetsCount = tweetData.retweets_count;
     // ignore: unused_local_variable
     int repliesCount = tweetData.replies_count;
-    log("Likes Count $likesCount ${tweetData.likes_count}");
+    // log("Likes Count $likesCount ${tweetData.likes_count}");
+    // log(tweetData.is_reply.toString());
+    // log(tweetData.toString());
+    UserManagementBloc userBloc = context.read<UserManagementBloc>();
+    // log(userBloc.access_token);
+    // log(tweetData.id);
+    TweetsManagementBloc tweetsBloc = context.read<TweetsManagementBloc>();
+
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -104,6 +112,39 @@ class _TapTweetState extends State<TapTweet> {
                     ),
                   ),
                   const Divider(thickness: 1),
+                  BlocListener<TweetsManagementBloc, TweetsManagementStates>(
+                    listener: (context, state) {
+                      if (state is TweetDeleteSuccess) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                      else if(state is TweetDeleteFailure){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.errorMessage),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                      Future.delayed(Duration(seconds: 3), () {
+                        if (state is TweetDeleteSuccess) {
+                          Navigator.pop(context);
+                        }
+                      });
+                    },
+                    child: ElevatedButton(
+                      onPressed: () {
+                        tweetsBloc.add(DeleteTweetButtonPressed(
+                            access_token: userBloc.access_token,
+                            tweet_id: tweetData.id));
+                      },
+                      child: Text("detele"),
+                    ),
+                  )
                 ]),
           ),
         ),
@@ -113,6 +154,7 @@ class _TapTweetState extends State<TapTweet> {
 
   Widget tweetbar(double screenHeight) {
     return ListTile(
+      trailing: Icon(Icons.menu_outlined),
       leading:
           tweetProfilePicture(tweetData.user.profile_image_url, screenHeight),
       title: Text(

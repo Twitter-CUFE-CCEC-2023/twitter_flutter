@@ -90,4 +90,15 @@ class TweetsManagementRepository {
       throw Exception(e);
     }
   }
+
+  Future<TweetModel> deleteTweet(
+      {required String access_token, required String tweet_id}) async {
+    try {
+      String tweetData = await tweetsManagementRequests.deleteTweet(
+          access_token: access_token, tweet_id: tweet_id);
+      return TweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
 }

@@ -25,7 +25,7 @@ class _TweetWidgetState extends State<TweetWidget> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
+    return InkWell(
       onTap: () => Navigator.pushNamed(context, "/TapTweet",
           arguments: widget.tweetData),
       child: Column(

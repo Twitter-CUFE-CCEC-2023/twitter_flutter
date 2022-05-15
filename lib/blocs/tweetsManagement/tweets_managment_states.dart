@@ -80,3 +80,17 @@ class TweetUnlikeSuccess extends TweetsManagementStates {
   @override
   List<Object?> get props => [];
 }
+
+class TweetDeleteSuccess extends TweetsManagementStates {
+  String message;
+  TweetDeleteSuccess({required this.message});
+  @override
+  List<Object?> get props => [message];
+}
+
+class TweetDeleteFailure extends TweetsManagementStates {
+  String errorMessage;
+   TweetDeleteFailure({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}

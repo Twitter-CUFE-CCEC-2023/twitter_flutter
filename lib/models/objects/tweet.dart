@@ -25,7 +25,7 @@ class TweetModel extends Equatable {
     retweets_count = json['retweets_count'];
     quotes_count = json['quotes_count'];
     replies_count = json['replies_count'];
-    //created_at = DateTime.parse(json['created_at']);
+    created_at = DateTime.parse(json['created_at']);
     is_liked = json['is_liked'];
     is_retweeted = json['is_retweeted'];
     is_quoted = json['is_quoted'];
