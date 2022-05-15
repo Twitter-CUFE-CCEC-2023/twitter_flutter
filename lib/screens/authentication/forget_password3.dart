@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+import 'forget_password4.dart';
+
 class ForgetPassword3 extends StatefulWidget {
   static String route = '/ForgetPassword3';
   const ForgetPassword3({Key? key}) : super(key: key);
@@ -133,6 +135,9 @@ class forgetpassword3 extends State<ForgetPassword3> {
                         height: 35,
                         child: ElevatedButton(
                           onPressed: (){
+
+                            Navigator.pushNamed(
+                                context, ForgetPassword4.route);
                           },
 
                           child: Message(message: 'Verify', fontSize: 0.0233 * fontSizeMultiplier[0] * screenHeight, colors: Colors.white),

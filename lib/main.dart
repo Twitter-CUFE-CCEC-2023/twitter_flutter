@@ -8,6 +8,7 @@ import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/repositories/user_management_repository.dart';
 import 'package:twitter_flutter/screens/authentication/forget_password2.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password4.dart';
 import 'package:twitter_flutter/screens/profile/followers.dart';
 import 'package:twitter_flutter/screens/profile/following.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
@@ -29,7 +30,6 @@ import 'package:twitter_flutter/screens/profile/profile.dart';
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
-import 'package:twitter_flutter/repositories/profile_management/profile_repository.dart';
 import 'package:twitter_flutter/screens/profile_management/account_information.dart';
 import 'package:twitter_flutter/screens/profile_management/pre_user_name.dart';
 import 'package:twitter_flutter/screens/profile_management/change_email.dart';
@@ -42,7 +42,6 @@ import 'package:twitter_flutter/screens/profile/followers.dart';
 import 'package:twitter_flutter/screens/profile_management/change_country2.dart';
 import 'package:twitter_flutter/screens/profile_management/verify_password.dart';
 import 'package:twitter_flutter/screens/profile_management/verify_password2.dart';
-
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'blocs/tweetsManagement/tweets_managment_bloc.dart';
@@ -52,6 +51,10 @@ import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/models/hive models/logged_user.dart';
 import 'package:twitter_flutter/blocs/profileTabs/tweets_tab_cubit.dart';
+import 'package:twitter_flutter/screens/profile/pre_home_page.dart';
+import 'package:twitter_flutter/screens/profile/search_page.dart';
+import 'package:twitter_flutter/screens/profile/search_page2.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -122,7 +125,15 @@ class _TwitterState extends State<Twitter> {
 
           ForgetPassword3.route: (context) => const ForgetPassword3(),
 
+          ForgetPassword4.route: (context) => const ForgetPassword4(),
+
+          PreHomePage.route: (context) => const PreHomePage(),
+
           HomePage.route: (context) => const HomePage(),
+
+          SearchPage.route: (context) => const SearchPage(),
+
+          SearchPage2.route: (context) => const SearchPage2(),
 
           CreateAccount1.route: (context) => const CreateAccount1(),
 

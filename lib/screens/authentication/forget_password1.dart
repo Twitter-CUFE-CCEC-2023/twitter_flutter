@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+import '../profile/followers.dart';
 import 'forget_password2.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -142,7 +143,7 @@ class forgetpassword extends State<ForgetPassword> {
                     child: ElevatedButton(
                       onPressed: (){
                         Navigator.pushNamed(
-                            context, ForgetPassword2.route,
+                            context, Followers.route,
                             arguments: _usernamefield.text);
                       },
 
