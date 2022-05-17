@@ -12,6 +12,10 @@ class TweetsLoadingState extends TweetsManagementStates {
   List<Object?> get props => [];
 }
 
+class TweetsRefreshLoadingState extends TweetsManagementStates {
+  List<Object?> get props => [];
+}
+
 class TweetsFetchingSuccess extends TweetsManagementStates {
   List<ReplyTweetModel> tweets;
   TweetsFetchingSuccess({required this.tweets});
@@ -73,6 +77,26 @@ class TweetLikeFailure extends TweetsManagementStates {
 }
 
 class TweetUnlikeSuccess extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class TweetDeleteSuccess extends TweetsManagementStates {
+  String message;
+  TweetDeleteSuccess({required this.message});
+  @override
+  List<Object?> get props => [message];
+}
+
+class TweetDeleteFailure extends TweetsManagementStates {
+  String errorMessage;
+   TweetDeleteFailure({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+class TweetDeleteLoading extends TweetsManagementStates {
+  TweetDeleteLoading();
   @override
   List<Object?> get props => [];
 }

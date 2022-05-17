@@ -9,24 +9,40 @@ class TweetsTabCubit extends Cubit<TabStates> {
 
   final TweetsManagementRepository _repository = TweetsManagementRepository(tweetsManagementRequests: TweetsManagementRequests());
   List<TweetModel> Tweets_List = [];
+  late String username;
 
   TweetsTabCubit() : super(TabinitState()){}
 
   void onInit({required access_token,required username}) async {
     try{
+      this.username = username;
       Tweets_List = await _repository.getLoggedUserTweets(access_token: access_token, username: username);
-      Success();
+      Success(username);
     } on Exception{
       Error();
     }
   }
+
+  void onNewUser({required access_token,required username}) async {
+    print(username);
+    emit(TabLoadingState());
+    try{
+      Tweets_List = await _repository.getLoggedUserTweets(access_token: access_token, username: username);
+      this.username = username;
+      Success(username);
+    } on Exception{
+      Error();
+    }
+  }
+
   void Loading() => emit(TabLoadingState());
-  void Success() => emit(TabLoadSuccessState());
+  void Success(String username) => emit(TabLoadSuccessState(username: username));
   void Error() => emit(TabLoadFailureState());
 
   Future<List<TweetModel>> Refresh({required access_token, required username})  {
     emit(TabRefreshingState());
     try{
+      this.username = username;
       return _repository.getLoggedUserTweets(access_token: access_token, username: username);
     } on Exception catch(e) {
       Error();
@@ -34,7 +50,7 @@ class TweetsTabCubit extends Cubit<TabStates> {
     return Future.value([]);
   }
 
-  void updateTweet({required tweet_id,required String Action}){
+  void updateTweet({required tweet_id,required String Action, required String username}) async {
     switch(Action) {
       case "like":
         {
@@ -44,7 +60,8 @@ class TweetsTabCubit extends Cubit<TabStates> {
               Tweets_List[i].is_liked = true;
             }
           }
-          emit(LocalUpadteState());
+          this.username = username;
+          emit(LocalUpadteState(username: username));
           break;
         }
       default:

@@ -37,7 +37,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
     _datefield = TextEditingController();
     _usernamefield = TextEditingController();
     _emailfield.addListener(() {
-      emailCheckSuffix = ValidateEmailOrPhone(_emailfield.text)
+      emailCheckSuffix = ValidateEmail(_emailfield.text)
           ? const Icon(
               Icons.check_circle_outline_sharp,
               size: 25.0,
@@ -208,10 +208,10 @@ class _CreateAccount1State extends State<CreateAccount1> {
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               validator: (Value) {
-                if (ValidateEmailOrPhone(_emailfield.text)) {
+                if (ValidateEmail(_emailfield.text)) {
                   return null;
                 } else {
-                  return "Enter Valid Email or Phone";
+                  return "Enter Valid Email";
                 }
               },
               controller: _emailfield,
@@ -223,7 +223,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                       if (emailCheckSuffix.icon != null) emailCheckSuffix, // c
                     ],
                   ),
-                  hintText: "Phone number or email address",
+                  hintText: "Email address",
                   hintStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 88, 85, 85))),
             )),
@@ -291,11 +291,10 @@ class _CreateAccount1State extends State<CreateAccount1> {
       );
 }
 
-bool ValidateEmailOrPhone(String p) {
+bool ValidateEmail(String p) {
   RegExp regMail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  RegExp regPhone = RegExp(r"^01[0-2,5]{1}[0-9]{8}$");
-  return regMail.hasMatch(p) || regPhone.hasMatch(p);
+  return regMail.hasMatch(p);
 }
 
 

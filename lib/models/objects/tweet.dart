@@ -16,7 +16,7 @@ class TweetModel extends Equatable {
   late String? quote_comment;
   late bool is_reply;
   late List<UserModel> mentions;
-  late List<MediaModel> media;
+  late List<String> media;
 
   TweetModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,7 +33,7 @@ class TweetModel extends Equatable {
     is_reply = json['is_reply'];
     mentions =
         (json['mentions'] as List).map((i) => UserModel.fromJson(i)).toList();
-    media = (json['media'] as List).map((i) => MediaModel.fromJson(i)).toList();
+    media = (json['media'] as List).cast<String>();
   }
 
   TweetModel.copy(TweetModel other) {
@@ -52,7 +52,6 @@ class TweetModel extends Equatable {
     mentions = other.mentions;
     media = other.media;
   }
-
 
   @override
   List<Object?> get props => [
@@ -81,7 +80,7 @@ class ReplyTweetModel extends TweetModel {
     user = UserModel.fromJson(json['user']);
   }
 
-  ReplyTweetModel.copy(TweetModel tweet,UserModel user) : super.copy(tweet) {
+  ReplyTweetModel.copy(TweetModel tweet, UserModel user) : super.copy(tweet) {
     this.user = UserModel.copy(user);
   }
 
@@ -98,6 +97,17 @@ class TweetWithRepliesModel {
 
   TweetWithRepliesModel.fromJson(Map<String, dynamic> json) {
     tweet = TweetModel.fromJson(json);
+    replies = (json['replies'] as List)
+        .map((i) => ReplyTweetModel.fromJson(i))
+        .toList();
+  }
+}
+
+class HomeTweetWithReplies {
+  late ReplyTweetModel tweet;
+  late List<ReplyTweetModel> replies;
+  HomeTweetWithReplies.fromJson(Map<String, dynamic> json) {
+    tweet = ReplyTweetModel.fromJson(json);
     replies = (json['replies'] as List)
         .map((i) => ReplyTweetModel.fromJson(i))
         .toList();

@@ -6,9 +6,11 @@ import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:twitter_flutter/widgets/tweet.dart';
 
-class Likes extends StatefulWidget {
-  const Likes({Key? key}) : super(key: key);
+import 'package:twitter_flutter/models/objects/user.dart';
 
+class Likes extends StatefulWidget {
+  final UserModel userdata;
+  const Likes({Key? key, required this.userdata}) : super(key: key);
   @override
   State<Likes> createState() => _LikesState();
 }
@@ -18,36 +20,52 @@ class _LikesState extends State<Likes> {
   @override
   Widget build(BuildContext context) {
     var userbloc = context.read<UserManagementBloc>();
-    var likedTweetsTabCubit = context.watch<LikedTweetsTabCubit>();
+    var likedTweetTabCubit = context.watch<LikedTweetsTabCubit>();
+
     return RefreshIndicator(
-      onRefresh: ()  async {
-        var tempTweets = await likedTweetsTabCubit.Refresh(
+      onRefresh: () async {
+        var tempTweets = await likedTweetTabCubit.Refresh(
             access_token: userbloc.access_token,
-            username: userbloc.userdata.username);
-        likedTweetsTabCubit.Tweets_List.clear();
+            username: widget.userdata.username);
+        likedTweetTabCubit.Tweets_List.clear();
         tweetsList.clear();
-        likedTweetsTabCubit.Tweets_List = tempTweets;
-        likedTweetsTabCubit.emit(TabLoadSuccessState());
+        likedTweetTabCubit.Tweets_List = tempTweets;
+        likedTweetTabCubit
+            .emit(TabLoadSuccessState(username: widget.userdata.username));
         return Future.value(null);
       },
       child: BlocBuilder<LikedTweetsTabCubit, TabStates>(
-        buildWhen: (previous, current) => current is! TabRefreshingState,
+        buildWhen: (previous, current) => current is! TabRefreshingState || current is! TabLoadingState,
         builder: (context, state) {
           print(state);
           if (state is TabinitState) {
-            var user = userbloc.userdata;
-            likedTweetsTabCubit.onInit(
+            var user = widget.userdata;
+            likedTweetTabCubit.onInit(
                 access_token: userbloc.access_token, username: user.username);
             return Center(
               child: CircularProgressIndicator(),
             );
           } else if (state is TabLoadingState) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.black,
+              ),
             );
-          } else if (state is TabLoadSuccessState || state is LocalUpadteState) {
+          } else if (state is TabLoadSuccessState ||
+              state is LocalUpadteState) {
+            if (likedTweetTabCubit.username != widget.userdata.username) {
+              print(likedTweetTabCubit.username);
+              print(widget.userdata.username);
+              likedTweetTabCubit.onNewUser(
+                  access_token: userbloc.access_token,
+                  username: widget.userdata.username);
+              print("username should be equal here");
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             tweetsList.clear();
-            for (ReplyTweetModel currentTweet in likedTweetsTabCubit.Tweets_List) {
+            for (ReplyTweetModel currentTweet in likedTweetTabCubit.Tweets_List) {
               tweetsList.add(TweetWidget(
                 tweetData: currentTweet,
               ));
@@ -56,18 +74,17 @@ class _LikesState extends State<Likes> {
               children: tweetsList,
             );
           } else if (state is TabLoadFailureState) {
-            likedTweetsTabCubit.onInit(
+            likedTweetTabCubit.onInit(
                 access_token: userbloc.access_token,
-                username: userbloc.userdata.username);
-            return Stack(
-                children: [Center(
-                  child: CircularProgressIndicator(),
-                ),
-                  Center(
-                    child: Text('Failed to load tweets'),
-                  ),
-                ]
-            );
+                username: widget.userdata.username);
+            return Stack(children: [
+              Center(
+                child: CircularProgressIndicator(),
+              ),
+              Center(
+                child: Text('Failed to load tweets --Retrying'),
+              ),
+            ]);
           }
           return Container();
         },

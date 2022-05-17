@@ -5,12 +5,12 @@ void main() {
   test('Given valid user email when ValidiateMail called should return true ',
       () {
     const String email = "khaled@gmail.com";
-    expect(ValidateEmailOrPhone(email), true);
+    expect(ValidateEmail(email), true);
   });
   test(
       'Given invalid user email when ValidiateMail called should return false ',
       () {
     const String email = "ahmed7778.com";
-    expect(ValidateEmailOrPhone(email), false);
+    expect(ValidateEmail(email), false);
   });
 }

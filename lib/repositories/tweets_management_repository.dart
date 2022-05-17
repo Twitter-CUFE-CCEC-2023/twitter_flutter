@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:twitter_flutter/utils/Web Services/tweets_management_requests.dart';
 
@@ -8,10 +9,12 @@ class TweetsManagementRepository {
   TweetsManagementRepository({required this.tweetsManagementRequests});
 
   Future<List<ReplyTweetModel>> fetchTweets(
-      {required String access_token, required int count}) async {
+      {required String access_token,
+      required int count,
+      required int page}) async {
     try {
       String tweets = await tweetsManagementRequests.fetchTweets(
-          access_token: access_token, count: count);
+          access_token: access_token, count: count, page: page);
       return (jsonDecode(tweets)["tweets"] as List)
           .map((i) => ReplyTweetModel.fromJson(i))
           .toList();
@@ -39,10 +42,11 @@ class TweetsManagementRepository {
   Future<List<ReplyTweetModel>> getLoggedUserLikedTweets(
       {required String access_token,
       required String username,
-      int? count = 100}) async {
+      int? count = 10}) async {
     try {
-      String tweetData = await tweetsManagementRequests.getLoggedUserLikedTweets(
-          access_token: access_token, username: username, count: count);
+      String tweetData =
+          await tweetsManagementRequests.getLoggedUserLikedTweets(
+              access_token: access_token, username: username, count: count);
 
       return (jsonDecode(tweetData)["tweets"] as List)
           .map((i) => ReplyTweetModel.fromJson(i))
@@ -57,7 +61,6 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.likeTweet(
           access_token: access_token, tweet_id: tweet_id);
-      //print(tweetData);
       return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);
@@ -67,11 +70,10 @@ class TweetsManagementRepository {
   Future<TweetModel> postTweet(
       {required String access_token,
       required String content,
-      List<int>? mediaIds}) async {
+      required List<File> media}) async {
     try {
       String tweetData = await tweetsManagementRequests.postTweet(
-          access_token: access_token, content: content, mediaIds: mediaIds);
-      //print(tweetData);
+          access_token: access_token, content: content,media: media);
       return TweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);
@@ -85,6 +87,17 @@ class TweetsManagementRepository {
           access_token: access_token, tweet_id: tweet_id);
       print(tweetData);
       return ReplyTweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<TweetModel> deleteTweet(
+      {required String access_token, required String tweet_id}) async {
+    try {
+      String tweetData = await tweetsManagementRequests.deleteTweet(
+          access_token: access_token, tweet_id: tweet_id);
+      return TweetModel.fromJson(jsonDecode(tweetData)['tweet']);
     } on Exception catch (e) {
       throw Exception(e);
     }

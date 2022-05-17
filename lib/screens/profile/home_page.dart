@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+//import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweet_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
@@ -15,6 +17,8 @@ import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/widgets/tweet.dart';
+import '../../blocs/tweetsManagement/tweet_cubit.dart';
+import '../../blocs/tweetsManagement/tweet_cubit.dart';
 import '../../blocs/tweetsManagement/tweets_managment_bloc.dart';
 import '../../blocs/tweetsManagement/tweets_managment_states.dart';
 
@@ -108,13 +112,14 @@ class _HomePageState extends State<HomePage> {
 
       //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
-    var timeLineBloc = context.read<TweetsManagementBloc>();
+
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
-    late List<TweetWidget> tweets = [];
-    timeLineBloc.add(IntialHomePage(access_token: bloc.access_token, count: 5));
+    late List<TweetWidget> tweetsList = [];
+
+    var tweet_Cubit = context.watch<tweetCubit>();
 
     return Container(
         color: Colors.white,
@@ -157,56 +162,71 @@ class _HomePageState extends State<HomePage> {
                   scaffoldKey.currentState?.openDrawer();
                 }
               }),
-              child: RefreshIndicator(
-                onRefresh: () {
-                  timeLineBloc.add(
-                      OnRefresh(access_token: bloc.access_token, count: 5));
-
-                  return Future.delayed(const Duration(seconds: 10));
+              child: BlocListener<TweetsManagementBloc, TweetsManagementStates>(
+                listenWhen: (previous, current) =>
+                    current is SuccessPostingTweet ||
+                    current is FailurePostingTweet,
+                listener: (context, state) {
+                  if (state is SuccessPostingTweet) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Tweet posted successfully"),
+                      duration: Duration(seconds: 2),
+                    ));
+                  } else if (state is FailurePostingTweet) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Failed to post tweet"),
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
                 },
-                child:
-                    BlocListener<TweetsManagementBloc, TweetsManagementStates>(
-                  listener: (context, state) {
-                    if (state is SuccessPostingTweet) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Tweet posted successfully"),
-                        duration: Duration(seconds: 10),
-                      ));
-                    } else if (state is FailurePostingTweet) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Failed to post tweet"),
-                        duration: Duration(seconds: 2),
-                      ));
-                    }
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await tweet_Cubit.Refresh(
+                        access_token: bloc.access_token,
+                        count: 3,
+                        page: tweet_Cubit.pageNumber);
+                    tweet_Cubit.pageNumber++;
                   },
-                  child: BlocConsumer<TweetsManagementBloc,
-                      TweetsManagementStates>(listener: (context, state) {
-                    if (state is TweetsFetchingFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.errorMessage),
-                        ),
-                      );
-                    }
-                  }, builder: (context, state) {
-                    if (state is TweetsLoadingState) {
-                      //TODO: add loading state Specific to home page timeLine
-                      return Container(
-                        color: Colors.white,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-
-                    if (state is TweetsFetchingSuccess) {
-                      for (var tweet in timeLineBloc.newTweets) {
-                        tweets.add(TweetWidget(tweetData: tweet));
-                      }
-                    }
-
-                    return ListView(children: tweets);
-                  }),
+                  child: BlocConsumer<tweetCubit, TweetsManagementStates>(
+                      buildWhen: (previous, current) =>
+                          current is! TweetsRefreshLoadingState,
+                      listener: (context, state) {
+                        if (state is TweetsFetchingFailed) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.errorMessage),
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is TweetsIntialState) {
+                          tweet_Cubit.onInit(
+                              access_token: bloc.access_token,
+                              count: 10,
+                              page: tweet_Cubit.pageNumber);
+                          tweet_Cubit.pageNumber++;
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is TweetsLoadingState) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (state is TweetsFetchingSuccess) {
+                          for (var tweet in tweet_Cubit.homeList) {
+                            tweetsList.insert(0, TweetWidget(tweetData: tweet));
+                          }
+                        }
+                        return ListView.builder(
+                          reverse: true,
+                          itemCount: tweetsList.length,
+                          itemBuilder: (context, index) {
+                            return tweetsList[index];
+                          },
+                        );
+                      }),
                 ),
               ),
             ),

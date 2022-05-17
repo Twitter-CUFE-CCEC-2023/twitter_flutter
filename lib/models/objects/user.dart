@@ -18,6 +18,7 @@ class UserModel extends Equatable {
   late int tweets_count = 0;
   late int likes_count = 0;
   late bool isBanned = false;
+  late bool is_followed = false;
   late DateTime birth_date = DateTime.now();
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -25,15 +26,15 @@ class UserModel extends Equatable {
     name = json["name"];
     username = json["username"];
     email = json["email"];
-    profile_image_url = json["profile_image_url"];
-    cover_image_url = json["cover_image_url"];
+    profile_image_url = json["profile_image_url"].toString().replaceAll("data:", "");
+    cover_image_url = json["cover_image_url"].toString().replaceAll("data:", "");
     bio = json["bio"];
     website = json["website"];
     location = json["location"];
     created_at = DateTime.parse(json["created_at"]);
     birth_date = DateTime.parse(json["birth_date"]);
     isVerified = json["isVerified"];
-    //role = json["role"];
+    is_followed = json["is_followed"] ?? false;
     followers_count = json["followers_count"];
     following_count = json["following_count"];
     tweets_count = json["tweets_count"];
@@ -46,15 +47,15 @@ class UserModel extends Equatable {
     name = user.name;
     username = user.username;
     email = user.email;
-    profile_image_url = user.profile_image_url;
-    cover_image_url = user.cover_image_url;
+    profile_image_url = user.profile_image_url.replaceAll("data:", "");
+    cover_image_url = user.cover_image_url.replaceAll("data:", "");
     bio = user.bio;
     website = user.website;
     location = user.location;
     created_at = user.created_at;
     birth_date = user.birth_date;
     isVerified = user.isVerified;
-    //role = user.role;
+    is_followed = user.is_followed;
     followers_count = user.followers_count;
     following_count = user.following_count;
     tweets_count = user.tweets_count;
@@ -80,7 +81,8 @@ class UserModel extends Equatable {
         tweets_count,
         likes_count,
         isBanned,
-        birth_date
+        birth_date,
+        is_followed
       ];
 }
 

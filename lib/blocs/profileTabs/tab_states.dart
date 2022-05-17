@@ -11,6 +11,8 @@ class TabLoadingState extends TabStates {
   List<Object?> get props => [];
 }
 class TabLoadSuccessState extends TabStates {
+  String username;
+  TabLoadSuccessState({required this.username});
   @override
   List<Object?> get props => [];
 }
@@ -23,6 +25,8 @@ class TabRefreshingState extends TabStates {
   List<Object?> get props => [];
 }
 class LocalUpadteState extends TabStates {
+  String username;
+  LocalUpadteState({required this.username});
   @override
   List<Object?> get props => [];
 }

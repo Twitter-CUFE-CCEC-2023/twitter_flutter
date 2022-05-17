@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,17 +22,19 @@ class TapTweet extends StatefulWidget {
 
 class _TapTweetState extends State<TapTweet> {
   late ReplyTweetModel tweetData;
-  List<String> media = [
-    "https://pbs.twimg.com/media/FRYEbNEWUAASMrR?format=jpg&name=large",
-    "https://pbs.twimg.com/media/FRYEaJRXwAEX_Pz?format=jpg&name=4096x4096",
-    "https://pbs.twimg.com/media/FRbtqCFXoAEK6uA?format=jpg&name=large",
-    // "https://pbs.twimg.com/media/FRbtqCWXwAMShGB?format=jpg&name=900x900",
-  ];
+  // List<String> media = [
+  //   "https://pbs.twimg.com/media/FRYEbNEWUAASMrR?format=jpg&name=large",
+  //   "https://pbs.twimg.com/media/FRYEaJRXwAEX_Pz?format=jpg&name=4096x4096",
+  //   "https://pbs.twimg.com/media/FRbtqCFXoAEK6uA?format=jpg&name=large",
+  //   // "https://pbs.twimg.com/media/FRbtqCWXwAMShGB?format=jpg&name=900x900",
+  // ];
   @override
   Widget build(BuildContext context) {
-    tweetData = ModalRoute.of(context)?.settings.arguments as ReplyTweetModel;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+
+    tweetData = ModalRoute.of(context)?.settings.arguments as ReplyTweetModel;
+
     int likesCount = tweetData.likes_count;
 
     // TODO: implent replies count and retweets count
@@ -39,80 +42,163 @@ class _TapTweetState extends State<TapTweet> {
     int retweetsCount = tweetData.retweets_count;
     // ignore: unused_local_variable
     int repliesCount = tweetData.replies_count;
-    log("Likes Count $likesCount ${tweetData.likes_count}");
+
+    log("Likes Count $likesCount repliesCount $repliesCount retweetsCount $retweetsCount");
+    // log(tweetData.is_reply.toString());
+    // log(tweetData.toString());
+    UserManagementBloc userBloc = context.read<UserManagementBloc>();
+    log(userBloc.access_token);
+    // log(userBloc.userdata.username.toString());
+    log(tweetData.id.toString());
+
+    // log(tweetData.replies_count.toString());
+    // log(tweetData.id);
+    TweetsManagementBloc tweetsBloc = context.read<TweetsManagementBloc>();
+
     return Container(
       color: Colors.white,
       child: SafeArea(
-        child: Scaffold(
-          appBar: myAppBar(context),
-          body: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Divider(
-                    height: 1,
-                    thickness: 1,
-                  ),
-                  tweetbar(screenHeight),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: tweetText(tweetData.content, screenHeight),
-                  ),
-                  // TODO: REMOVE HARDCODED
-
-                  Padding(
-                    padding: media.isEmpty
-                        ? const EdgeInsets.only()
-                        : const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15),
-                    child: tweetMedia(media,
-                        screenWidth: screenWidth, screenHeight: screenHeight),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    child: tweetdate(),
-                  ),
-                  const Divider(thickness: 1),
-
-                  Padding(
-                    padding: (likesCount != 0 ||
-                            tweetData.replies_count != 0 ||
-                            tweetData.replies_count != 0)
-                        ? const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8)
-                        : const EdgeInsets.all(0),
-                    child: retweetLikeCount(),
-                  ),
-                  if (likesCount != 0 ||
-                      tweetData.replies_count != 0 ||
-                      tweetData.replies_count != 0)
-                    const Divider(thickness: 1),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    child: tweetButtons(
-                      like_count: tweetData.likes_count,
-                      retweetCount: tweetData.retweets_count,
-                      commentCount: tweetData.replies_count,
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth,
-                      is_liked: tweetData.is_liked,
-                      is_retweeted: tweetData.is_retweeted,
-                      is_quoted: tweetData.is_quoted,
+        child: BlocListener<TweetsManagementBloc, TweetsManagementStates>(
+          listener: (context, state) {
+            if (state is TweetDeleteLoading) {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Delete Request Send"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+            if (state is TweetDeleteSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              Future.delayed(
+                Duration(seconds: 2),
+                () {
+                  if (state is TweetDeleteSuccess &&
+                      ModalRoute.of(context)?.settings.name == "/TapTweet") {
+                    Navigator.of(context).pop();
+                  }
+                },
+              );
+            } else if (state is TweetDeleteFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+          },
+          child: Scaffold(
+            appBar: myAppBar(context),
+            body: SingleChildScrollView(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
                     ),
-                  ),
-                  const Divider(thickness: 1),
-                ]),
+                    tweetbar(screenHeight, context, userBloc, tweetData),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: tweetText(tweetData.content, screenHeight),
+                    ),
+                    Padding(
+                      padding: tweetData.media.isEmpty
+                          ? const EdgeInsets.only()
+                          : const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                      child: tweetMedia(tweetData.media,
+                          screenWidth: screenWidth, screenHeight: screenHeight),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: tweetdate(),
+                    ),
+                    const Divider(thickness: 1),
+                    Padding(
+                      padding: (likesCount != 0 ||
+                              tweetData.replies_count != 0 ||
+                              tweetData.replies_count != 0)
+                          ? const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 8)
+                          : const EdgeInsets.all(0),
+                      child: retweetLikeCount(),
+                    ),
+                    if (likesCount != 0 ||
+                        tweetData.replies_count != 0 ||
+                        tweetData.replies_count != 0)
+                      const Divider(thickness: 1),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: tweetButtons(
+                        like_count: tweetData.likes_count,
+                        retweetCount: tweetData.retweets_count,
+                        commentCount: tweetData.replies_count,
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        is_liked: tweetData.is_liked,
+                        is_retweeted: tweetData.is_retweeted,
+                        is_quoted: tweetData.is_quoted,
+                      ),
+                    ),
+                    const Divider(thickness: 1),
+                  ]),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget tweetbar(double screenHeight) {
+  Widget tweetbar(double screenHeight, BuildContext context,
+      UserManagementBloc userBloc, ReplyTweetModel tweet) {
     return ListTile(
+      trailing: InkWell(
+        child: Icon(Icons.menu_outlined),
+        onTap: () {
+          showModalBottomSheet(
+              context: context,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20),
+              )),
+              builder: (context) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    if (userBloc.userdata.id == tweet.user.id)
+                      InkWell(
+                        onTap: () {
+                          TweetsManagementBloc tweetsBloc =
+                              context.read<TweetsManagementBloc>();
+                          tweetsBloc.add(
+                            DeleteTweetButtonPressed(
+                              access_token: userBloc.access_token,
+                              tweet_id: tweetData.id,
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          leading: Icon(Icons.delete),
+                          title: Text("Delete Tweet"),
+                        ),
+                      )
+                  ],
+                );
+              });
+        },
+      ),
       leading:
           tweetProfilePicture(tweetData.user.profile_image_url, screenHeight),
       title: Text(
@@ -514,15 +600,13 @@ class DetailScreen extends StatelessWidget {
           },
         ),
       ),
-      body: GestureDetector(
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 45),
         child: Center(
           child: Image.network(
             imageUrl.toString(),
           ),
         ),
-        // onTap: () {
-        //   Navigator.pop(context);
-        // },
       ),
     );
   }

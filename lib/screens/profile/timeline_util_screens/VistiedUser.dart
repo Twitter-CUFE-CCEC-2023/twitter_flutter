@@ -15,17 +15,18 @@ import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
-import '../utility_screens/opened_image.dart';
+import 'package:twitter_flutter/screens/utility_screens/opened_image.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
 
-class UserProfile extends StatefulWidget  {
-  const UserProfile({Key? key}) : super(key: key);
-  static const route = "/userProfile";
+class VisitedUserProfile extends StatefulWidget  {
+  const VisitedUserProfile({Key? key}) : super(key: key);
+  static const route = "/VisitedUserProfile";
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<VisitedUserProfile> createState() => _VisitedUserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _VisitedUserProfileState extends State<VisitedUserProfile> {
   late UserModel userData;
   late SharedPreferences pref;
 
@@ -39,9 +40,11 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     var userBloc = context.watch<UserManagementBloc>();
 
+    print("VisitedUserProfile build");
+
     if (userBloc.state is LoginSuccessState ||
         userBloc.state is VerificationSuccessState) {
-      userData = userBloc.userdata;
+      userData = ModalRoute.of(context)?.settings.arguments as UserModel;
     } else {
       return FutureBuilder(
           builder: (context, _) {
@@ -77,19 +80,18 @@ class _UserProfileState extends State<UserProfile> {
                   color: Colors.white,
                   child: SizedBox(
                       child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        OutlinedButton(
-                          child: const Text("Edit Profile"),
-                          style: outlinedButtonsStyle,
-                          onPressed: () =>
-                              Navigator.pushNamed(context, PreEditProfile.route),
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            OutlinedButton(
+                              child: Text(userData.is_followed ? "Following" : "Follow"),
+                              style: outlinedButtonsStyle,
+                              onPressed: () => print("Send Follow Request"),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )),
+                      )),
                 ),
               ),
               SliverToBoxAdapter(
@@ -97,18 +99,18 @@ class _UserProfileState extends State<UserProfile> {
                   color: Colors.white,
                   child: SizedBox(
                       child: _buildUserData(
-                    name: userData.name,
-                    username: userData.username,
-                    birthday: userData.birth_date.day,
-                    birthmonth: DateFormat('MMMM')
-                        .format(DateTime(0, userData.birth_date.month)),
-                    birthyear: userData.birth_date.year,
-                    followers: userData.followers_count,
-                    following: userData.following_count,
-                    joinMonth: DateFormat('MMMM')
-                        .format(DateTime(0, userData.created_at.month)),
-                    joinYear: userData.created_at.year,
-                  )),
+                        name: userData.name,
+                        username: userData.username,
+                        birthday: userData.birth_date.day,
+                        birthmonth: DateFormat('MMMM')
+                            .format(DateTime(0, userData.birth_date.month)),
+                        birthyear: userData.birth_date.year,
+                        followers: userData.followers_count,
+                        following: userData.following_count,
+                        joinMonth: DateFormat('MMMM')
+                            .format(DateTime(0, userData.created_at.month)),
+                        joinYear: userData.created_at.year,
+                      )),
                 ),
               ),
 
@@ -118,7 +120,7 @@ class _UserProfileState extends State<UserProfile> {
                 hasScrollBody: true,
                 child: Scaffold(
                   body: TabBarView(
-                    children: [Tweets(userdata: userBloc.userdata,), TweetsAndReplies(userdata: userData), Media(), Likes(userdata: userData,)],
+                    children: [Tweets(userdata: userData), TweetsAndReplies(userdata: userData), Media(), Likes(userdata: userData,)],
                   ),
                 ),
               ),
@@ -151,14 +153,14 @@ class _UserProfileState extends State<UserProfile> {
 
   _buildUserData(
       {required name,
-      required username,
-      required birthday,
-      required birthmonth,
-      required birthyear,
-      required joinMonth,
-      required joinYear,
-      required following,
-      required followers}) {
+        required username,
+        required birthday,
+        required birthmonth,
+        required birthyear,
+        required joinMonth,
+        required joinYear,
+        required following,
+        required followers}) {
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Column(
@@ -253,10 +255,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
 
   MySliverAppBar(
       {required this.expandedHeight,
-      required this.coverImageURL,
-      required this.profileImageURL,
-      required this.name,
-      required this.tweetCount});
+        required this.coverImageURL,
+        required this.profileImageURL,
+        required this.name,
+        required this.tweetCount});
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -295,14 +297,14 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             left: 13,
             callback: () => Navigator.pop(context)),
         _buildAppbarText(
-            //username
+          //username
             username: name,
             screenWidth: width,
             shrinkOffset: shrinkOffset,
             fontSize: 20,
             top: 10),
         _buildAppbarText(
-            //tweet Count
+          //tweet Count
             username: "$tweetCount Tweets",
             screenWidth: width,
             shrinkOffset: shrinkOffset,
@@ -343,20 +345,20 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
     var height = MediaQuery.of(context).size.height;
 
     return (((orientation == Orientation.portrait ? width : height) /
-                    opacityFactor >
-                maxSize)
-            ? maxSize
-            : (orientation == Orientation.portrait ? width : height) /
-                opacityFactor) *
+        opacityFactor >
+        maxSize)
+        ? maxSize
+        : (orientation == Orientation.portrait ? width : height) /
+        opacityFactor) *
         (sized ? (1 - shrinkOffset / expandedHeight) : 1);
   }
 
   Widget _buildBarIcon(
       {double? left,
-      double? right,
-      required double top,
-      required Icon icon,
-      void Function()? callback}) {
+        double? right,
+        required double top,
+        required Icon icon,
+        void Function()? callback}) {
     return Positioned(
         left: left,
         right: right,
@@ -370,10 +372,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
 
   Widget _buildAppbarText(
       {required String username,
-      required double screenWidth,
-      required double shrinkOffset,
-      required double top,
-      required double fontSize}) {
+        required double screenWidth,
+        required double shrinkOffset,
+        required double top,
+        required double fontSize}) {
     return Positioned(
         left: screenWidth / 5,
         top: top,
@@ -391,9 +393,9 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
 
   Widget _buildProfilePhoto(
       {required String imageUrl,
-      required screenWidth,
-      required double shrinkOffset,
-      required BuildContext context}) {
+        required screenWidth,
+        required double shrinkOffset,
+        required BuildContext context}) {
     return Positioned(
       top: expandedHeight / 2 - shrinkOffset,
       left: screenWidth / 25,
@@ -402,11 +404,11 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
         child: GestureDetector(
           onTap: () => profileImageURL.toString().isNotEmpty
               ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          OpenedImage(imageURL: profileImageURL)))
-              : Navigator.pushNamed(context, PreEditProfile.route),
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      OpenedImage(imageURL: profileImageURL)))
+              : null,
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.blue,
@@ -415,7 +417,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             child: SizedBox(
               height: expandedHeight,
               width:
-                  profileImageSize(context, 3.5, shrinkOffset, 76, sized: true),
+              profileImageSize(context, 3.5, shrinkOffset, 76, sized: true),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
@@ -436,45 +438,42 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
 
   Widget _buildCoverPhoto(
       {required BuildContext context,
-      required String imageUrl,
-      required double shrinkOffset}) {
+        required String imageUrl,
+        required double shrinkOffset}) {
     return Opacity(
       opacity: 1 - shrinkOffset / expandedHeight,
       child: imageUrl.toString().isNotEmpty
           ? GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OpenedImage(imageURL: imageUrl))),
-              child: Image.network(
-                imageUrl,
-                loadingBuilder: (context, image, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return image;
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.lightBlue,
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  }
-                },
-                errorBuilder: (context, object, stackTrace) => Container(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OpenedImage(imageURL: imageUrl))),
+        child: Image.network(
+          imageUrl,
+          loadingBuilder: (context, image, loadingProgress) {
+            if (loadingProgress == null) {
+              return image;
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
                   color: Colors.lightBlue,
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                      : null,
                 ),
-                fit: BoxFit.cover,
-              ),
-            )
-          : GestureDetector(
-              onTap: () => Navigator.pushNamed(context, PreEditProfile.route),
-              child: Container(
-                color: Colors.lightBlue,
-              ),
-            ),
+              );
+            }
+          },
+          errorBuilder: (context, object, stackTrace) => Container(
+            color: Colors.lightBlue,
+          ),
+          fit: BoxFit.cover,
+        ),
+      )
+          : Container(
+            color: Colors.lightBlue,
+          ),
     );
   }
 }
