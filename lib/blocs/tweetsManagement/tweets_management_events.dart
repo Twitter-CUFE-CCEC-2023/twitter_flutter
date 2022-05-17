@@ -1,28 +1,16 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class TweetsManagementEvents extends Equatable {}
 
-class UserProfileTweetsTabOpen extends TweetsManagementEvents {
-  String access_token;
-  String username;
-  UserProfileTweetsTabOpen(
-      {required this.access_token, required this.username});
-  List<Object?> get props => [access_token, username];
-}
-
-class UserProfileLikedTweetsTabOpen extends TweetsManagementEvents {
-  String access_token;
-  String username;
-  UserProfileLikedTweetsTabOpen(
-      {required this.access_token, required this.username});
-  List<Object?> get props => [access_token, username];
-}
 
 class PostTweetButtonPressed extends TweetsManagementEvents {
   String access_token;
   String tweet_content;
+  List<File> media;
   PostTweetButtonPressed(
-      {required this.access_token, required this.tweet_content});
+      {required this.access_token, required this.tweet_content, required this.media});
   @override
   List<Object?> get props => [access_token, tweet_content];
 }
@@ -33,7 +21,7 @@ class IntialHomePage extends TweetsManagementEvents {
   int page;
   IntialHomePage(
       {required this.access_token, required this.count, required this.page});
-  List<Object?> get props => [access_token, count];
+  List<Object?> get props => [access_token, count, page];
 }
 
 class OnRefresh extends TweetsManagementEvents {

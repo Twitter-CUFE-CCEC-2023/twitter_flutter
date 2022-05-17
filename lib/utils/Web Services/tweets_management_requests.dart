@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
@@ -146,7 +147,7 @@ class TweetsManagementRequests {
   Future<String> postTweet(
       {required String access_token,
       required String content,
-      List<int>? mediaIds}) async {
+      required List<File> media}) async {
     var headers = {
       'Authorization': 'Bearer $access_token',
       'Content-Type': 'application/json'
@@ -155,7 +156,7 @@ class TweetsManagementRequests {
       "content": content,
     });
 
-    //      "media_ids": mediaIds ?? []
+    print(media);
 
     http.Response res = await http.post(
         Uri.parse("$ENDPOINT/status/tweet/post"),

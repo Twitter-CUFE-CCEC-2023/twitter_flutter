@@ -210,12 +210,12 @@ class _HomePageState extends State<HomePage> {
                 listener: (context, state) {
                   if (state is SuccessPostingTweet) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Failed to post tweet"),
+                      content: Text("Tweet posted successfully"),
                       duration: Duration(seconds: 2),
                     ));
                   } else if (state is FailurePostingTweet) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Tweet posted successfully"),
+                      content: Text("Failed to post tweet"),
                       duration: Duration(seconds: 2),
                     ));
                   }

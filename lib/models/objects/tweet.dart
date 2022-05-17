@@ -16,7 +16,7 @@ class TweetModel extends Equatable {
   late String? quote_comment;
   late bool is_reply;
   late List<UserModel> mentions;
-  late List<MediaModel> media;
+  late List<String> media;
 
   TweetModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,7 +25,7 @@ class TweetModel extends Equatable {
     retweets_count = json['retweets_count'];
     quotes_count = json['quotes_count'];
     replies_count = json['replies_count'];
-    //created_at = DateTime.parse(json['created_at']);
+    created_at = DateTime.parse(json['created_at']);
     is_liked = json['is_liked'];
     is_retweeted = json['is_retweeted'];
     is_quoted = json['is_quoted'];
@@ -33,7 +33,7 @@ class TweetModel extends Equatable {
     is_reply = json['is_reply'];
     mentions =
         (json['mentions'] as List).map((i) => UserModel.fromJson(i)).toList();
-    media = (json['media'] as List).map((i) => MediaModel.fromJson(i)).toList();
+    media = (json['media'] as List).cast<String>();
   }
 
   TweetModel.copy(TweetModel other) {

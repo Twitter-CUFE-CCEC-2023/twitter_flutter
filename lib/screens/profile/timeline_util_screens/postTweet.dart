@@ -29,7 +29,7 @@ class _PostTweetState extends State<PostTweet> {
     if (image != null) {
       setState(() {
         _images.add(File(image.path));
-        if(_images.length >= 1 && _imagesToUpload.length <= 4) {
+        if (_images.length >= 1 && _imagesToUpload.length <= 4) {
           _imagesToUpload.add(File(image.path));
         }
       });
@@ -84,6 +84,7 @@ class _PostTweetState extends State<PostTweet> {
                   onPressed: !tweetEmpty
                       ? () {
                           TweetBloc.add(PostTweetButtonPressed(
+                              media: _imagesToUpload,
                               access_token: userBloc.access_token,
                               tweet_content: _tweetTextController.text));
                         }
