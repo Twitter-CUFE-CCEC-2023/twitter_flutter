@@ -79,7 +79,8 @@ class _TapTweetState extends State<TapTweet> {
               Future.delayed(
                 Duration(seconds: 2),
                 () {
-                  if (state is TweetDeleteSuccess) {
+                  if (state is TweetDeleteSuccess &&
+                      ModalRoute.of(context)?.settings.name == "/TapTweet") {
                     Navigator.of(context).pop();
                   }
                 },
@@ -109,7 +110,6 @@ class _TapTweetState extends State<TapTweet> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: tweetText(tweetData.content, screenHeight),
                     ),
-
                     Padding(
                       padding: tweetData.media.isEmpty
                           ? const EdgeInsets.only()
@@ -124,7 +124,6 @@ class _TapTweetState extends State<TapTweet> {
                       child: tweetdate(),
                     ),
                     const Divider(thickness: 1),
-
                     Padding(
                       padding: (likesCount != 0 ||
                               tweetData.replies_count != 0 ||
