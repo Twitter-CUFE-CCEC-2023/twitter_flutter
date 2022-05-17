@@ -22,12 +22,12 @@ class TapTweet extends StatefulWidget {
 
 class _TapTweetState extends State<TapTweet> {
   late ReplyTweetModel tweetData;
-  List<String> media = [
-    "https://pbs.twimg.com/media/FRYEbNEWUAASMrR?format=jpg&name=large",
-    "https://pbs.twimg.com/media/FRYEaJRXwAEX_Pz?format=jpg&name=4096x4096",
-    "https://pbs.twimg.com/media/FRbtqCFXoAEK6uA?format=jpg&name=large",
-    // "https://pbs.twimg.com/media/FRbtqCWXwAMShGB?format=jpg&name=900x900",
-  ];
+  // List<String> media = [
+  //   "https://pbs.twimg.com/media/FRYEbNEWUAASMrR?format=jpg&name=large",
+  //   "https://pbs.twimg.com/media/FRYEaJRXwAEX_Pz?format=jpg&name=4096x4096",
+  //   "https://pbs.twimg.com/media/FRbtqCFXoAEK6uA?format=jpg&name=large",
+  //   // "https://pbs.twimg.com/media/FRbtqCWXwAMShGB?format=jpg&name=900x900",
+  // ];
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -61,7 +61,6 @@ class _TapTweetState extends State<TapTweet> {
         child: BlocListener<TweetsManagementBloc, TweetsManagementStates>(
           listener: (context, state) {
             if (state is TweetDeleteLoading) {
-              log("loading");
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -71,7 +70,6 @@ class _TapTweetState extends State<TapTweet> {
               );
             }
             if (state is TweetDeleteSuccess) {
-              log("success");
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
@@ -87,7 +85,6 @@ class _TapTweetState extends State<TapTweet> {
                 },
               );
             } else if (state is TweetDeleteFailure) {
-              log("failed");
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.errorMessage),
@@ -112,14 +109,13 @@ class _TapTweetState extends State<TapTweet> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: tweetText(tweetData.content, screenHeight),
                     ),
-                    // TODO: REMOVE HARDCODED
 
                     Padding(
-                      padding: media.isEmpty
+                      padding: tweetData.media.isEmpty
                           ? const EdgeInsets.only()
                           : const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
-                      child: tweetMedia(media,
+                      child: tweetMedia(tweetData.media,
                           screenWidth: screenWidth, screenHeight: screenHeight),
                     ),
                     Padding(
@@ -181,7 +177,7 @@ class _TapTweetState extends State<TapTweet> {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     if (userBloc.userdata.id == tweet.user.id)
                       InkWell(
                         onTap: () {
