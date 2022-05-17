@@ -94,3 +94,9 @@ class TweetDeleteFailure extends TweetsManagementStates {
   @override
   List<Object?> get props => [errorMessage];
 }
+
+class TweetDeleteLoading extends TweetsManagementStates {
+  TweetDeleteLoading();
+  @override
+  List<Object?> get props => [];
+}

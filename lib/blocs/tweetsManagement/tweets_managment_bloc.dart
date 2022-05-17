@@ -51,13 +51,15 @@ class TweetsManagementBloc
     }
   }
 
-  void _onDeleteTweetButtonPressed(
-      DeleteTweetButtonPressed event, Emitter<TweetsManagementStates> emit) async {
+  void _onDeleteTweetButtonPressed(DeleteTweetButtonPressed event,
+      Emitter<TweetsManagementStates> emit) async {
     try {
+      emit(TweetDeleteLoading());
       var tweet = await tweetsManagementRepository.deleteTweet(
           access_token: event.access_token, tweet_id: event.tweet_id);
       emit(TweetDeleteSuccess(
-          message: "Tweet deleted successfully",));
+        message: "Tweet deleted successfully",
+      ));
     } on Exception catch (e) {
       emit(TweetDeleteFailure(
           errorMessage: e.toString().replaceAll("Exception: ", "")));

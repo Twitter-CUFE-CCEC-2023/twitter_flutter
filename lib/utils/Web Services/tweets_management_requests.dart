@@ -204,5 +204,33 @@ class TweetsManagementRequests {
       throw Exception("Undefined Error");
     }
   }
+
+
+   Future<String> getTweetReplay(
+      {required String access_token,
+      required int count,
+      required int page}) async {
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+
+    http.Response res = await http.get(Uri.parse("$ENDPOINT/home/$page/$count"),
+        headers: headers);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
  
 }
