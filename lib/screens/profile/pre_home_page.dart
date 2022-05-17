@@ -1,23 +1,16 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
+import 'package:twitter_flutter/screens/profile/notification_page.dart';
 import 'package:twitter_flutter/screens/profile/search_page.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
-import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
-import 'package:twitter_flutter/widgets/tweet.dart';
-import '../../blocs/tweetsManagement/tweets_managment_bloc.dart';
-import '../../blocs/tweetsManagement/tweets_managment_states.dart';
 
 class PreHomePage extends StatefulWidget {
   const PreHomePage({Key? key}) : super(key: key);
@@ -35,7 +28,7 @@ class _PreHomePageState extends State<PreHomePage> {
   List<Widget> _widgetOptions=<Widget>[
     HomePage(),
     SearchPage(),
-    SearchPage(),
+    NotificationPage(),
     SearchPage(),
 
 

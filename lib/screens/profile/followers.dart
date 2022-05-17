@@ -26,6 +26,7 @@ class User {
 }
 
 class followers extends State<Followers> {
+  late List<FollowModel> userfollowers;
 
   List<User> _users = [
     User('User1', '@username','bio','https://www.royalunibrew.com/wp-content/uploads/2021/07/blank-profile-picture-973460_640-300x300.png', false),
@@ -53,14 +54,15 @@ class followers extends State<Followers> {
 
   @override
   Widget build(BuildContext context) {
-
-
     UserManagementBloc userBloc = context.read<UserManagementBloc>();
+    Future<List<FollowModel>> model = call_getfollowers(userBloc);
 
-    Future<FollowModel> model = call_getfollowers(userBloc);
+
+
     model == null
         ? log("model is null")
         : log("model is not null");
+
 
       // List[UserModel]
       // each user model have username, name ,bio
@@ -112,17 +114,22 @@ class followers extends State<Followers> {
           backgroundColor: Colors.white,
 
 
-          body: Container(
-              padding: EdgeInsets.only(right: 20, left: 20),
-              color: Colors.white,
-              height: double.infinity,
-              width: double.infinity,
-              child: ListView.builder(
-                itemCount: _users.length,
-                itemBuilder: (context, index) {
-                  return userComponent(user: _users[index]);
-                },
-              )
+          body: FutureBuilder(
+            future: call_getfollowers(userBloc),
+            builder: (context,_) {
+              return Container(
+                  padding: EdgeInsets.only(right: 20, left: 20),
+                  color: Colors.white,
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    itemCount: _users.length,
+                    itemBuilder: (context, index) {
+                      return userComponent(user: _users[index]);
+                    },
+                  )
+              );
+            }
           ),
         ),
       );
@@ -133,14 +140,14 @@ class followers extends State<Followers> {
     
   }
   
-  Future<FollowModel> call_getfollowers(UserManagementBloc bloc) {
-    late Future<FollowModel> replay;
+  Future<List<FollowModel>> call_getfollowers(UserManagementBloc bloc) {
+    late Future<List<FollowModel>> replay;
     try {
       replay = repo.getFollowing(
           access_token: bloc.access_token,
           username: bloc.userdata.username,
           page: 1,
-          count: 5);
+          count: 5).then((value) => userfollowers);
     } on Exception catch (e) {
       SnackBar snackBar = SnackBar(
         content: Text(e.toString()),

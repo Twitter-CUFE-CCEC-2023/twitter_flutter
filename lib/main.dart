@@ -54,6 +54,7 @@ import 'package:twitter_flutter/blocs/profileTabs/tweets_tab_cubit.dart';
 import 'package:twitter_flutter/screens/profile/pre_home_page.dart';
 import 'package:twitter_flutter/screens/profile/search_page.dart';
 import 'package:twitter_flutter/screens/profile/search_page2.dart';
+import 'package:twitter_flutter/screens/profile/notification_page.dart';
 
 
 void main() async {
