@@ -197,13 +197,13 @@ class _TweetWidgetState extends State<TweetWidget> {
   }
 
 // TODO: add condition for image and videos
-  Widget tweetMedia(List<MediaModel> media,
+  Widget tweetMedia(List<String> media,
       {required double screenWidth, required double screenHeight}) {
     if (media.isEmpty) {
       return Container();
     } else if (media.length == 1) {
       return oneImage(
-          media[0].path,
+          media[0],
           0.01536 * screenHeight,
           0.01536 * screenHeight,
           0.01536 * screenHeight,
@@ -214,14 +214,14 @@ class _TweetWidgetState extends State<TweetWidget> {
         height: 0.205 * screenHeight, //160
         child: Row(
           children: <Widget>[
-            oneImage(media[0].path, 0.01536 * screenHeight, 0,
+            oneImage(media[0], 0.01536 * screenHeight, 0,
                 0.01536 * screenHeight, 0,
                 imageWidth: 0.356 * screenWidth,
                 imageHeight: 0.205 * screenHeight), // 140  160
             const SizedBox(
               width: 3,
             ),
-            oneImage(media[1].path, 0, 0.01536 * screenHeight, 0,
+            oneImage(media[1], 0, 0.01536 * screenHeight, 0,
                 0.01536 * screenHeight,
                 imageWidth: 0.356 * screenWidth,
                 imageHeight: 0.205 * screenHeight), // 140 160
@@ -234,7 +234,7 @@ class _TweetWidgetState extends State<TweetWidget> {
         height: 0.205 * screenHeight, //160
         child: Row(
           children: <Widget>[
-            oneImage(media[0].path, 0.01536 * screenHeight, 0,
+            oneImage(media[0], 0.01536 * screenHeight, 0,
                 0.01536 * screenHeight, 0,
                 imageWidth: 0.382 * screenWidth,
                 imageHeight: 0.205 * screenHeight), //150 160
@@ -247,13 +247,13 @@ class _TweetWidgetState extends State<TweetWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  oneImage(media[1].path, 0, 0.01536 * screenHeight, 0, 0,
+                  oneImage(media[1], 0, 0.01536 * screenHeight, 0, 0,
                       imageWidth: 0.326 * screenWidth,
                       imageHeight: 0.0999 * screenHeight), //128 78
                   const SizedBox(
                     height: 3,
                   ),
-                  oneImage(media[2].path, 0, 0, 0, 0.01536 * screenHeight,
+                  oneImage(media[2], 0, 0, 0, 0.01536 * screenHeight,
                       imageWidth: 0.326 * screenWidth,
                       imageHeight: 0.0999 * screenHeight), // 128 78
                 ],
@@ -274,13 +274,13 @@ class _TweetWidgetState extends State<TweetWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  oneImage(media[0].path, 0.01536 * screenHeight, 0, 0, 0,
+                  oneImage(media[0], 0.01536 * screenHeight, 0, 0, 0,
                       imageWidth: 0.356 * screenWidth,
                       imageHeight: 0.0999 * screenHeight),
                   const SizedBox(
                     height: 3,
                   ),
-                  oneImage(media[1].path, 0, 0, 0.01536 * screenHeight, 0,
+                  oneImage(media[1], 0, 0, 0.01536 * screenHeight, 0,
                       imageWidth: 0.356 * screenWidth,
                       imageHeight: 0.0999 * screenHeight),
                 ],
@@ -295,13 +295,13 @@ class _TweetWidgetState extends State<TweetWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  oneImage(media[2].path, 0, 0.01536 * screenHeight, 0, 0,
+                  oneImage(media[2], 0, 0.01536 * screenHeight, 0, 0,
                       imageWidth: 0.356 * screenWidth,
                       imageHeight: 0.0999 * screenHeight),
                   const SizedBox(
                     height: 3,
                   ),
-                  oneImage(media[3].path, 0, 0, 0, 0.01536 * screenHeight,
+                  oneImage(media[3], 0, 0, 0, 0.01536 * screenHeight,
                       imageWidth: 0.356 * screenWidth,
                       imageHeight: 0.0999 * screenHeight),
                 ],

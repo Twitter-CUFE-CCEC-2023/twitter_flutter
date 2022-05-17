@@ -23,7 +23,7 @@ class TweetsManagementBloc
     emit(TweetsLoadingState());
     try {
       var tweets = await tweetsManagementRepository.postTweet(
-          access_token: event.access_token, content: event.tweet_content);
+          access_token: event.access_token, content: event.tweet_content,media: event.media);
 
       emit(SuccessPostingTweet(
           message: "Tweet posted successfully", tweet: tweets));

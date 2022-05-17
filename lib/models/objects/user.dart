@@ -26,8 +26,8 @@ class UserModel extends Equatable {
     name = json["name"];
     username = json["username"];
     email = json["email"];
-    profile_image_url = json["profile_image_url"];
-    cover_image_url = json["cover_image_url"];
+    profile_image_url = json["profile_image_url"].toString().replaceAll("data:", "");
+    cover_image_url = json["cover_image_url"].toString().replaceAll("data:", "");
     bio = json["bio"];
     website = json["website"];
     location = json["location"];
@@ -47,8 +47,8 @@ class UserModel extends Equatable {
     name = user.name;
     username = user.username;
     email = user.email;
-    profile_image_url = user.profile_image_url;
-    cover_image_url = user.cover_image_url;
+    profile_image_url = user.profile_image_url.replaceAll("data:", "");
+    cover_image_url = user.cover_image_url.replaceAll("data:", "");
     bio = user.bio;
     website = user.website;
     location = user.location;
