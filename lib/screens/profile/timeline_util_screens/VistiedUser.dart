@@ -120,7 +120,7 @@ class _VisitedUserProfileState extends State<VisitedUserProfile> {
                 hasScrollBody: true,
                 child: Scaffold(
                   body: TabBarView(
-                    children: [Tweets(userdata: userData), TweetsAndReplies(userdata: userData), Media(), Likes(userdata: userData,)],
+                    children: [Tweets(userdata: userData), TweetsAndReplies(userdata: userData), Media(userdata: userData), Likes(userdata: userData,)],
                   ),
                 ),
               ),

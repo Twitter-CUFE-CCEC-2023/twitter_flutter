@@ -30,7 +30,8 @@ import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'blocs/tweetsManagement/tweets_managment_bloc.dart';
+import 'package:twitter_flutter/blocs/profileTabs/media_tab_cubit.dart';
+import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'models/hive models/logged_user.dart';
 import 'package:twitter_flutter/screens/profile/tap_tweet.dart';
 import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
@@ -78,6 +79,7 @@ class _TwitterState extends State<Twitter> {
           tweetsManagementRequests: TweetsManagementRequests()));
   final TweetsTabCubit tweetsTabCubit = TweetsTabCubit();
   final LikedTweetsTabCubit likedTweetsTabCubit = LikedTweetsTabCubit();
+  final MediaTweetsTabCubit mediaTweetsTabCubit = MediaTweetsTabCubit();
   final tweetCubit tweet_Cubit = tweetCubit();
   @override
   Widget build(BuildContext context) {
@@ -89,6 +91,7 @@ class _TwitterState extends State<Twitter> {
         BlocProvider.value(value: tweetsTabCubit),
         BlocProvider.value(value: likedTweetsTabCubit),
         BlocProvider.value(value: tweet_Cubit),
+        BlocProvider.value(value: mediaTweetsTabCubit),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -145,6 +148,7 @@ class _TwitterState extends State<Twitter> {
     tweetsTabCubit.close();
     likedTweetsTabCubit.close();
     tweet_Cubit.close();
+    mediaTweetsTabCubit.close();
     super.dispose();
   }
 }

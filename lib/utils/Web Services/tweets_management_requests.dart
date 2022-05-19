@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class TweetsManagementRequests {
@@ -52,6 +53,30 @@ class TweetsManagementRequests {
       throw Exception("Server Error");
     } else {
       throw Exception("${res.statusCode} ${res.body} Undefined Error from lt");
+    }
+  }
+
+  Future<String> getLoggedUserMediaTweets(
+      {required String access_token,
+        required String username,
+        page = 1,
+        int? count = 20}) async {
+    var headers = {'Authorization': 'Bearer $access_token'};
+
+    http.Response res = await http.get(
+        Uri.parse("$ENDPOINT/media/list/$username/$page/$count"),
+        headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("${res.statusCode}  Undefined Error from lt");
     }
   }
 
@@ -148,25 +173,26 @@ class TweetsManagementRequests {
       {required String access_token,
       required String content,
       required List<File> media}) async {
-    var headers = {
-      'Authorization': 'Bearer $access_token',
-      'Content-Type': 'application/json'
-    };
-    var body = jsonEncode(<String, dynamic>{
-      "content": content,
-    });
+    var headers = {'Authorization': 'Bearer $access_token'};
 
-    print(media);
+    var request =
+        http.MultipartRequest('POST', Uri.parse("$ENDPOINT/status/tweet/post"));
 
-    http.Response res = await http.post(
-        Uri.parse("$ENDPOINT/status/tweet/post"),
-        headers: headers,
-        body: body);
+    request.headers.addAll(headers);
+
+    request.fields.addAll({"content": content});
+
+    for (File file in media) {
+      request.files.add(await http.MultipartFile.fromPath('media', file.path));
+    }
+
+    http.StreamedResponse res = await request.send();
 
     int statusCode = res.statusCode;
+
     if (statusCode == 200) {
-      //print(res.body);
-      return res.body;
+      return await res.stream.bytesToString();
+      //return await res.stream.bytesToString();
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
     } else if (statusCode == 401) {
@@ -188,8 +214,10 @@ class TweetsManagementRequests {
       "id": tweet_id,
     });
 
-    http.Response res = await http.delete(Uri.parse("$ENDPOINT/status/tweet/delete"),
-        headers: headers, body: body);
+    http.Response res = await http.delete(
+        Uri.parse("$ENDPOINT/status/tweet/delete"),
+        headers: headers,
+        body: body);
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {
@@ -206,8 +234,7 @@ class TweetsManagementRequests {
     }
   }
 
-
-   Future<String> getTweetReplay(
+  Future<String> getTweetReplay(
       {required String access_token,
       required int count,
       required int page}) async {
@@ -232,6 +259,4 @@ class TweetsManagementRequests {
       throw Exception("Undefined Error");
     }
   }
-
- 
 }

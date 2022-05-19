@@ -61,8 +61,14 @@ class _PostTweetState extends State<PostTweet> {
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
         listener: (context, state) {
       if (state is TweetsLoadingState) {
-        Navigator.popUntil(
-            context, (route) => HomePage.route == route.settings.name);
+        // if(ModalRoute.of(context)! == "/UserProfile")
+        //   {
+            //Navigator.popUntil(context, (route) => UserProfile.route == route.settings.name);
+        //   }else if(ModalRoute.of(context)!.settings.name == "/HomePage")
+        //   {
+        //     Navigator.popUntil(context, (route) => HomePage.route == route.settings.name);
+        //   }
+        Navigator.popUntil(context, (route) => UserProfile.route == route.settings.name || HomePage.route == route.settings.name);
       }
     }, builder: (context, state) {
       return SafeArea(
