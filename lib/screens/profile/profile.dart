@@ -118,7 +118,7 @@ class _UserProfileState extends State<UserProfile> {
                 hasScrollBody: true,
                 child: Scaffold(
                   body: TabBarView(
-                    children: [Tweets(userdata: userBloc.userdata,), TweetsAndReplies(userdata: userData), Media(), Likes(userdata: userData,)],
+                    children: [Tweets(userdata: userBloc.userdata,), TweetsAndReplies(userdata: userData), Media(userdata: userData), Likes(userdata: userData,)],
                   ),
                 ),
               ),
