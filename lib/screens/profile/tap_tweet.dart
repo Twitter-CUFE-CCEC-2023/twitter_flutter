@@ -12,6 +12,11 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dar
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 
+import '../../models/objects/user.dart';
+import '../../repositories/user_management_repository.dart';
+import '../../utils/Web Services/Follow_management_request.dart';
+import '../../utils/Web Services/tweets_management_requests.dart';
+
 class TapTweet extends StatefulWidget {
   const TapTweet({Key? key}) : super(key: key);
   static String route = '/TapTweet';
@@ -22,12 +27,9 @@ class TapTweet extends StatefulWidget {
 
 class _TapTweetState extends State<TapTweet> {
   late ReplyTweetModel tweetData;
-  // List<String> media = [
-  //   "https://pbs.twimg.com/media/FRYEbNEWUAASMrR?format=jpg&name=large",
-  //   "https://pbs.twimg.com/media/FRYEaJRXwAEX_Pz?format=jpg&name=4096x4096",
-  //   "https://pbs.twimg.com/media/FRbtqCFXoAEK6uA?format=jpg&name=large",
-  //   // "https://pbs.twimg.com/media/FRbtqCWXwAMShGB?format=jpg&name=900x900",
-  // ];
+
+  late List<UserModel>? data = null;
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -50,9 +52,19 @@ class _TapTweetState extends State<TapTweet> {
     log(userBloc.access_token);
     // log(userBloc.userdata.username.toString());
     log(tweetData.id.toString());
+    // log(userBloc.userdata.followers_count.toString());
 
     // log(tweetData.replies_count.toString());
     // log(tweetData.id);
+    // log(userBloc.userdata.username);
+
+    getfollow(userBloc);
+    if (data != null) {
+      log(data![0].bio);
+    } else {
+      log("not loaded yet");
+    }
+
     TweetsManagementBloc tweetsBloc = context.read<TweetsManagementBloc>();
 
     return Container(
@@ -63,7 +75,7 @@ class _TapTweetState extends State<TapTweet> {
             if (state is TweetDeleteLoading) {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text("Delete Request Send"),
                   duration: Duration(seconds: 2),
                 ),
@@ -73,14 +85,13 @@ class _TapTweetState extends State<TapTweet> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  duration: Duration(seconds: 2),
+                  duration: const Duration(seconds: 1),
                 ),
               );
               Future.delayed(
-                Duration(seconds: 2),
+                const Duration(seconds: 2),
                 () {
-                  if (state is TweetDeleteSuccess &&
-                      ModalRoute.of(context)?.settings.name == "/TapTweet") {
+                  if (ModalRoute.of(context)?.settings.name == "/TapTweet") {
                     Navigator.of(context).pop();
                   }
                 },
@@ -89,7 +100,7 @@ class _TapTweetState extends State<TapTweet> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.errorMessage),
-                  duration: Duration(seconds: 2),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             }
@@ -127,7 +138,7 @@ class _TapTweetState extends State<TapTweet> {
                     Padding(
                       padding: (likesCount != 0 ||
                               tweetData.replies_count != 0 ||
-                              tweetData.replies_count != 0)
+                              tweetData.retweets_count != 0)
                           ? const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 8)
                           : const EdgeInsets.all(0),
@@ -158,6 +169,17 @@ class _TapTweetState extends State<TapTweet> {
         ),
       ),
     );
+  }
+
+  getfollow(
+    UserManagementBloc userBloc,
+  ) async {
+    UserFollowRepository repo = UserFollowRepository();
+    data = await repo.getFollowers(
+        access_token: userBloc.access_token,
+        username: userBloc.userdata.username,
+        page: 1,
+        count: 5);
   }
 
   Widget tweetbar(double screenHeight, BuildContext context,
