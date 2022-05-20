@@ -24,6 +24,8 @@ class UserManagementBloc
     on<EditProfileButtonPressed>(_onEditProfileButtonPressed);
     on<LoadUserProfile>(_onLoadUserProfileEvent);
     on<LogoutButtonPressed>(_onLogoutButtonPressed);
+    on<FollowButtonPressed>(_onFollowButtonPressed);
+
   }
 
   void _onStartEvent(
@@ -160,6 +162,20 @@ class UserManagementBloc
       emit(LoginSuccessState(data));
     } on Exception catch (e) {
       emit(LoginFailureState(
+          errorMessage: e.toString().replaceAll("Exception:", "")));
+    }
+  }
+
+  void _onFollowButtonPressed(
+      FollowButtonPressed event, Emitter<UserManagementStates> emitter) async {
+    emit(LoadingState());
+    try {
+      var data = await userManagementRepository.getFollow(
+          username: event.username, access_token: event.access_token);
+      userdata = data;
+      emit(FollowSuccessState(data));
+    } on Exception catch (e) {
+      emit(FollowFailureState(
           errorMessage: e.toString().replaceAll("Exception:", "")));
     }
   }

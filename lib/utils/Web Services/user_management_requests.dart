@@ -222,6 +222,34 @@ class UserManagementRequests {
     }
   }
 
+  Future<String> followUser(
+      {access_token	, username, notify}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode(<String, String>{
+      "access_token": access_token,
+      "username": username,
+      "notify": notify,
+    });
+
+    http.Response res = await http.post(Uri.parse("$ENDPOINT/user/follow"),
+        body: body, headers: headers);
+
+    int statusCode = res.statusCode;
+    print(res.body);
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("BadRequest");
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 500) {
+      throw Exception("Invalid user Id");
+    } else {
+      throw Exception("The server encountered an unexpected condition which prevented it from fulfilling the request");
+    }
+  }
+
    Future<String> getFollowersRequest(
       {required String access_token,
       required String username,
@@ -250,3 +278,8 @@ class UserManagementRequests {
     }
   }
 }
+
+
+
+
+

@@ -54,14 +54,11 @@ class followers extends State<Followers> {
 
   @override
   Widget build(BuildContext context) {
-    UserManagementBloc userBloc = context.read<UserManagementBloc>();
-    Future<List<FollowModel>> model = call_getfollowers(userBloc);
-
-
-
-    model == null
-        ? log("model is null")
-        : log("model is not null");
+    var userBloc = context.read<UserManagementBloc>();
+ //   Future<List<FollowModel>> model = call_getfollowers(userBloc);
+ //model == null
+    //    ? log("model is null")
+    //    : log("model is not null");
 
 
       // List[UserModel]
@@ -116,43 +113,57 @@ class followers extends State<Followers> {
 
           body: FutureBuilder(
             future: call_getfollowers(userBloc),
-            builder: (context,_) {
-              return Container(
-                  padding: EdgeInsets.only(right: 20, left: 20),
-                  color: Colors.white,
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    itemCount: _users.length,
-                    itemBuilder: (context, index) {
-                      return userComponent(user: _users[index]);
-                    },
-                  )
-              );
+            builder: (context,AsyncSnapshot snapshot) {
+              if(snapshot.data == null)
+                {
+                  return Container(
+                    child: Center(
+                      child: Text('Loading'),
+                    ),
+                  );
+                }else{
+              return ListView.builder(itemCount: snapshot.data.length,itemBuilder: (BuildContext context,int index){
+                return ListTile(
+                  title: Text(snapshot.data[index].name),
+                );
+              },);}
+
+                //Container(
+                //  padding: EdgeInsets.only(right: 20, left: 20),
+                //  color: Colors.white,
+                //  height: double.infinity,
+                //  width: double.infinity,
+                //  child: ListView.builder(
+                //    itemCount: _users.length,
+                //    itemBuilder: (context, index) {
+                //      return userComponent(user: _users[index]);
+                //    },
+                //  )
+            //  );
             }
           ),
         ),
       );
       //);
     }
-    
+
     );
-    
   }
   
-  Future<List<FollowModel>> call_getfollowers(UserManagementBloc bloc) {
-    late Future<List<FollowModel>> replay;
+  Future<List<FollowModel>> call_getfollowers(UserManagementBloc bloc) async{
+     List<FollowModel> replay = [];
     try {
       replay = repo.getFollowing(
           access_token: bloc.access_token,
           username: bloc.userdata.username,
           page: 1,
-          count: 5).then((value) => userfollowers);
+          count: 5).then((value) => userfollowers) as List<FollowModel>;
     } on Exception catch (e) {
       SnackBar snackBar = SnackBar(
         content: Text(e.toString()),
       );
     }
+
     return replay;
   }
 

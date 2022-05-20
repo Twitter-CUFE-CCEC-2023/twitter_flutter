@@ -79,7 +79,7 @@ class UserManagementRepository {
     }
   }
 
-  Future<FollowModel> getFollowing(
+  Future<List<FollowModel>> getFollowing(
       {required username,
       required access_token,
       required page,
@@ -90,13 +90,15 @@ class UserManagementRepository {
           access_token: access_token,
           page: page,
           count: count);
-      return FollowModel.fromJson(jsonDecode(data)['user']);
+      return (jsonDecode(data)["user"] as List)
+          .map((i) => FollowModel.fromJson(i))
+          .toList();
     } on Exception catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<FollowModel> getFollowers(
+  Future<List<FollowModel>> getFollowers(
       {required username,
       required access_token,
       required page,
@@ -107,7 +109,19 @@ class UserManagementRepository {
           access_token: access_token,
           page: page,
           count: count);
-      return FollowModel.fromJson(jsonDecode(data)['user']);
+      return (jsonDecode(data)["user"] as List)
+          .map((i) => FollowModel.fromJson(i))
+          .toList();
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+  Future<UserModel> getFollow(
+      {required username, required access_token}) async {
+    try {
+      String data = await userManagementRequests.followUser(
+          username: username, access_token: access_token);
+      return UserModel.fromJson(jsonDecode(data)['user']);
     } on Exception catch (e) {
       throw Exception(e);
     }

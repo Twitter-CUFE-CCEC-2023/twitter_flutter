@@ -80,4 +80,13 @@ class LogoutButtonPressed extends UserManagementEvents {
   List<Object?> get props => [];
 }
 
+class FollowButtonPressed extends UserManagementEvents {
+  final String access_token;
+  final String username;
+  final bool notify = true;
+  FollowButtonPressed({required this.access_token, required this.username,});
+  @override
+  List<Object?> get props => [username, access_token];
+}
+
 
