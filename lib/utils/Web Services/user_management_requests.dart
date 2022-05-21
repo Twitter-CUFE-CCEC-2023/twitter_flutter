@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password1.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class UserManagementRequests {
@@ -60,7 +62,8 @@ class UserManagementRequests {
     }
   }
 
-  Future<String> Verification({required email_or_username, required verificationCode}) async {
+  Future<String> Verification(
+      {required email_or_username, required verificationCode}) async {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonEncode(<String, dynamic>{
@@ -74,9 +77,8 @@ class UserManagementRequests {
         headers: headers);
 
     int statusCode = res.statusCode;
-    print (res.body);
+    print(res.body);
     if (statusCode == 200) {
-
       return res.body;
     } else if (statusCode == 400) {
       throw Exception("Client Error, Can not process your request");
@@ -192,5 +194,153 @@ class UserManagementRequests {
     }
   }
 
+  Future<String> getFollowingRequest(
+      {required String access_token,
+      required String username,
+      required int page,
+      required int count}) async {
+    var pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + access_token,
+    };
+    log(access_token+ username.toString() + page.toString() +  count.toString());
+    http.Response res = await http.get(
+        Uri.parse("$ENDPOINT/following/list/:$username/:$page/:$count"),
+        headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid user Id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+  Future<String> followUser(
+      {access_token	, username, notify}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode(<String, String>{
+      "access_token": access_token,
+      "username": username,
+      "notify": notify,
+    });
+
+    http.Response res = await http.post(Uri.parse("$ENDPOINT/user/follow"),
+        body: body, headers: headers);
+
+    int statusCode = res.statusCode;
+    print(res.body);
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("BadRequest");
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 500) {
+      throw Exception("Invalid user Id");
+    } else {
+      throw Exception("The server encountered an unexpected condition which prevented it from fulfilling the request");
+    }
+  }
+
+   Future<String> getFollowersRequest(
+      {required String access_token,
+      required String username,
+      required int page,
+      required int count}) async {
+    var pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + access_token,
+    };
+    http.Response res = await http.get(
+        Uri.parse("$ENDPOINT/follower/list/:$username/:$page/:$count"),
+        headers: headers);
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      //print(res.body);
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid user Id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+
+  Future<String> forgetPassword({username, password,verification_code}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode(<String, dynamic>{
+      "email_or_username": username,
+      "password": password,
+      "verification_code":verification_code
+    });
+
+    http.Response res = await http.put(
+        Uri.parse("$ENDPOINT/auth/reset-password"),
+        body: body,
+        headers: headers);
+
+    int statusCode = res.statusCode;
+    print(res.body);
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+  Future<String> forgetPasswordEmail(
+      {username}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode(<String, String>{
+      "email_or_username": username,
+    });
+
+    http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/send-reset-password"),
+        body: body, headers: headers);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid or expired verification code");
+    } else if (statusCode == 404) {
+      throw Exception("NotFound");
+    } else if (statusCode == 500) {
+      throw Exception("InternalServerError");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+
 
 }
+
+
+
+
+

@@ -5,10 +5,12 @@ import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_events.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
+import 'package:twitter_flutter/screens/profile/pre_home_page.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import '../../utils/common_listners/network_listner.dart';
 import '../../widgets/authentication/appBar.dart';
+import 'forget_password1.dart';
 
 class LoginPassword extends StatefulWidget {
   static const String route = "/LoginPassword";
@@ -75,7 +77,7 @@ class _LoginPasswordState extends State<LoginPassword> {
             try {
               Navigator.pushNamedAndRemoveUntil(
                   context,
-                  HomePage.route,
+                  PreHomePage.route,
                       (Route<dynamic> route) => false);
             } on Exception catch (e) {
               context
@@ -216,7 +218,8 @@ class _LoginPasswordState extends State<LoginPassword> {
                                 children: [
                                   OutlinedButton(
                                     onPressed: () {
-                                      //TODO:Forget Password Button
+                                      Navigator.pushNamed(
+                                          context, ForgetPassword.route);
                                     },
                                     child: const Text("Forget Password?"),
                                     style: outlinedButtonsStyle,

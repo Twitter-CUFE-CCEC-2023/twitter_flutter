@@ -100,3 +100,21 @@ class LogoutSuccessState extends UserManagementStates {
   @override
   List<Object?> get props => [];
 }
+
+class FollowSuccessState extends UserManagementStates {
+  final dynamic userdata;
+  FollowSuccessState(this.userdata);
+  @override
+  List<Object?> get props => [userdata];
+}
+
+class FollowFailureState extends UserManagementStates {
+  final String errorMessage;
+  FollowFailureState({required this.errorMessage});
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+
+
+

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/profile_management/your_account.dart';
-
+import 'package:twitter_flutter/screens/profile_management/account_information.dart';
 import '../../blocs/userManagement/user_management_bloc.dart';
 import '../../blocs/userManagement/user_management_states.dart';
 import '../starting_page.dart';
@@ -58,7 +58,7 @@ class _SettingsState extends State<Settings> {
               backgroundColor: Colors.white,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                icon: const Icon(Icons.arrow_back, color: Colors.blue),
                 onPressed: () {
                   Navigator.pop(context);
                 },
