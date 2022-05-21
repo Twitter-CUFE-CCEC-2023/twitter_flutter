@@ -8,9 +8,10 @@ import 'package:twitter_flutter/blocs/tweetsManagement/tweet_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
+import 'package:twitter_flutter/models/objects/mediaModel.dart';
+import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
 import 'package:twitter_flutter/screens/authentication/Icons.dart';
-import 'package:twitter_flutter/screens/profile/search_page.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
@@ -33,7 +34,48 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   late UserModel userData;
-
+  BottomNavigationBar Bottom(
+      {required double height, required double imageMultiplier}) {
+    return BottomNavigationBar(
+      elevation: 0,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(
+              MyFlutterApp.download,
+              size: 0.033 * imageMultiplier * height,
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.white,
+            label: 'Home'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              MyFlutterApp.saved,
+              size: 0.033 * imageMultiplier * height,
+              color: Colors.black,
+            ),
+            label: 'Search'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              MyFlutterApp.home,
+              size: 0.033 * imageMultiplier * height,
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.black,
+            label: 'Notification'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.mail_outline,
+              size: 0.033 * imageMultiplier * height,
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.black,
+            label: 'Messages'),
+      ],
+    );
+  }
 
   AppBar logoAppBar(
       {required double height,
@@ -76,7 +118,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 
   Widget Message(
       {required String message,
@@ -230,7 +271,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-
+            bottomNavigationBar: Bottom(
+                height: screenHeight, imageMultiplier: imageMultiplier[0]),
           ),
         ));
   }

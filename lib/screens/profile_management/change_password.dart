@@ -31,11 +31,10 @@ class changepassword extends State<ChangePassword> {
     pass.dispose();
     super.dispose();
   }
-
-  Widget message(
+  Widget Message(
       {required String message,
-      required double fontSize,
-      required Color colors}) {
+        required double fontSize,
+        required Color colors}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 35), // 35
       child: AutoSizeText(
@@ -48,10 +47,10 @@ class changepassword extends State<ChangePassword> {
 
   Widget textfield(
       {required String message,
-      required String message2,
-      required double width,
-      required TextEditingController controller,
-      required validator}) {
+        required String message2,
+        required double width,
+        required TextEditingController controller,
+        required validator}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
       child: SizedBox(
@@ -77,17 +76,17 @@ class changepassword extends State<ChangePassword> {
 
     confirmpassword.addListener(() {
       setState(() {
-        nextActive = disableButton();
+        nextActive = DisableButton();
       });
     });
     password.addListener(() {
       setState(() {
-        nextActive = disableButton();
+        nextActive = DisableButton();
       });
     });
     pass.addListener(() {
       setState(() {
-        nextActive = disableButton();
+        nextActive = DisableButton();
       });
     });
   }
@@ -111,7 +110,7 @@ class changepassword extends State<ChangePassword> {
     return null;
   }
 
-  bool disableButton() {
+  bool DisableButton() {
     if (pass.text.isEmpty ||
         password.text.isEmpty ||
         confirmpassword.text.isEmpty) {
@@ -213,8 +212,7 @@ class changepassword extends State<ChangePassword> {
                         child: SizedBox(
                           width: screenWidth / 2,
                           height: 45,
-                          child: BlocListener<UserManagementBloc,
-                              UserManagementStates>(
+                          child: BlocListener<UserManagementBloc, UserManagementStates>(
                             listener: (context, state) {
                               if (state is UpdatePasswordSuccessState) {
                                 try {
@@ -222,11 +220,9 @@ class changepassword extends State<ChangePassword> {
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       YourAccount.route,
-                                      (route) => route == ChangePassword.route);
+                                      (route)=>route == ChangePassword.route);
                                 } on Exception catch (e) {
-                                  context
-                                      .read<UserManagementBloc>()
-                                      .add(StartEvent());
+                                  context.read<UserManagementBloc>().add(StartEvent());
                                 }
                               } else if (state is UpdatePasswordFailureState) {
                                 //TODO:Add bottom sheet to show Failure Message
@@ -234,47 +230,45 @@ class changepassword extends State<ChangePassword> {
                               }
                             },
                             child: RaisedButton(
-                              color: Colors.blueAccent,
-                              disabledColor: Colors.lightBlueAccent,
-                              disabledElevation: 54,
-                              child: const Text(
-                                'Update password',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
+                            color: Colors.blueAccent,
+                            disabledColor: Colors.lightBlueAccent,
+                            disabledElevation: 54,
+                            child: const Text(
+                              'Update password',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
                               ),
-                              onPressed: nextActive
-                                  ? () {
-                                      if (_formkey.currentState!.validate()) {
-                                        String oldpassword = pass.text;
-                                        String newpassword = confirmpassword.text;
-                                        context.read<UserManagementBloc>().add(
-                                            UpdatePasswordButtonPressed(
-                                                oldpassword: oldpassword,
-                                                newpassword: newpassword));
-                                      }
-                                    }
-                                  : null,
                             ),
+                            onPressed: nextActive
+                                ? () {
+                                    if (_formkey.currentState!.validate()) {
+                                      String oldpassword = pass.text;
+                                      String newpassword = confirmpassword.text;
+                                      context.read<UserManagementBloc>().add(
+                                          UpdatePasswordButtonPressed(
+                                              oldpassword: oldpassword,
+                                              newpassword: newpassword));
+                                    } else {
+                                      print("UnSuccessfull");
+                                    }
+                                  }
+                                : null,
                           ),
                         ),
-                      ),
+                      ),),
                       SizedBox(
                           width: screenWidth,
-                          height: screenHeight *
-                              sizedBoxHeightMultiplier[0] *
-                              0.043,
+                          height: screenHeight*sizedBoxHeightMultiplier[0]*0.043,
                           child: Center(
                             child: TextButton(
-                              onPressed: () {},
-                              child: message(
-                                  fontSize: 25,
-                                  message: 'Forgot password?',
-                                  colors: Colors.black54),
-                            ),
-                          )),
+                              onPressed: (){},
+                            child : Message(
+                                fontSize: 25 ,
+                                message: 'Forgot password?',
+                                colors: Colors.black54),
+                            ),   )),
                     ],
                   ),
                 ],

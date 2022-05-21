@@ -81,5 +81,3 @@ class LogoutButtonPressed extends UserManagementEvents {
 }
 
 
-
-

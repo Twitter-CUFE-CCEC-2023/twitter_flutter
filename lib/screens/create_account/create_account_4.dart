@@ -177,7 +177,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
             if (value!.length >= 8) {
               return null;
             } else {
-              return "Enter at least 8 characters";
+              return "Enter atleast 8 characters";
             }
           },
           keyboardType: TextInputType.text,
