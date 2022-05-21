@@ -41,7 +41,6 @@ class _TapTweetState extends State<TapTweet> {
     int likesCount = tweetData.likes_count;
 
     // TODO: implent replies count and retweets count
-    // ignore: unused_local_variable
     int retweetsCount = tweetData.retweets_count;
     // ignore: unused_local_variable
     int repliesCount = tweetData.replies_count;
@@ -104,22 +103,12 @@ class _TapTweetState extends State<TapTweet> {
             }
 
             if (state is RetweetLoading) {
-              if (tweetData.is_retweeted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Retweet Request Send"),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              }
-              if (!tweetData.is_retweeted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("UnRetweet Request Send"),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              }
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Request Send"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             } else if (state is RetweetSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -221,14 +210,9 @@ class _TapTweetState extends State<TapTweet> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 5),
                       child: tweetButtons(
-                        like_count: tweetData.likes_count,
-                        retweetCount: tweetData.retweets_count,
-                        commentCount: tweetData.replies_count,
+                        tweet: tweetData,
                         screenHeight: screenHeight,
                         screenWidth: screenWidth,
-                        is_liked: tweetData.is_liked,
-                        is_retweeted: tweetData.is_retweeted,
-                        is_quoted: tweetData.is_quoted,
                       ),
                     ),
                     const Divider(thickness: 1),
@@ -287,65 +271,72 @@ class _TapTweetState extends State<TapTweet> {
             onTap: () => Navigator.pushNamed(context, "/TapTweet",
                 arguments: data[index]),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ListTile(
-                  leading: tweetProfilePicture(
-                      data[index].user.profile_image_url, 25),
-                  title: Row(
-                    children: [
-                      Text(
-                        data[index].user.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: tweetProfilePicture(
+                          data[index].user.profile_image_url, 25),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                data[index].user.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                " @" + data[index].user.username,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 85, 76, 76),
+                                  fontSize: 15,
+                                ),
+                              ),
+                              Text(
+                                "  • " + date,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 85, 76, 76),
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 5)),
+                          Text(
+                            data[index].content,
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 85, 76, 76),
+                              fontSize: 17,
+                            ),
+                          ),
+                          if (data[index].media.length != 0)
+                            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                          tweetMedia(data[index].media,
+                              screenHeight: screenHeight,
+                              screenWidth: screenWidth,
+                              margin: 42),
+                          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                          tweetButtons(
+                            tweet: data[index],
+                            screenHeight: screenHeight,
+                            screenWidth: screenWidth,
+                          ),
+                        ],
                       ),
-                      Text(
-                        " @" + data[index].user.username,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 85, 76, 76),
-                          fontSize: 15,
-                        ),
-                      ),
-                      Text(
-                        "  • " + date,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 85, 76, 76),
-                          fontSize: 15,
-                        ),
-                      )
-                    ],
-                  ),
-                  subtitle: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data[index].content,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 85, 76, 76),
-                          fontSize: 15,
-                        ),
-                      ),
-                      if (data[index].media.length != 0)
-                        Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                      tweetMedia(data[index].media,
-                          screenHeight: screenHeight,
-                          screenWidth: screenWidth,
-                          margin: 52),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                      tweetButtonsForComment(
-                          like_count: data[index].likes_count,
-                          retweetCount: data[index].retweets_count,
-                          commentCount: data[index].replies_count,
-                          screenHeight: screenHeight,
-                          screenWidth: screenWidth,
-                          is_liked: data[index].is_liked,
-                          is_retweeted: data[index].is_retweeted,
-                          is_quoted: data[index].is_quoted)
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Divider(thickness: 1)
               ],
@@ -393,8 +384,7 @@ class _TapTweetState extends State<TapTweet> {
               });
         },
       ),
-      leading:
-          tweetProfilePicture(tweetData.user.profile_image_url, 30),
+      leading: tweetProfilePicture(tweetData.user.profile_image_url, 30),
       title: Text(
         tweetData.user.name,
         style: const TextStyle(
@@ -476,21 +466,17 @@ class _TapTweetState extends State<TapTweet> {
   }
 
   Widget tweetButtons({
-    required int like_count,
-    required int retweetCount,
-    required int commentCount,
     required double screenHeight,
     required double screenWidth,
-    required bool is_liked,
-    required bool is_retweeted,
-    required bool is_quoted,
+    required ReplyTweetModel tweet,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
+        //replies
         LikeButton(
           animationDuration: const Duration(milliseconds: 0),
-          likeCount: commentCount,
+          likeCount: tweet.replies_count,
           likeBuilder: (bool isLiked) {
             return Icon(
               FontAwesomeIcons.comment,
@@ -502,107 +488,26 @@ class _TapTweetState extends State<TapTweet> {
         SizedBox(
           width: 0.0764 * screenWidth,
         ),
+        //retweet
         LikeButton(
           animationDuration: const Duration(milliseconds: 0),
-          likeCount: retweetCount,
-          isLiked: is_retweeted,
+          likeCount: tweet.retweets_count,
+          isLiked: tweet.is_retweeted,
           onTap: (f) {
             var tweetBloc = context.read<TweetsManagementBloc>();
             var userBloc = context.read<UserManagementBloc>();
             tweetBloc.add(RetweetButtonPressed(
                 access_token: userBloc.access_token,
-                tweet_id: tweetData.id,
-                is_retweeted: tweetData.is_retweeted));
-            tweetData.is_retweeted = !tweetData.is_retweeted;
-            return Future.value(tweetData.is_retweeted);
-          },
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              FontAwesomeIcons.retweet,
-              color: isLiked ? Colors.green : Colors.grey,
-              size: 0.0256 * screenHeight,
-            );
-          },
-        ),
-        SizedBox(
-          width: 0.0764 * screenWidth,
-        ),
-        LikeButton(
-          onTap: (f) {
-            var tweetBloc = context.read<TweetsManagementBloc>();
-            var userBloc = context.read<UserManagementBloc>();
-            tweetBloc.add(LikeButtonPressed(
-                access_token: userBloc.access_token,
-                tweet_id: tweetData.id,
-                isLiked: tweetData.is_liked));
-            tweetData.is_liked = !tweetData.is_liked;
-            tweetData.likes_count = tweetData.is_liked
-                ? tweetData.likes_count + 1
-                : tweetData.likes_count - 1;
+                tweet_id: tweet.id,
+                is_retweeted: tweet.is_retweeted));
+            tweet.is_retweeted = !tweet.is_retweeted;
             setState(() {
-              like_count = tweetData.likes_count;
+              tweet.retweets_count = tweet.is_retweeted
+                  ? tweet.retweets_count + 1
+                  : tweet.retweets_count - 1;
             });
-
-            return Future.value(tweetData.is_liked);
+            return Future.value(tweet.is_retweeted);
           },
-          likeCount: like_count,
-          isLiked: is_liked,
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              FontAwesomeIcons.solidHeart,
-              color: isLiked ? Colors.red : Colors.grey,
-              size: 0.0256 * screenHeight,
-            );
-          },
-        ),
-        SizedBox(
-          width: 0.0764 * screenWidth,
-        ),
-        LikeButton(
-          animationDuration: const Duration(milliseconds: 0),
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              FontAwesomeIcons.arrowUpFromBracket,
-              color: Colors.grey,
-              size: 0.0256 * screenHeight,
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget tweetButtonsForComment({
-    required int like_count,
-    required int retweetCount,
-    required int commentCount,
-    required double screenHeight,
-    required double screenWidth,
-    required bool is_liked,
-    required bool is_retweeted,
-    required bool is_quoted,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        LikeButton(
-          animationDuration: const Duration(milliseconds: 0),
-          likeCount: commentCount,
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              FontAwesomeIcons.comment,
-              color: Colors.grey,
-              size: 0.0256 * screenHeight,
-            );
-          },
-        ),
-        SizedBox(
-          width: 0.0764 * screenWidth,
-        ),
-        LikeButton(
-          animationDuration: const Duration(milliseconds: 0),
-          likeCount: retweetCount,
-          isLiked: is_retweeted,
           likeBuilder: (bool isLiked) {
             return Icon(
               FontAwesomeIcons.retweet,
@@ -614,19 +519,25 @@ class _TapTweetState extends State<TapTweet> {
         SizedBox(
           width: 0.0764 * screenWidth,
         ),
+        //likes
         LikeButton(
           onTap: (f) {
             var tweetBloc = context.read<TweetsManagementBloc>();
             var userBloc = context.read<UserManagementBloc>();
             tweetBloc.add(LikeButtonPressed(
                 access_token: userBloc.access_token,
-                tweet_id: tweetData.id,
-                isLiked: tweetData.is_liked));
-            tweetData.is_liked = !tweetData.is_liked;
-            return Future.value(tweetData.is_liked);
+                tweet_id: tweet.id,
+                isLiked: tweet.is_liked));
+            tweet.is_liked = !tweet.is_liked;
+            setState(() {
+              tweet.likes_count = tweet.is_liked
+                  ? tweet.likes_count + 1
+                  : tweet.likes_count - 1;
+            });
+            return Future.value(tweet.is_liked);
           },
-          likeCount: like_count,
-          isLiked: is_liked,
+          likeCount: tweet.likes_count,
+          isLiked: tweet.is_liked,
           likeBuilder: (bool isLiked) {
             return Icon(
               FontAwesomeIcons.solidHeart,
@@ -638,6 +549,7 @@ class _TapTweetState extends State<TapTweet> {
         SizedBox(
           width: 0.0764 * screenWidth,
         ),
+        //share
         LikeButton(
           animationDuration: const Duration(milliseconds: 0),
           likeBuilder: (bool isLiked) {
@@ -702,7 +614,9 @@ class _TapTweetState extends State<TapTweet> {
     } else if (media.length == 1) {
       return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(0.015 * screenHeight)),
-        child: oneImage(media[0]),
+        child: SizedBox(
+            width: screenWidth - (gap * 2), //400
+            child: oneImage(media[0])),
       );
     } else if (media.length == 2) {
       return ClipRRect(
@@ -873,7 +787,7 @@ myAppBar(BuildContext context) {
 class DetailScreen extends StatelessWidget {
   late String? imageUrl;
   DetailScreen({Key? key, @required this.imageUrl}) : super(key: key);
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

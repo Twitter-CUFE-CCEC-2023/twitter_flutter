@@ -294,12 +294,11 @@ class TweetsManagementRequests {
     };
     var body = jsonEncode(<String, String>{
       "id": tweet_id,
+      
     });
 
     http.Response res = await http.post(Uri.parse("$ENDPOINT/status/retweet"),
         headers: headers, body: body);
-
-    log(res.body);
 
     int statusCode = res.statusCode;
     if (statusCode == 200) {

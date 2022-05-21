@@ -144,7 +144,6 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.RetweetTweet(
           access_token: access_token, tweet_id: tweetID);
-      log(tweetData);
     } on Exception catch (e) {
       print(e);
       throw Exception(e);
@@ -156,7 +155,6 @@ class TweetsManagementRepository {
     try {
       String tweetData = await tweetsManagementRequests.UnRetweetTweet(
           access_token: access_token, tweet_id: tweetID);
-      log(tweetData);
     } on Exception catch (e) {
       print(e);
       throw Exception(e);

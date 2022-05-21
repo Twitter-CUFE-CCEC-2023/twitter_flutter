@@ -82,9 +82,14 @@ class TweetsManagementBloc
             errorMessage: e.toString().replaceAll("Exception: ", "")));
       }
     } else {
-      await tweetsManagementRepository.UnRetweet(
-          access_token: event.access_token, tweetID: event.tweet_id);
-      emit(UnRetweetSuccess());
+      try {
+        await tweetsManagementRepository.UnRetweet(
+            access_token: event.access_token, tweetID: event.tweet_id);
+        emit(UnRetweetSuccess());
+      } on Exception catch (e) {
+        emit(TweetDeleteFailure(
+            errorMessage: e.toString().replaceAll("Exception: ", "")));
+      }
     }
   }
 }
