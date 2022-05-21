@@ -24,8 +24,7 @@ class UserManagementBloc
     on<EditProfileButtonPressed>(_onEditProfileButtonPressed);
     on<LoadUserProfile>(_onLoadUserProfileEvent);
     on<LogoutButtonPressed>(_onLogoutButtonPressed);
-    on<FollowButtonPressed>(_onFollowButtonPressed);
-
+   // on<FollowButtonPressed>(_onFollowButtonPressed);
   }
 
   void _onStartEvent(
@@ -166,7 +165,7 @@ class UserManagementBloc
     }
   }
 
-  void _onFollowButtonPressed(
+  /*void _onFollowButtonPressed(
       FollowButtonPressed event, Emitter<UserManagementStates> emitter) async {
     emit(LoadingState());
     try {
@@ -178,8 +177,7 @@ class UserManagementBloc
       emit(FollowFailureState(
           errorMessage: e.toString().replaceAll("Exception:", "")));
     }
-  }
-
+  }*/
   _onLogoutButtonPressed(
       LogoutButtonPressed event, Emitter<UserManagementStates> emitter) async {
     emit(LoadingState());
@@ -199,4 +197,6 @@ class UserManagementBloc
       print(e.toString());
     }
   }
+
+
 }

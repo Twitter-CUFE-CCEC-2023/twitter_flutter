@@ -137,7 +137,8 @@ class forgetpassword3 extends State<ForgetPassword3> {
                           onPressed: (){
 
                             Navigator.pushNamed(
-                                context, ForgetPassword4.route);
+                                context, ForgetPassword4.route,
+                                arguments: _verifyfield.text);
                           },
 
                           child: Message(message: 'Verify', fontSize: 0.0233 * fontSizeMultiplier[0] * screenHeight, colors: Colors.white),

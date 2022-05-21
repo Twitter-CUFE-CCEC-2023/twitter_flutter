@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
+import 'package:twitter_flutter/screens/starting_page.dart';
+import '../../blocs/forget_password/forget_password_bloc.dart';
+import '../../blocs/forget_password/forget_password_events.dart';
+import '../../blocs/forget_password/forget_password_states.dart';
 import '../../models/objects/user.dart';
 
 class ForgetPassword4 extends StatefulWidget {
@@ -11,6 +17,8 @@ class ForgetPassword4 extends StatefulWidget {
 }
 
 class forgetpassword4 extends State<ForgetPassword4> {
+  Widget? bottomSheet = null;
+  late String verificationCode;
   late TextEditingController password;
   late TextEditingController confirmpassword;
   bool value = false;
@@ -99,7 +107,7 @@ class forgetpassword4 extends State<ForgetPassword4> {
 
   @override
   Widget build(BuildContext context) {
-    userData = ModalRoute.of(context)!.settings.arguments as UserModel?;
+    verificationCode = ModalRoute.of(context)!.settings.arguments as String;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
@@ -115,6 +123,7 @@ class forgetpassword4 extends State<ForgetPassword4> {
 
       return SafeArea(
         child: Scaffold(
+          bottomSheet: bottomSheet,
           appBar: AppBar(
             elevation: 0.25,
             leading: IconButton(
@@ -151,21 +160,7 @@ class forgetpassword4 extends State<ForgetPassword4> {
                       style: TextStyle(fontSize: 0.0282 * fontSizeMultiplier[0] * screenHeight, color: Colors.black,fontWeight: FontWeight.bold)),
                 ),
 
-                ListTile(
-                  selectedTileColor: Colors.blue,
-                  title: Text(''),
-                  subtitle: Text('ahmed'),
-                  leading: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 44,
-                      minHeight: 44,
-                      maxWidth: 64,
-                      maxHeight: 64,
-                    ),
-                    child: Image.asset('', fit: BoxFit.cover),
-                  ),
 
-                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10,top: 10, bottom: 20),
                   child: Message(message: "Strong passwords include numbers,letters,and punctuation marks.", fontSize: 0.0192 * fontSizeMultiplier[0] * screenHeight, colors: Colors.black87),
@@ -230,9 +225,42 @@ class forgetpassword4 extends State<ForgetPassword4> {
                       child: SizedBox(
                         width: screenWidth/2.5,
                         height: 35,
-                        child: ElevatedButton(
+                        child: BlocListener<ForgetPasswordBloc,
+                            ForgetPasswordStates>(
+                          listener: (context, state) {
+                            if (state is ForgetPasswordSuccessState) {
+                              try {
+                                //TODO:Add bottom sheet to show success Message
+
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    StartingPage.route,
+                                        (route) => route == ForgetPassword4.route);
+                              } on Exception catch (e) {
+                                context
+                                    .read<ForgetPasswordBloc>()
+                                    .add(StartEvent());
+                              }
+                            } else if (state is ForgetPasswordFailureState) {
+                              //TODO:Add bottom sheet to show Failure Message
+                              setState(() {
+                                bottomSheet =
+                                    _buildBottomSheet(context, state);
+                              });
+
+                            }
+                          },
+                          child: ElevatedButton(
                           onPressed: (){
-    if (_formkey.currentState!.validate()) {}
+                             if (_formkey.currentState!.validate()) {
+                               String user_name = "omar.abdelazeez01@eng-st.cu.edu.eg";
+                               int VerificationCode = int.parse(verificationCode);
+                               String pass = password.text;
+                               context.read<ForgetPasswordBloc>().add(
+                                   ForgetPasswordButtonPressed(username: user_name,verificationCode: VerificationCode,password: pass
+
+                                   ));
+                             }
                           },
 
                           child: Message(message: 'Reset password', fontSize: 0.0233 * fontSizeMultiplier[0] * screenHeight, colors: Colors.white),
@@ -240,12 +268,36 @@ class forgetpassword4 extends State<ForgetPassword4> {
                       ),
                     )
                 ),
-              ],
+                )],
             ),
           ),
         ),
       );
       //);
     });
+  }
+  Widget _buildBottomSheet(context, state) {
+    return Transform.translate(
+      offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom / 3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -143,7 +143,7 @@ class forgetpassword extends State<ForgetPassword> {
                     child: ElevatedButton(
                       onPressed: (){
                         Navigator.pushNamed(
-                            context, Followers.route,
+                            context, ForgetPassword2.route,
                             arguments: _usernamefield.text);
                       },
 

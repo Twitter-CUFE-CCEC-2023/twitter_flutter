@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password1.dart';
 import 'package:twitter_flutter/utils/Web Services/constants.dart';
 
 class UserManagementRequests {
@@ -261,7 +262,7 @@ class UserManagementRequests {
       'Authorization': 'Bearer ' + access_token,
     };
     http.Response res = await http.get(
-        Uri.parse("$ENDPOINT/followers/list/:$username/:$page/:$count"),
+        Uri.parse("$ENDPOINT/follower/list/:$username/:$page/:$count"),
         headers: headers);
     int statusCode = res.statusCode;
     if (statusCode == 200) {
@@ -277,6 +278,66 @@ class UserManagementRequests {
       throw Exception("Undefined Error");
     }
   }
+
+
+  Future<String> forgetPassword({username, password,verification_code}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode(<String, dynamic>{
+      "email_or_username": username,
+      "password": password,
+      "verification_code":verification_code
+    });
+
+    http.Response res = await http.put(
+        Uri.parse("$ENDPOINT/auth/reset-password"),
+        body: body,
+        headers: headers);
+
+    int statusCode = res.statusCode;
+    print(res.body);
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+  Future<String> forgetPasswordEmail(
+      {username}) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode(<String, String>{
+      "email_or_username": username,
+    });
+
+    http.Response res = await http.post(Uri.parse("$ENDPOINT/auth/send-reset-password"),
+        body: body, headers: headers);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid or expired verification code");
+    } else if (statusCode == 404) {
+      throw Exception("NotFound");
+    } else if (statusCode == 500) {
+      throw Exception("InternalServerError");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+
+
 }
 
 

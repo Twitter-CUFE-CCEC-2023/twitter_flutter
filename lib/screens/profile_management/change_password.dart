@@ -249,8 +249,7 @@ class changepassword extends State<ChangePassword> {
                                   ? () {
                                       if (_formkey.currentState!.validate()) {
                                         String oldpassword = pass.text;
-                                        String newpassword =
-                                            confirmpassword.text;
+                                        String newpassword = confirmpassword.text;
                                         context.read<UserManagementBloc>().add(
                                             UpdatePasswordButtonPressed(
                                                 oldpassword: oldpassword,

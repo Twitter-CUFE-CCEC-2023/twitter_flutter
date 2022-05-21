@@ -1,6 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'forget_password3.dart';
+import 'package:twitter_flutter/blocs/forget_password/forget_password_states.dart';
+import 'package:twitter_flutter/blocs/forget_password/forget_password_events.dart';
+import 'package:twitter_flutter/blocs/forget_password/forget_password_bloc.dart';
+
+
 
 
 
@@ -16,6 +24,7 @@ class forgetpassword2 extends State<ForgetPassword2> {
   late int selectedRadioTile;
   late int selectedRadio;
   late String result;
+  Widget? bottomSheet = null;
 
   @override
   void initState() {
@@ -63,7 +72,9 @@ class forgetpassword2 extends State<ForgetPassword2> {
 
       return SafeArea(
         child: Scaffold(
+          bottomSheet: bottomSheet,
           appBar: AppBar(
+
             elevation: 0.25,
             leading: IconButton(
                 icon: const Icon(
@@ -124,15 +135,47 @@ class forgetpassword2 extends State<ForgetPassword2> {
                       child: SizedBox(
                         width: 70,
                         height: 35,
-                        child: ElevatedButton(
+                        child: BlocListener<ForgetPasswordBloc,
+                            ForgetPasswordStates>(
+                          listener: (context, state) {
+                            if (state is ForgetPasswordEmailSuccessState) {
+                              try {
+                                //TODO:Add bottom sheet to show success Message
+                        //        omar.abdelazeez01@eng-st.cu.edu.eg
+
+                            Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    ForgetPassword3.route,
+                                          (route) => route == ForgetPassword2.route);
+                              } on Exception catch (e) {
+                                context
+                                    .read<ForgetPasswordBloc>()
+                                    .add(StartEvent());
+                              }
+                            } else if (state is ForgetPasswordEmailFailureState) {
+                              //TODO:Add bottom sheet to show Failure Message
+                              print(username);
+                              setState(() {
+                                bottomSheet =
+                                    _buildBottomSheet(context, state);
+                              });
+
+                            }
+                          },
+                          child: ElevatedButton(
                           onPressed: (){
-                            Navigator.pushNamed(
-                                context, ForgetPassword3.route);
+
+                              String user_name = username;
+                              context.read<ForgetPasswordBloc>().add(
+                                  ForgetPasswordButtonEmailPressed(username: user_name
+
+                                  ));
+
                           },
 
                           child: Message(message: 'Next', fontSize: 0.0233 * fontSizeMultiplier[0] * screenHeight, colors: Colors.white),
                         ),
-                      ),
+                      ),),
                     )
                 ),
 
@@ -145,5 +188,30 @@ class forgetpassword2 extends State<ForgetPassword2> {
       );
       //);
     });
+  }
+
+  Widget _buildBottomSheet(context, state) {
+    return Transform.translate(
+      offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom / 3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

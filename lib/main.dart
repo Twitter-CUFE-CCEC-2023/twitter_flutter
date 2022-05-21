@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/blocs/forget_password/forget_password_bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweet_cubit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
@@ -97,6 +98,9 @@ class _TwitterState extends State<Twitter> {
   final TweetsManagementBloc tweetsManagementBloc = TweetsManagementBloc(
       tweetsManagementRepository: TweetsManagementRepository(
           tweetsManagementRequests: TweetsManagementRequests()));
+  final ForgetPasswordBloc forgetPasswordBloc = ForgetPasswordBloc(
+      forgetPasswordRepository: UserManagementRepository(
+          userManagementRequests: UserManagementRequests()));
   final TweetsTabCubit tweetsTabCubit = TweetsTabCubit();
   final LikedTweetsTabCubit likedTweetsTabCubit = LikedTweetsTabCubit();
   final tweetCubit tweet_Cubit = tweetCubit();
@@ -110,6 +114,7 @@ class _TwitterState extends State<Twitter> {
         BlocProvider.value(value: tweetsTabCubit),
         BlocProvider.value(value: likedTweetsTabCubit),
         BlocProvider.value(value: tweet_Cubit),
+        BlocProvider.value(value: forgetPasswordBloc),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -200,6 +205,7 @@ class _TwitterState extends State<Twitter> {
     tweetsTabCubit.close();
     likedTweetsTabCubit.close();
     tweet_Cubit.close();
+    forgetPasswordBloc.close();
     super.dispose();
   }
 }
