@@ -154,13 +154,17 @@ class UserManagementRepository {
 }
 
 class UserFollowRepository {
+  late UserFollowerRequests userFollowRequest;
+
+  UserFollowRepository({required this.userFollowRequest});
+
   Future<List<UserModel>> getFollowers(
       {required access_token,
       required username,
       required page,
       required count}) async {
     try {
-      String data = await UserFollowerRequests().GetFollowers(
+      String data = await userFollowRequest.GetFollowers(
           username: username,
           access_token: access_token,
           page: page,
@@ -179,7 +183,7 @@ class UserFollowRepository {
       required page,
       required count}) async {
     try {
-      String data = await UserFollowerRequests().GetFollowing(
+      String data = await UserFollowerRequests().followingAPIReq(
           username: username,
           access_token: access_token,
           page: page,

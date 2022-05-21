@@ -31,7 +31,7 @@ class UserFollowerRequests {
     }
   }
 
-  Future<String> GetFollowing(
+  Future<String> followingAPIReq(
       {required String access_token,
       required String username,
       required int count,
