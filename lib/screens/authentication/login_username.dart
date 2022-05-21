@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password1.dart';
 import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import '../../utils/common_listners/network_listner.dart';
 import '../../widgets/authentication/appBar.dart';
@@ -99,7 +100,8 @@ class _LoginUsernameState extends State<LoginUsername> {
                         children: [
                           OutlinedButton(
                             onPressed: () {
-                              //TODO:Forget Password Button
+                              Navigator.pushNamed(
+                                  context, ForgetPassword.route);
                             },
                             child: const Text("Forget Password?"),
                             style: outlinedButtonsStyle,
