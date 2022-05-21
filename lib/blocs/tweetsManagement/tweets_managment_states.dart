@@ -90,13 +90,42 @@ class TweetDeleteSuccess extends TweetsManagementStates {
 
 class TweetDeleteFailure extends TweetsManagementStates {
   String errorMessage;
-   TweetDeleteFailure({required this.errorMessage});
+  TweetDeleteFailure({required this.errorMessage});
   @override
   List<Object?> get props => [errorMessage];
 }
 
 class TweetDeleteLoading extends TweetsManagementStates {
   TweetDeleteLoading();
+  @override
+  List<Object?> get props => [];
+}
+
+class RetweetSuccess extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class RetweetFailure extends TweetsManagementStates {
+  String errorMessage;
+  RetweetFailure({required this.errorMessage});
+  @override
+  List<Object?> get props => [];
+}
+
+class UnRetweetFailure extends TweetsManagementStates {
+  String errorMessage;
+  UnRetweetFailure({required this.errorMessage});
+  @override
+  List<Object?> get props => [];
+}
+
+class UnRetweetSuccess extends TweetsManagementStates {
+  @override
+  List<Object?> get props => [];
+}
+
+class RetweetLoading extends TweetsManagementStates {
   @override
   List<Object?> get props => [];
 }

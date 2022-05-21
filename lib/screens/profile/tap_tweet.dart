@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:twitter_flutter/blocs/cubit/followmanagement_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/tweet.dart';
 import 'package:intl/intl.dart';
@@ -10,11 +11,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
+import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 
 import '../../models/objects/user.dart';
-import '../../repositories/user_management_repository.dart';
-import '../../utils/Web Services/Follow_management_request.dart';
+
 import '../../utils/Web Services/tweets_management_requests.dart';
 
 class TapTweet extends StatefulWidget {
@@ -27,9 +28,9 @@ class TapTweet extends StatefulWidget {
 
 class _TapTweetState extends State<TapTweet> {
   late ReplyTweetModel tweetData;
+  bool isbuild = false;
 
-  late List<UserModel>? data = null;
-
+  late Future<List<ReplyTweetModel>> comments;
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -49,23 +50,20 @@ class _TapTweetState extends State<TapTweet> {
     // log(tweetData.is_reply.toString());
     // log(tweetData.toString());
     UserManagementBloc userBloc = context.read<UserManagementBloc>();
-    log(userBloc.access_token);
+    // log(userBloc.access_token);
     // log(userBloc.userdata.username.toString());
-    log(tweetData.id.toString());
     // log(userBloc.userdata.followers_count.toString());
 
-    // log(tweetData.replies_count.toString());
-    // log(tweetData.id);
-    // log(userBloc.userdata.username);
+    // log(userBloc.userdata.username.toString());
+    log(userBloc.access_token);
+    log(tweetData.id.toString());
 
-    getfollow(userBloc);
-    if (data != null) {
-      log(data![0].bio);
-    } else {
-      log("not loaded yet");
-    }
+    TweetsManagementRepository rep = TweetsManagementRepository(
+        tweetsManagementRequests: TweetsManagementRequests());
+    // rep.RetweetATweet(
+    //     access_token: userBloc.access_token, tweetID: tweetData.id);
 
-    TweetsManagementBloc tweetsBloc = context.read<TweetsManagementBloc>();
+    FollowmanagementCubit followQubit = context.read<FollowmanagementCubit>();
 
     return Container(
       color: Colors.white,
@@ -104,6 +102,53 @@ class _TapTweetState extends State<TapTweet> {
                 ),
               );
             }
+
+            if (state is RetweetLoading) {
+              if (tweetData.is_retweeted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Retweet Request Send"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+              if (!tweetData.is_retweeted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("UnRetweet Request Send"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            } else if (state is RetweetSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Retweeted Successfuly"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            } else if (state is RetweetFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            } else if (state is UnRetweetSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("UnRetweeted Successfuly"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            } else if (state is UnRetweetFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            }
           },
           child: Scaffold(
             appBar: myAppBar(context),
@@ -112,6 +157,28 @@ class _TapTweetState extends State<TapTweet> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // BlocBuilder<FollowmanagementCubit, FollowmanagementState>(
+                    //   builder: (context, state) {
+                    //     if (state is FollowmanagementInitial)
+                    //       followQubit.onInit(
+                    //           access_token: userBloc.access_token,
+                    //           username: userBloc.userdata.username,
+                    //           count: 10,
+                    //           page: 1);
+                    //     if (state is Loading)
+                    //       return Text("Loading");
+                    //     else if (state is GetFollowingSucess &&
+                    //         state is GetFollowingSucess) {
+                    //       List<UserModel> data = followQubit.following;
+                    //       List<UserModel> data2 = followQubit.followers;
+                    //       // log("following ${data.length}");
+                    //       // log("followers ${data2.length}");
+
+                    //       return Container();
+                    //     } else
+                    //       return Text("NO DATA");
+                    //   },
+                    // ),
                     const Divider(
                       height: 1,
                       thickness: 1,
@@ -127,7 +194,9 @@ class _TapTweetState extends State<TapTweet> {
                           : const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
                       child: tweetMedia(tweetData.media,
-                          screenWidth: screenWidth, screenHeight: screenHeight),
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight,
+                          margin: 15),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -163,6 +232,7 @@ class _TapTweetState extends State<TapTweet> {
                       ),
                     ),
                     const Divider(thickness: 1),
+                    if (tweetData.replies_count != 0) Comments(rep, userBloc),
                   ]),
             ),
           ),
@@ -171,15 +241,117 @@ class _TapTweetState extends State<TapTweet> {
     );
   }
 
-  getfollow(
-    UserManagementBloc userBloc,
-  ) async {
-    UserFollowRepository repo = UserFollowRepository();
-    data = await repo.getFollowers(
-        access_token: userBloc.access_token,
-        username: userBloc.userdata.username,
-        page: 1,
-        count: 5);
+  FutureBuilder<List<ReplyTweetModel>> Comments(
+      TweetsManagementRepository rep, UserManagementBloc userBloc) {
+    if (!isbuild) {
+      log("building");
+      comments = rep.getTweetRepliesByID(
+          access_token: userBloc.access_token, tweetID: tweetData.id);
+    }
+    return FutureBuilder(
+        future: comments,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text('${snapshot.error}'),
+            //     duration: const Duration(seconds: 2),
+            //   ),
+            // );
+            log("error");
+            return Container();
+          }
+          if (snapshot.hasData) {
+            isbuild = true;
+            List<ReplyTweetModel> data = snapshot.data;
+            // List tweet = snapshot.data;
+            if (data.length == 0) return Container();
+            return CommentItem(data);
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        });
+  }
+
+  ListView CommentItem(List<ReplyTweetModel> data) {
+    return ListView.builder(
+        shrinkWrap: true,
+        primary: false,
+        scrollDirection: Axis.vertical,
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          var date = DateFormat("d MMM").format(data[index].created_at);
+          return InkWell(
+            onTap: () => Navigator.pushNamed(context, "/TapTweet",
+                arguments: data[index]),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: tweetProfilePicture(
+                      data[index].user.profile_image_url, 25),
+                  title: Row(
+                    children: [
+                      Text(
+                        data[index].user.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        " @" + data[index].user.username,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 85, 76, 76),
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        "  • " + date,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 85, 76, 76),
+                          fontSize: 15,
+                        ),
+                      )
+                    ],
+                  ),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data[index].content,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 85, 76, 76),
+                          fontSize: 15,
+                        ),
+                      ),
+                      if (data[index].media.length != 0)
+                        Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                      tweetMedia(data[index].media,
+                          screenHeight: screenHeight,
+                          screenWidth: screenWidth,
+                          margin: 52),
+                      Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                      tweetButtonsForComment(
+                          like_count: data[index].likes_count,
+                          retweetCount: data[index].retweets_count,
+                          commentCount: data[index].replies_count,
+                          screenHeight: screenHeight,
+                          screenWidth: screenWidth,
+                          is_liked: data[index].is_liked,
+                          is_retweeted: data[index].is_retweeted,
+                          is_quoted: data[index].is_quoted)
+                    ],
+                  ),
+                ),
+                Divider(thickness: 1)
+              ],
+            ),
+          );
+        });
   }
 
   Widget tweetbar(double screenHeight, BuildContext context,
@@ -222,7 +394,7 @@ class _TapTweetState extends State<TapTweet> {
         },
       ),
       leading:
-          tweetProfilePicture(tweetData.user.profile_image_url, screenHeight),
+          tweetProfilePicture(tweetData.user.profile_image_url, 30),
       title: Text(
         tweetData.user.name,
         style: const TextStyle(
@@ -261,18 +433,18 @@ class _TapTweetState extends State<TapTweet> {
               ),
             ],
           ),
-        if (tweetData.quotes_count != 0)
+        if (tweetData.replies_count != 0)
           Row(
             children: [
               Text(
-                tweetData.quotes_count.toString(),
+                tweetData.replies_count.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
               const Text(
-                " Quoute Tweet   ",
+                " Replies   ",
                 style: TextStyle(
                   color: Color.fromARGB(255, 85, 76, 76),
                   fontSize: 15,
@@ -334,6 +506,16 @@ class _TapTweetState extends State<TapTweet> {
           animationDuration: const Duration(milliseconds: 0),
           likeCount: retweetCount,
           isLiked: is_retweeted,
+          onTap: (f) {
+            var tweetBloc = context.read<TweetsManagementBloc>();
+            var userBloc = context.read<UserManagementBloc>();
+            tweetBloc.add(RetweetButtonPressed(
+                access_token: userBloc.access_token,
+                tweet_id: tweetData.id,
+                is_retweeted: tweetData.is_retweeted));
+            tweetData.is_retweeted = !tweetData.is_retweeted;
+            return Future.value(tweetData.is_retweeted);
+          },
           likeBuilder: (bool isLiked) {
             return Icon(
               FontAwesomeIcons.retweet,
@@ -361,6 +543,86 @@ class _TapTweetState extends State<TapTweet> {
               like_count = tweetData.likes_count;
             });
 
+            return Future.value(tweetData.is_liked);
+          },
+          likeCount: like_count,
+          isLiked: is_liked,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.solidHeart,
+              color: isLiked ? Colors.red : Colors.grey,
+              size: 0.0256 * screenHeight,
+            );
+          },
+        ),
+        SizedBox(
+          width: 0.0764 * screenWidth,
+        ),
+        LikeButton(
+          animationDuration: const Duration(milliseconds: 0),
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.arrowUpFromBracket,
+              color: Colors.grey,
+              size: 0.0256 * screenHeight,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget tweetButtonsForComment({
+    required int like_count,
+    required int retweetCount,
+    required int commentCount,
+    required double screenHeight,
+    required double screenWidth,
+    required bool is_liked,
+    required bool is_retweeted,
+    required bool is_quoted,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        LikeButton(
+          animationDuration: const Duration(milliseconds: 0),
+          likeCount: commentCount,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.comment,
+              color: Colors.grey,
+              size: 0.0256 * screenHeight,
+            );
+          },
+        ),
+        SizedBox(
+          width: 0.0764 * screenWidth,
+        ),
+        LikeButton(
+          animationDuration: const Duration(milliseconds: 0),
+          likeCount: retweetCount,
+          isLiked: is_retweeted,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              FontAwesomeIcons.retweet,
+              color: isLiked ? Colors.green : Colors.grey,
+              size: 0.0256 * screenHeight,
+            );
+          },
+        ),
+        SizedBox(
+          width: 0.0764 * screenWidth,
+        ),
+        LikeButton(
+          onTap: (f) {
+            var tweetBloc = context.read<TweetsManagementBloc>();
+            var userBloc = context.read<UserManagementBloc>();
+            tweetBloc.add(LikeButtonPressed(
+                access_token: userBloc.access_token,
+                tweet_id: tweetData.id,
+                isLiked: tweetData.is_liked));
+            tweetData.is_liked = !tweetData.is_liked;
             return Future.value(tweetData.is_liked);
           },
           likeCount: like_count,
@@ -419,9 +681,9 @@ class _TapTweetState extends State<TapTweet> {
     );
   }
 
-  Widget tweetProfilePicture(String profilePicture, double screenHeight) {
+  Widget tweetProfilePicture(String profilePicture, double radius) {
     return CircleAvatar(
-      radius: 0.03 * screenHeight, //20
+      radius: radius, //20
       backgroundImage: profilePicture.isEmpty
           ? null
           : NetworkImage(
@@ -431,8 +693,10 @@ class _TapTweetState extends State<TapTweet> {
   }
 
   Widget tweetMedia(List<String> media,
-      {required double screenWidth, required double screenHeight}) {
-    double margin = 15;
+      {required double screenWidth,
+      required double screenHeight,
+      required double margin}) {
+    double gap = margin;
     if (media.isEmpty) {
       return Container();
     } else if (media.length == 1) {
@@ -446,7 +710,7 @@ class _TapTweetState extends State<TapTweet> {
         child: Row(
           children: <Widget>[
             SizedBox(
-              width: screenWidth / 2 - (1.5 + margin), //400
+              width: screenWidth / 2 - (1.5 + gap), //400
               height: 0.2 * screenHeight,
               child: oneImage(media[0]),
             ), // 140  160
@@ -455,7 +719,7 @@ class _TapTweetState extends State<TapTweet> {
             ),
             SizedBox(
               height: 0.2 * screenHeight,
-              width: screenWidth / 2 - (1.5 + margin), //400
+              width: screenWidth / 2 - (1.5 + gap), //400
               child: oneImage(
                 media[1],
               ),
@@ -471,28 +735,28 @@ class _TapTweetState extends State<TapTweet> {
           child: Row(
             children: <Widget>[
               SizedBox(
-                  width: screenWidth / 2 - (1.5 + margin),
+                  width: screenWidth / 2 - (1.5 + gap),
                   height: 0.3 * screenHeight,
                   child: oneImage(media[0])), //150 160
               const SizedBox(
                 width: 3,
               ),
               SizedBox(
-                width: screenWidth / 2 - (1.5 + margin),
+                width: screenWidth / 2 - (1.5 + gap),
                 height: 0.3 * screenHeight, //160
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
                         height: 0.15 * screenHeight - 1.5,
-                        width: screenWidth / 2 - (1.5 + margin),
+                        width: screenWidth / 2 - (1.5 + gap),
                         child: oneImage(media[1])), //128 78
                     const SizedBox(
                       height: 3,
                     ),
                     SizedBox(
                         height: 0.15 * screenHeight - 1.5,
-                        width: screenWidth / 2 - (1.5 + margin),
+                        width: screenWidth / 2 - (1.5 + gap),
                         child: oneImage(media[2])), // 128 78
                   ],
                 ),
@@ -513,14 +777,14 @@ class _TapTweetState extends State<TapTweet> {
                 children: <Widget>[
                   SizedBox(
                       height: 0.15 * screenHeight - 1.5,
-                      width: screenWidth / 2 - (1.5 + margin),
+                      width: screenWidth / 2 - (1.5 + gap),
                       child: oneImage(media[0])),
                   const SizedBox(
                     height: 3,
                   ),
                   SizedBox(
                     height: 0.15 * screenHeight - 1.5,
-                    width: screenWidth / 2 - (1.5 + margin),
+                    width: screenWidth / 2 - (1.5 + gap),
                     child: oneImage(media[1]),
                   ),
                 ],
@@ -535,7 +799,7 @@ class _TapTweetState extends State<TapTweet> {
                   children: <Widget>[
                     SizedBox(
                       height: 0.15 * screenHeight - 1.5,
-                      width: screenWidth / 2 - (1.5 + margin),
+                      width: screenWidth / 2 - (1.5 + gap),
                       child: oneImage(media[2]),
                     ),
                     const SizedBox(
@@ -543,7 +807,7 @@ class _TapTweetState extends State<TapTweet> {
                     ),
                     SizedBox(
                       height: 0.15 * screenHeight - 1.5,
-                      width: screenWidth / 2 - (1.5 + margin),
+                      width: screenWidth / 2 - (1.5 + gap),
                       child: oneImage(media[3]),
                     ),
                   ],
@@ -608,8 +872,8 @@ myAppBar(BuildContext context) {
 
 class DetailScreen extends StatelessWidget {
   late String? imageUrl;
-  DetailScreen({@required this.imageUrl});
-  @override
+  DetailScreen({Key? key, @required this.imageUrl}) : super(key: key);
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
