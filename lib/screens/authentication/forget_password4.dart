@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import '../../blocs/forget_password/forget_password_bloc.dart';
 import '../../blocs/forget_password/forget_password_events.dart';
 import '../../blocs/forget_password/forget_password_states.dart';
 import '../../models/objects/user.dart';
+import 'forget_password3.dart';
 
 class ForgetPassword4 extends StatefulWidget {
   static String route = '/ForgetPassword4';
@@ -107,7 +107,7 @@ class forgetpassword4 extends State<ForgetPassword4> {
 
   @override
   Widget build(BuildContext context) {
-    verificationCode = ModalRoute.of(context)!.settings.arguments as String;
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
@@ -120,6 +120,7 @@ class forgetpassword4 extends State<ForgetPassword4> {
         sizedBoxHeightMultiplier[0] = .1;
         fontSizeMultiplier[0] = 2;
       }
+
 
       return SafeArea(
         child: Scaffold(
@@ -253,11 +254,11 @@ class forgetpassword4 extends State<ForgetPassword4> {
                           child: ElevatedButton(
                           onPressed: (){
                              if (_formkey.currentState!.validate()) {
-                               String user_name = "omar.abdelazeez01@eng-st.cu.edu.eg";
-                               int VerificationCode = int.parse(verificationCode);
+                               String user_name = args.username;
+                               int resetPasswordCode = int.parse(args.code);
                                String pass = password.text;
                                context.read<ForgetPasswordBloc>().add(
-                                   ForgetPasswordButtonPressed(username: user_name,verificationCode: VerificationCode,password: pass
+                                   ForgetPasswordButtonPressed(username: user_name,resetPasswordCode: resetPasswordCode,password: pass
 
                                    ));
                              }

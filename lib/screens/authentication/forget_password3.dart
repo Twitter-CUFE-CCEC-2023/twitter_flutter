@@ -13,6 +13,7 @@ class ForgetPassword3 extends StatefulWidget {
 
 class forgetpassword3 extends State<ForgetPassword3> {
   late TextEditingController _verifyfield;
+  late String username;
 
   @override
   void initState() {
@@ -60,6 +61,7 @@ class forgetpassword3 extends State<ForgetPassword3> {
 
   @override
   Widget build(BuildContext context) {
+    username = ModalRoute.of(context)!.settings.arguments as String;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     final List<double> sizedBoxHeightMultiplier = [1, 1, 1, 1];
@@ -138,7 +140,7 @@ class forgetpassword3 extends State<ForgetPassword3> {
 
                             Navigator.pushNamed(
                                 context, ForgetPassword4.route,
-                                arguments: _verifyfield.text);
+                                arguments: ScreenArguments(_verifyfield.text, username,));
                           },
 
                           child: Message(message: 'Verify', fontSize: 0.0233 * fontSizeMultiplier[0] * screenHeight, colors: Colors.white),
@@ -160,4 +162,10 @@ class forgetpassword3 extends State<ForgetPassword3> {
       //);
     });
   }
+}
+class ScreenArguments {
+  final String code;
+  final String username;
+
+  ScreenArguments(this.code, this.username);
 }

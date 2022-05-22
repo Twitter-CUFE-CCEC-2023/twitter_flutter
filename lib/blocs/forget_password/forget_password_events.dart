@@ -8,13 +8,13 @@ class StartEvent extends ForgetPasswordEvents {
 }
 
 class ForgetPasswordButtonPressed extends ForgetPasswordEvents {
-  final int verificationCode;
+  final int resetPasswordCode;
   final String username;
   final String password;
   ForgetPasswordButtonPressed(
-      {required this.username, required this.password,required this.verificationCode});
+      {required this.username, required this.password,required this.resetPasswordCode});
   @override
-  List<Object?> get props => [username, password,verificationCode];
+  List<Object?> get props => [username, password,resetPasswordCode];
 }
 
 class ForgetPasswordButtonEmailPressed extends ForgetPasswordEvents {

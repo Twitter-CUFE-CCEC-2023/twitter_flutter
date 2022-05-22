@@ -146,7 +146,8 @@ class forgetpassword2 extends State<ForgetPassword2> {
                             Navigator.pushNamedAndRemoveUntil(
                                     context,
                                     ForgetPassword3.route,
-                                          (route) => route == ForgetPassword2.route);
+                                          (route) => route == ForgetPassword2.route,arguments: username,
+                            );
                               } on Exception catch (e) {
                                 context
                                     .read<ForgetPasswordBloc>()

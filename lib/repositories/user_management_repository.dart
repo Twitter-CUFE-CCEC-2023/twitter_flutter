@@ -133,7 +133,7 @@ class UserManagementRepository {
   Future<String> forgetPassword({username, password,verificationcode}) async {
     try {
       String forgetPasswordData = await userManagementRequests.forgetPassword(
-          username: username, password: password,verification_code: verificationcode);
+          username: username, password: password,resetPasswordCode: verificationcode);
       return forgetPasswordData;
     } on Exception catch (e) {
       throw Exception(e);

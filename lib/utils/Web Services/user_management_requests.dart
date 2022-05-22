@@ -280,13 +280,13 @@ class UserManagementRequests {
   }
 
 
-  Future<String> forgetPassword({username, password,verification_code}) async {
+  Future<String> forgetPassword({username, password,resetPasswordCode}) async {
     var headers = {'Content-Type': 'application/json'};
 
     var body = jsonEncode(<String, dynamic>{
       "email_or_username": username,
       "password": password,
-      "verification_code":verification_code
+      "resetPasswordCode":resetPasswordCode
     });
 
     http.Response res = await http.put(

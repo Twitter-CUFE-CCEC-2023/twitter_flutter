@@ -18,7 +18,7 @@ class ForgetPasswordBloc
     emit(LoadingState());
     try {
       var data = await forgetPasswordRepository.forgetPassword(
-          username: event.username, password: event.password,verificationcode: event.verificationCode);
+          username: event.username, password: event.password,verificationcode: event.resetPasswordCode);
       emit(ForgetPasswordSuccessState(successMessage: data));
     } on Exception catch (e) {
       emit(ForgetPasswordFailureState(

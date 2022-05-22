@@ -97,12 +97,12 @@ class _AccountState extends State<Account> {
                                 tiles: [
                                   buildItem1("Username", context,
                                       Text2: "@" + userData.username.toString(),font2: 0.0192 * fontSizeMultiplier[0] * screenHeight,font1: 0.0212* fontSizeMultiplier[0] * screenHeight,
-                                      route: "/Followers"),
+                                      route: "/ChangeEmail"),
                                   buildItem1("Phone", context,
                                       Text2: 'Add', route: "/VerifyPassword",font2:0.0192 * fontSizeMultiplier[0] * screenHeight,font1: 0.0212* fontSizeMultiplier[0] * screenHeight),
                                   buildItem1("Email", context,
                                       Text2: userData.email,font2:0.0192 * fontSizeMultiplier[0] * screenHeight,font1:0.0212* fontSizeMultiplier[0] * screenHeight ,
-                                      route: "/VerifyPassword2"),
+                                        route: "/VerifyPassword2"),
                                   buildItem1("Password", context,font1: 0.0212* fontSizeMultiplier[0] * screenHeight,
                                       route: "/ChangePassword"),
                                   buildItem1(
