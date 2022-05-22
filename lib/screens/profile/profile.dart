@@ -16,6 +16,8 @@ import 'package:twitter_flutter/widgets/authentication/constants.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import '../utility_screens/opened_image.dart';
+import 'followers.dart';
+import 'following.dart';
 
 class UserProfile extends StatefulWidget  {
   const UserProfile({Key? key}) : super(key: key);
@@ -218,9 +220,13 @@ class _UserProfileState extends State<UserProfile> {
                 "$following",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
               ),
-              Text(
-                " Following",
-                style: TextStyle(color: Colors.black45),
+              TextButton(
+                  onPressed: (){
+                    Navigator.pushNamed(
+                        context, Following.route);
+                  },
+                  child:Text("Following",
+                    style: TextStyle(color: Colors.black45),)
               ),
               SizedBox(
                 width: 15,
@@ -229,9 +235,13 @@ class _UserProfileState extends State<UserProfile> {
                 "$followers",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
               ),
-              Text(
-                " Followers",
-                style: TextStyle(color: Colors.black45),
+              TextButton(
+                onPressed: (){
+                  Navigator.pushNamed(
+                      context, Followers.route);
+                },
+                child:Text(" Followers",
+                style: TextStyle(color: Colors.black45),)
               ),
             ],
           ),
