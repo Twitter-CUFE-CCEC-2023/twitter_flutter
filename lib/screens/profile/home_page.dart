@@ -244,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                         if (state is TweetsIntialState) {
                           tweet_Cubit.onInit(
                               access_token: bloc.access_token,
-                              count: 10,
+                              count: 7,
                               page: tweet_Cubit.pageNumber);
                           tweet_Cubit.pageNumber++;
                           return Center(

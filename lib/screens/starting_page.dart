@@ -52,7 +52,7 @@ class StartingPage extends StatelessWidget {
   }
 
   Future signIn() async {
-    await GoogleSignInApi.login();
+    //await GoogleSignInApi.login();
   }
 
   // To create buttons for signing in with other company
