@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twitter_flutter/blocs/InternetStates/internet_cubit.dart';
+import 'package:twitter_flutter/blocs/forget_password/forget_password_bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweet_cubit.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/repositories/user_management_repository.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password2.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password4.dart';
+import 'package:twitter_flutter/screens/profile/followers.dart';
+import 'package:twitter_flutter/screens/profile/following.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
 import 'package:twitter_flutter/screens/profile/timeline_util_screens/VistiedUser.dart';
 import 'package:twitter_flutter/screens/profile/timeline_util_screens/postTweet.dart';
@@ -28,16 +33,34 @@ import 'package:twitter_flutter/screens/profile/profile.dart';
 import 'package:twitter_flutter/screens/profile_management/change_password.dart';
 import 'package:twitter_flutter/screens/profile/home_page.dart';
 import 'package:twitter_flutter/screens/create_account/VerificationCode.dart';
+import 'package:twitter_flutter/screens/profile_management/account_information.dart';
+import 'package:twitter_flutter/screens/profile_management/pre_user_name.dart';
+import 'package:twitter_flutter/screens/profile_management/change_email.dart';
+import 'package:twitter_flutter/screens/profile_management/change_phone.dart';
+import 'package:twitter_flutter/screens/profile_management/change_country.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password1.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password2.dart';
+import 'package:twitter_flutter/screens/authentication/forget_password3.dart';
+import 'package:twitter_flutter/screens/profile/followers.dart';
+import 'package:twitter_flutter/screens/profile_management/change_country2.dart';
+import 'package:twitter_flutter/screens/profile_management/verify_password.dart';
+import 'package:twitter_flutter/screens/profile_management/verify_password2.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:twitter_flutter/blocs/profileTabs/media_tab_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
+import 'blocs/cubit/followmanagement_cubit.dart';
 import 'models/hive models/logged_user.dart';
 import 'package:twitter_flutter/screens/profile/tap_tweet.dart';
 import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/models/hive models/logged_user.dart';
 import 'package:twitter_flutter/blocs/profileTabs/tweets_tab_cubit.dart';
+import 'package:twitter_flutter/screens/profile/pre_home_page.dart';
+import 'package:twitter_flutter/screens/profile/search_page.dart';
+import 'package:twitter_flutter/screens/profile/search_page2.dart';
+import 'package:twitter_flutter/screens/profile/notification_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,9 +100,13 @@ class _TwitterState extends State<Twitter> {
   final TweetsManagementBloc tweetsManagementBloc = TweetsManagementBloc(
       tweetsManagementRepository: TweetsManagementRepository(
           tweetsManagementRequests: TweetsManagementRequests()));
+  final ForgetPasswordBloc forgetPasswordBloc = ForgetPasswordBloc(
+      forgetPasswordRepository: UserManagementRepository(
+          userManagementRequests: UserManagementRequests()));
   final TweetsTabCubit tweetsTabCubit = TweetsTabCubit();
   final LikedTweetsTabCubit likedTweetsTabCubit = LikedTweetsTabCubit();
   final MediaTweetsTabCubit mediaTweetsTabCubit = MediaTweetsTabCubit();
+  final FollowmanagementCubit followmanagementCubit = FollowmanagementCubit();
   final tweetCubit tweet_Cubit = tweetCubit();
   @override
   Widget build(BuildContext context) {
@@ -92,6 +119,8 @@ class _TwitterState extends State<Twitter> {
         BlocProvider.value(value: likedTweetsTabCubit),
         BlocProvider.value(value: tweet_Cubit),
         BlocProvider.value(value: mediaTweetsTabCubit),
+        BlocProvider.value(value: forgetPasswordBloc),
+        BlocProvider.value(value: followmanagementCubit),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -106,7 +135,21 @@ class _TwitterState extends State<Twitter> {
 
           LoginPassword.route: (context) => const LoginPassword(),
 
+          ForgetPassword.route: (context) => const ForgetPassword(),
+
+          ForgetPassword2.route: (context) => const ForgetPassword2(),
+
+          ForgetPassword3.route: (context) => const ForgetPassword3(),
+
+          ForgetPassword4.route: (context) => const ForgetPassword4(),
+
+          PreHomePage.route: (context) => const PreHomePage(),
+
           HomePage.route: (context) => const HomePage(),
+
+          SearchPage.route: (context) => const SearchPage(),
+
+          SearchPage2.route: (context) => const SearchPage2(),
 
           CreateAccount1.route: (context) => const CreateAccount1(),
 
@@ -120,9 +163,29 @@ class _TwitterState extends State<Twitter> {
 
           Settings.route: (context) => const Settings(),
 
+          Account.route: (context) => const Account(),
+
+          PreUsername.route: (context) => const PreUsername(),
+
+          ChangeEmail.route: (context) => const ChangeEmail(),
+
+          VerifyPassword.route: (context) => const VerifyPassword(),
+
+          VerifyPassword2.route: (context) => const VerifyPassword2(),
+
+          ChangePhone.route: (context) => const ChangePhone(),
+
+          ChangeCountry.route: (context) => const ChangeCountry(),
+
+          ChangeCountry2.route: (context) => const ChangeCountry2(),
+
           TermsOfService.route: (context) => const TermsOfService(),
 
           UserProfile.route: (context) => const UserProfile(),
+
+          Following.route: (context) => const Following(),
+
+          Followers.route: (context) => const Followers(),
 
           PreEditProfile.route: (context) => const PreEditProfile(),
 
@@ -149,6 +212,7 @@ class _TwitterState extends State<Twitter> {
     likedTweetsTabCubit.close();
     tweet_Cubit.close();
     mediaTweetsTabCubit.close();
+    forgetPasswordBloc.close();
     super.dispose();
   }
 }

@@ -26,12 +26,15 @@ class UserModel extends Equatable {
     name = json["name"];
     username = json["username"];
     email = json["email"];
-    profile_image_url = json["profile_image_url"].toString().replaceAll("data:", "");
-    cover_image_url = json["cover_image_url"].toString().replaceAll("data:", "");
+    profile_image_url =
+        json["profile_image_url"].toString().replaceAll("data:", "");
+    cover_image_url =
+        json["cover_image_url"].toString().replaceAll("data:", "");
     bio = json["bio"];
     website = json["website"];
     location = json["location"];
-    created_at = DateTime.parse(json["created_at"]);
+    created_at =
+        DateTime.parse(json["created_at"] ?? "2022-04-24T00:29:24.967Z");
     birth_date = DateTime.parse(json["birth_date"]);
     isVerified = json["isVerified"];
     is_followed = json["is_followed"] ?? false;
@@ -84,4 +87,14 @@ class UserModel extends Equatable {
         birth_date,
         is_followed
       ];
+}
+
+class FollowModel {
+  late List<UserModel> followings;
+
+  FollowModel.fromJson(Map<String, dynamic> json) {
+    followings = (json['followings'] as List)
+        .map((i) => UserModel.fromJson(i))
+        .toList();
+  }
 }
