@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:ffi';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +70,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                           padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
                           child: tweetMedia(widget.tweetData.media,
                               screenWidth: screenWidth,
-                              screenHeight: screenHeight)),
+                              screenHeight: screenHeight,gif: widget.tweetData.gif)),
                       tweetButtons(
                         like_count: widget.tweetData.likes_count,
                         commentCount: widget.tweetData.quotes_count,
@@ -358,11 +358,18 @@ class _TweetWidgetState extends State<TweetWidget> {
   }
 
   Widget tweetMedia(List<String> media,
-      {required double screenWidth, required double screenHeight}) {
+      {required double screenWidth, required double screenHeight , String? gif}) {
     double margin = 47; //52.6
     double screenHeightMultiplier = screenHeight * 0.205;
+    if (gif != ""){
+      return ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(0.015 * screenHeight)),
+        child: SizedBox(width: screenWidth - margin, child: Image.network("https://backlb.twittercloneteamone.tk" + gif.toString(), fit: BoxFit.cover,)),
+      );
+    }
     if (media.isEmpty) {
       return Container();
+
     } else if (media.length == 1) {
       return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(0.015 * screenHeight)),

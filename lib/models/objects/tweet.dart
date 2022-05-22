@@ -17,6 +17,7 @@ class TweetModel extends Equatable {
   late bool is_reply;
   late List<UserModel> mentions;
   late List<String> media;
+  late String gif;
 
   TweetModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,6 +35,7 @@ class TweetModel extends Equatable {
     mentions =
         (json['mentions'] as List).map((i) => UserModel.fromJson(i)).toList();
     media = (json['media'] as List).cast<String>();
+    gif = json['gif'];
   }
 
   TweetModel.copy(TweetModel other) {
@@ -51,6 +53,7 @@ class TweetModel extends Equatable {
     is_reply = other.is_reply;
     mentions = other.mentions;
     media = other.media;
+    gif = other.gif;
   }
 
   @override
@@ -70,6 +73,7 @@ class TweetModel extends Equatable {
         is_retweeted,
         mentions,
         media,
+        gif,
       ];
 }
 

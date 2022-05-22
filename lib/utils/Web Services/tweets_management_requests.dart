@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
@@ -58,9 +59,9 @@ class TweetsManagementRequests {
 
   Future<String> getLoggedUserMediaTweets(
       {required String access_token,
-        required String username,
-        page = 1,
-        int? count = 20}) async {
+      required String username,
+      page = 1,
+      int? count = 20}) async {
     var headers = {'Authorization': 'Bearer $access_token'};
 
     http.Response res = await http.get(
@@ -91,7 +92,7 @@ class TweetsManagementRequests {
 
     http.Response res = await http.get(Uri.parse("$ENDPOINT/home/$page/$count"),
         headers: headers);
-
+    log (res.body);
     int statusCode = res.statusCode;
     if (statusCode == 200) {
       return res.body;
@@ -257,6 +258,88 @@ class TweetsManagementRequests {
       throw Exception("Server Error");
     } else {
       throw Exception("Undefined Error");
+    }
+  }
+
+  Future<String> getTweetByID(
+      {required String access_token, required String id}) async {
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+
+    http.Response res = await http.get(
+        Uri.parse("$ENDPOINT/status/tweet/$id?include_replies=true"),
+        headers: headers);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 404) {
+      throw Exception("Invalid tweet id");
+    } else if (statusCode == 401) {
+      throw Exception("user is not authenticated");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
+  Future<String> RetweetTweet(
+      {required String access_token, required String tweet_id}) async {
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+    var body = jsonEncode(<String, String>{
+      "id": tweet_id,
+      
+    });
+
+    http.Response res = await http.post(Uri.parse("$ENDPOINT/status/retweet"),
+        headers: headers, body: body);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid tweet id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error from Retwet a tweet");
+    }
+  }
+
+  Future<String> UnRetweetTweet(
+      {required String access_token, required String tweet_id}) async {
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+    var body = jsonEncode(<String, String>{
+      "id": tweet_id,
+    });
+
+    http.Response res = await http.delete(
+        Uri.parse("$ENDPOINT/status/tweet/delete"),
+        headers: headers,
+        body: body);
+
+    int statusCode = res.statusCode;
+    if (statusCode == 200) {
+      return res.body;
+    } else if (statusCode == 401) {
+      throw Exception("User is not authenticated");
+    } else if (statusCode == 404) {
+      throw Exception("Invalid tweet id");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error from Retwet a tweet");
     }
   }
 }

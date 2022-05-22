@@ -49,6 +49,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:twitter_flutter/blocs/profileTabs/media_tab_cubit.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
+import 'blocs/cubit/followmanagement_cubit.dart';
 import 'models/hive models/logged_user.dart';
 import 'package:twitter_flutter/screens/profile/tap_tweet.dart';
 import 'package:twitter_flutter/blocs/profileTabs/liked_tweets_tab_cubit.dart';
@@ -105,6 +106,7 @@ class _TwitterState extends State<Twitter> {
   final TweetsTabCubit tweetsTabCubit = TweetsTabCubit();
   final LikedTweetsTabCubit likedTweetsTabCubit = LikedTweetsTabCubit();
   final MediaTweetsTabCubit mediaTweetsTabCubit = MediaTweetsTabCubit();
+  final FollowmanagementCubit followmanagementCubit = FollowmanagementCubit();
   final tweetCubit tweet_Cubit = tweetCubit();
   @override
   Widget build(BuildContext context) {
@@ -118,6 +120,7 @@ class _TwitterState extends State<Twitter> {
         BlocProvider.value(value: tweet_Cubit),
         BlocProvider.value(value: mediaTweetsTabCubit),
         BlocProvider.value(value: forgetPasswordBloc),
+        BlocProvider.value(value: followmanagementCubit),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
