@@ -11,7 +11,9 @@ class tweetCubit extends Cubit<TweetsManagementStates> {
   List<ReplyTweetModel> newTweet = [];
   List<ReplyTweetModel> homeList = [];
   int pageNumber = 1;
+  bool top = false;
   tweetCubit() : super(TweetsIntialState());
+
 
   void onInit({required access_token, required count, required page}) async {
     Loading();
@@ -34,7 +36,8 @@ class tweetCubit extends Cubit<TweetsManagementStates> {
   }
 
   Future<void> Refresh(
-      {required access_token, required count, required page}) async {
+      {required access_token, required count, required page, required top}) async {
+    this.top = top;
     tweetRefresh();
     try {
       var tweets = await _repository.fetchTweets(

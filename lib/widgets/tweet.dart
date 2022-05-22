@@ -361,12 +361,7 @@ class _TweetWidgetState extends State<TweetWidget> {
       {required double screenWidth, required double screenHeight , String? gif}) {
     double margin = 47; //52.6
     double screenHeightMultiplier = screenHeight * 0.205;
-    if (gif != ""){
-      return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(0.015 * screenHeight)),
-        child: SizedBox(width: screenWidth - margin, child: Image.network("https://backlb.twittercloneteamone.tk" + gif.toString(), fit: BoxFit.cover,)),
-      );
-    }
+
     if (media.isEmpty) {
       return Container();
 
