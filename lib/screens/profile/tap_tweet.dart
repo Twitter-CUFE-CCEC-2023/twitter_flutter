@@ -16,6 +16,7 @@ import 'package:twitter_flutter/screens/profile/profile_page_tabs/likes.dart';
 
 import '../../models/objects/user.dart';
 
+import '../../utils/Web Services/Follow_management_request.dart';
 import '../../utils/Web Services/tweets_management_requests.dart';
 
 class TapTweet extends StatefulWidget {
@@ -39,10 +40,7 @@ class _TapTweetState extends State<TapTweet> {
     tweetData = ModalRoute.of(context)?.settings.arguments as ReplyTweetModel;
 
     int likesCount = tweetData.likes_count;
-
-    // TODO: implent replies count and retweets count
     int retweetsCount = tweetData.retweets_count;
-    // ignore: unused_local_variable
     int repliesCount = tweetData.replies_count;
 
     log("Likes Count $likesCount repliesCount $repliesCount retweetsCount $retweetsCount");
@@ -53,9 +51,14 @@ class _TapTweetState extends State<TapTweet> {
     // log(userBloc.userdata.username.toString());
     // log(userBloc.userdata.followers_count.toString());
 
+    UserFollowerRequests req = UserFollowerRequests();
+    req.UnfollowUser(
+        access_token: userBloc.access_token, id: tweetData.user.id);
+    log(tweetData.user.id);
+
     // log(userBloc.userdata.username.toString());
     log(userBloc.access_token);
-    log(tweetData.id.toString());
+    // log(tweetData.id.toString());
 
     TweetsManagementRepository rep = TweetsManagementRepository(
         tweetsManagementRequests: TweetsManagementRequests());
@@ -353,7 +356,7 @@ class _TapTweetState extends State<TapTweet> {
         onTap: () {
           showModalBottomSheet(
               context: context,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                 top: Radius.circular(20),
               )),
@@ -374,7 +377,7 @@ class _TapTweetState extends State<TapTweet> {
                             ),
                           );
                         },
-                        child: ListTile(
+                        child: const ListTile(
                           leading: Icon(Icons.delete),
                           title: Text("Delete Tweet"),
                         ),
@@ -384,7 +387,20 @@ class _TapTweetState extends State<TapTweet> {
               });
         },
       ),
-      leading: tweetProfilePicture(tweetData.user.profile_image_url, 30),
+      leading: InkWell(
+          onTap: () {
+            if (ModalRoute.of(context)!.settings.name == "/userProfile" ||
+                ModalRoute.of(context)!.settings.name == "/VisitedUserProfile")
+              return;
+            if (tweetData.user.id ==
+                context.read<UserManagementBloc>().userdata.id) {
+              Navigator.pushNamed(context, "/userProfile");
+            } else {
+              Navigator.pushNamed(context, "/VisitedUserProfile",
+                  arguments: tweetData.user);
+            }
+          },
+          child: tweetProfilePicture(tweetData.user.profile_image_url, 30)),
       title: Text(
         tweetData.user.name,
         style: const TextStyle(

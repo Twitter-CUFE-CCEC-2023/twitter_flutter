@@ -183,7 +183,7 @@ class HomeSideBar extends StatelessWidget {
               ),
             ),
             const Text(
-              " Following",
+              " Followers",
               style: TextStyle(color: Color.fromARGB(255, 125, 119, 119)),
             ),
           ])

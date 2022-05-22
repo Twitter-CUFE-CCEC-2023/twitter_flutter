@@ -61,7 +61,6 @@ import 'package:twitter_flutter/screens/profile/search_page.dart';
 import 'package:twitter_flutter/screens/profile/search_page2.dart';
 import 'package:twitter_flutter/screens/profile/notification_page.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -195,7 +194,7 @@ class _TwitterState extends State<Twitter> {
 
           PostTweet.route: (context) => const PostTweet(),
 
-          TapTweet.route : (context) => const TapTweet(),
+          TapTweet.route: (context) => const TapTweet(),
 
           VisitedUserProfile.route: (context) => const VisitedUserProfile(),
         },
@@ -212,6 +211,7 @@ class _TwitterState extends State<Twitter> {
     likedTweetsTabCubit.close();
     tweet_Cubit.close();
     mediaTweetsTabCubit.close();
+    followmanagementCubit.close();
     forgetPasswordBloc.close();
     super.dispose();
   }
