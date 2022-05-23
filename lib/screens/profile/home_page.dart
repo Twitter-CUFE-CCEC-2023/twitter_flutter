@@ -99,8 +99,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var bloc = context.watch<UserManagementBloc>();
 
-    if (bloc.state is LoginSuccessState ||
-        bloc.state is VerificationSuccessState) {
+    if (bloc.state is LoginSuccessState ) {
       userData = bloc.userdata;
     } else {
       return FutureBuilder(
@@ -110,8 +109,6 @@ class _HomePageState extends State<HomePage> {
             );
           },
           future: _faildAuthentication(context));
-
-      //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
 
     final List<double> imageMultiplier = [1, 1];
