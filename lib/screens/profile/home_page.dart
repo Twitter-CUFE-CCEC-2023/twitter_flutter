@@ -5,7 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 //import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweet_cubit.dart';
-import 'package:twitter_flutter/blocs/tweetsManagement/tweets_management_events.dart';
+import 'package:twitter_flutter/repositories/tweets_management_repository.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_bloc.dart';
 import 'package:twitter_flutter/blocs/tweetsManagement/tweets_managment_states.dart';
 import 'package:twitter_flutter/models/objects/user.dart';
@@ -14,6 +14,7 @@ import 'package:twitter_flutter/screens/profile/search_page.dart';
 import 'package:twitter_flutter/screens/utility_screens/home_side_bar.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_bloc.dart';
 import 'package:twitter_flutter/blocs/userManagement/user_management_states.dart';
+import 'package:twitter_flutter/utils/Web%20Services/tweets_management_requests.dart';
 import 'package:twitter_flutter/widgets/profile/logged_FAB_actions.dart';
 import 'package:twitter_flutter/screens/starting_page.dart';
 import 'package:twitter_flutter/widgets/tweet.dart';
@@ -98,8 +99,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var bloc = context.watch<UserManagementBloc>();
 
-    if (bloc.state is LoginSuccessState ||
-        bloc.state is VerificationSuccessState) {
+    if (bloc.state is LoginSuccessState ) {
       userData = bloc.userdata;
     } else {
       return FutureBuilder(
@@ -109,18 +109,18 @@ class _HomePageState extends State<HomePage> {
             );
           },
           future: _faildAuthentication(context));
-
-      //TODO:Log the user out in case of the state is not login success or the access token is expired
     }
 
     final List<double> imageMultiplier = [1, 1];
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final List<double> fontSizeMultiplier = [1, 1, 1, 1];
-    late List<TweetWidget> tweetsList = [];
-
+    late List<TweetWidget?> tweetsList = [null];
+    var scrollController = ScrollController();
     var tweet_Cubit = context.watch<tweetCubit>();
 
+    var tweetReq = TweetsManagementRequests();
+    var tweetRepo = TweetsManagementRepository(tweetsManagementRequests: tweetReq);
     return Container(
         color: Colors.white,
         child: SafeArea(
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                     await tweet_Cubit.Refresh(
                         access_token: bloc.access_token,
                         count: 3,
-                        page: tweet_Cubit.pageNumber);
+                        page: tweet_Cubit.pageNumber, top: true);
                     tweet_Cubit.pageNumber++;
                   },
                   child: BlocConsumer<tweetCubit, TweetsManagementStates>(
@@ -215,15 +215,42 @@ class _HomePageState extends State<HomePage> {
                           );
                         }
                         if (state is TweetsFetchingSuccess) {
-                          for (var tweet in tweet_Cubit.homeList) {
-                            tweetsList.insert(0, TweetWidget(tweetData: tweet));
+                          if (tweet_Cubit.top){
+                            for (var tweet in tweet_Cubit.homeList) {
+                              tweetsList.insert(
+                                  0, TweetWidget(tweetData: tweet));
+                            }
+                          }
+                          else{
+                            for (var tweet in tweet_Cubit.homeList) {
+                              tweetsList.insert(tweetsList.length - 1, TweetWidget(tweetData: tweet));
+                            }
+
                           }
                         }
                         return ListView.builder(
-                          reverse: true,
                           itemCount: tweetsList.length,
-                          itemBuilder: (context, index) {
-                            return tweetsList[index];
+                          controller: scrollController,
+                          itemBuilder: (context, index)  {
+
+                            if (tweetsList[index] == null)  {
+
+                               tweet_Cubit.Refresh(
+                                  access_token: bloc.access_token,
+                                  count: 3,
+                                  page: tweet_Cubit.pageNumber, top: false);
+                              tweet_Cubit.pageNumber++;
+                              return SizedBox(
+                                height: 0.05 * screenHeight,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+
+                            }
+                            else {
+                              return tweetsList[index]!;
+                            }
                           },
                         );
                       }),

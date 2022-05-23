@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,6 +12,7 @@ import 'dart:io';
 import '../../../blocs/tweetsManagement/tweets_management_events.dart';
 import '../../../blocs/tweetsManagement/tweets_managment_bloc.dart';
 import '../../../blocs/tweetsManagement/tweets_managment_states.dart';
+import '../pre_home_page.dart';
 
 class PostTweet extends StatefulWidget {
   static const String route = '/postTweet';
@@ -61,14 +64,9 @@ class _PostTweetState extends State<PostTweet> {
     return BlocConsumer<TweetsManagementBloc, TweetsManagementStates>(
         listener: (context, state) {
       if (state is TweetsLoadingState) {
-        // if(ModalRoute.of(context)! == "/UserProfile")
-        //   {
-            //Navigator.popUntil(context, (route) => UserProfile.route == route.settings.name);
-        //   }else if(ModalRoute.of(context)!.settings.name == "/HomePage")
-        //   {
-        //     Navigator.popUntil(context, (route) => HomePage.route == route.settings.name);
-        //   }
-        Navigator.popUntil(context, (route) => UserProfile.route == route.settings.name || HomePage.route == route.settings.name);
+        //log(HomePage.route.toString());
+        //Navigator.pop(context);
+        Navigator.popUntil(context, (route) => UserProfile.route == route.settings.name || HomePage.route == route.settings.name ||PreHomePage.route == route.settings.name);
       }
     }, builder: (context, state) {
       return SafeArea(

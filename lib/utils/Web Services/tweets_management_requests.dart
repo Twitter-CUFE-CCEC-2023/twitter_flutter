@@ -92,7 +92,7 @@ class TweetsManagementRequests {
 
     http.Response res = await http.get(Uri.parse("$ENDPOINT/home/$page/$count"),
         headers: headers);
-    log (res.body);
+
     int statusCode = res.statusCode;
     if (statusCode == 200) {
       return res.body;
