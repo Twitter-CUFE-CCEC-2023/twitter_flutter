@@ -235,7 +235,7 @@ class _CreateAccount4State extends State<CreateAccount4> {
                           }
                         }
                       : null,
-                  child: const Text("next"),
+                  child: const Text("Next"),
                   style: elevatedButtonsStyle
               ),
             ),

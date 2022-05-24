@@ -281,7 +281,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                             }
                           }
                         : null,
-                    child: const Text("next"),
+                    child: const Text("Next"),
                     style: elevatedButtonsStyle,
                 ),
               ),
