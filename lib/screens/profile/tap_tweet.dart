@@ -44,38 +44,21 @@ class _TapTweetState extends State<TapTweet> {
     int repliesCount = tweetData.replies_count;
 
     log("Likes Count $likesCount repliesCount $repliesCount retweetsCount $retweetsCount");
-    // log(tweetData.is_reply.toString());
-    // log(tweetData.toString());
     UserManagementBloc userBloc = context.read<UserManagementBloc>();
     // log(userBloc.access_token);
     // log(userBloc.userdata.username.toString());
     // log(userBloc.userdata.followers_count.toString());
 
-    UserFollowerRequests req = UserFollowerRequests();
-    req.UnfollowUser(
-        access_token: userBloc.access_token, id: tweetData.user.id);
-    log(tweetData.user.id);
+    // log(tweetData.user.id);
 
     // log(userBloc.userdata.username.toString());
-    log(userBloc.access_token);
+    // log(userBloc.access_token);
     // log(tweetData.id.toString());
 
     TweetsManagementBloc tweetBloc = context.read<TweetsManagementBloc>();
-    // tweetBloc.add(PostReplayButtonPressed(
-    //     access_token: userBloc.access_token,
-    //     tweet_content: "Hello Replay",
-    //     media: [],
-    //     Replay_id: tweetData.id));
 
     TweetsManagementRepository rep = TweetsManagementRepository(
         tweetsManagementRequests: TweetsManagementRequests());
-    // rep.postReplay(
-    //     access_token: userBloc.access_token,
-    //     content: "Hello",
-    //     media: [],
-    //     replay_id: tweetData.id);
-    // rep.RetweetATweet(
-    //     access_token: userBloc.access_token, tweetID: tweetData.id);
 
     FollowmanagementCubit followQubit = context.read<FollowmanagementCubit>();
 
@@ -99,14 +82,6 @@ class _TapTweetState extends State<TapTweet> {
                   content: Text(state.message),
                   duration: const Duration(seconds: 1),
                 ),
-              );
-              Future.delayed(
-                const Duration(seconds: 2),
-                () {
-                  if (ModalRoute.of(context)?.settings.name == "/TapTweet") {
-                    Navigator.of(context).pop();
-                  }
-                },
               );
             } else if (state is TweetDeleteFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -231,7 +206,7 @@ class _TapTweetState extends State<TapTweet> {
                       ),
                     ),
                     const Divider(thickness: 1),
-                    if (tweetData.replies_count != 0) Comments(rep, userBloc),
+                    Comments(rep, userBloc),
                   ]),
             ),
           ),
@@ -243,7 +218,6 @@ class _TapTweetState extends State<TapTweet> {
   FutureBuilder<List<ReplyTweetModel>> Comments(
       TweetsManagementRepository rep, UserManagementBloc userBloc) {
     if (!isbuild) {
-      log("building");
       comments = rep.getTweetRepliesByID(
           access_token: userBloc.access_token, tweetID: tweetData.id);
     }
