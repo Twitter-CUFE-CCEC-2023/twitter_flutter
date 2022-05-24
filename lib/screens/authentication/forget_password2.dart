@@ -141,7 +141,6 @@ class forgetpassword2 extends State<ForgetPassword2> {
                             if (state is ForgetPasswordEmailSuccessState) {
                               try {
                                 //TODO:Add bottom sheet to show success Message
-                        //        omar.abdelazeez01@eng-st.cu.edu.eg
 
                             Navigator.pushNamedAndRemoveUntil(
                                     context,
