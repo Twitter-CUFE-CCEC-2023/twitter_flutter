@@ -60,8 +60,20 @@ class _TapTweetState extends State<TapTweet> {
     log(userBloc.access_token);
     // log(tweetData.id.toString());
 
+    TweetsManagementBloc tweetBloc = context.read<TweetsManagementBloc>();
+    // tweetBloc.add(PostReplayButtonPressed(
+    //     access_token: userBloc.access_token,
+    //     tweet_content: "Hello Replay",
+    //     media: [],
+    //     Replay_id: tweetData.id));
+
     TweetsManagementRepository rep = TweetsManagementRepository(
         tweetsManagementRequests: TweetsManagementRequests());
+    // rep.postReplay(
+    //     access_token: userBloc.access_token,
+    //     content: "Hello",
+    //     media: [],
+    //     replay_id: tweetData.id);
     // rep.RetweetATweet(
     //     access_token: userBloc.access_token, tweetID: tweetData.id);
 
@@ -493,6 +505,11 @@ class _TapTweetState extends State<TapTweet> {
         LikeButton(
           animationDuration: const Duration(milliseconds: 0),
           likeCount: tweet.replies_count,
+          onTap: (f) {
+            Navigator.pushNamed(context, "/PostReply", arguments: tweet.id);
+            log(tweet.is_reply.toString());
+            return Future.value();
+          },
           likeBuilder: (bool isLiked) {
             return Icon(
               FontAwesomeIcons.comment,

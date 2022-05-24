@@ -205,6 +205,42 @@ class TweetsManagementRequests {
     }
   }
 
+  Future<String> postReplay(
+      {required String access_token,
+      required String content,
+      required String Replay_id,
+      required List<File> media}) async {
+    var headers = {'Authorization': 'Bearer $access_token'};
+
+    var request =
+        http.MultipartRequest('POST', Uri.parse("$ENDPOINT/status/tweet/post"));
+
+    request.headers.addAll(headers);
+
+    request.fields.addAll({"content": content, "replied_to_tweet": Replay_id});
+
+    for (File file in media) {
+      request.files.add(await http.MultipartFile.fromPath('media', file.path));
+    }
+
+    http.StreamedResponse res = await request.send();
+
+    int statusCode = res.statusCode;
+
+    if (statusCode == 200) {
+      return await res.stream.bytesToString();
+      //return await res.stream.bytesToString();
+    } else if (statusCode == 400) {
+      throw Exception("Client Error, Can not process your request");
+    } else if (statusCode == 401) {
+      throw Exception("Invalid Verification Code Credentials");
+    } else if (statusCode == 500) {
+      throw Exception("Server Error");
+    } else {
+      throw Exception("Undefined Error");
+    }
+  }
+
   Future<String> deleteTweet(
       {required String access_token, required String tweet_id}) async {
     var headers = {
@@ -294,7 +330,6 @@ class TweetsManagementRequests {
     };
     var body = jsonEncode(<String, String>{
       "id": tweet_id,
-      
     });
 
     http.Response res = await http.post(Uri.parse("$ENDPOINT/status/retweet"),

@@ -16,6 +16,20 @@ class PostTweetButtonPressed extends TweetsManagementEvents {
   List<Object?> get props => [access_token, tweet_content];
 }
 
+class PostReplayButtonPressed extends TweetsManagementEvents {
+  String access_token;
+  String tweet_content;
+  List<File> media;
+  String Replay_id;
+  PostReplayButtonPressed(
+      {required this.access_token,
+      required this.tweet_content,
+      required this.media,
+      required this.Replay_id});
+  @override
+  List<Object?> get props => [access_token, tweet_content];
+}
+
 class IntialHomePage extends TweetsManagementEvents {
   String access_token;
   int count;
