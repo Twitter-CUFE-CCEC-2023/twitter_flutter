@@ -98,6 +98,23 @@ class TweetsManagementRepository {
     }
   }
 
+  Future<TweetModel> postReplay(
+      {required String access_token,
+      required String content,
+      required String replay_id,
+      required List<File> media}) async {
+    try {
+      String tweetData = await tweetsManagementRequests.postReplay(
+          access_token: access_token,
+          content: content,
+          media: media,
+          Replay_id: replay_id);
+      return TweetModel.fromJson(jsonDecode(tweetData)['tweet']);
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<ReplyTweetModel> unlikeTweet(
       {required String access_token, required String tweet_id}) async {
     try {

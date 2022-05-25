@@ -14,6 +14,7 @@ import 'package:twitter_flutter/screens/authentication/forget_password4.dart';
 import 'package:twitter_flutter/screens/profile/followers.dart';
 import 'package:twitter_flutter/screens/profile/following.dart';
 import 'package:twitter_flutter/screens/profile/pre_edit_profile.dart';
+import 'package:twitter_flutter/screens/profile/timeline_util_screens/PostReply.dart';
 import 'package:twitter_flutter/screens/profile/timeline_util_screens/VistiedUser.dart';
 import 'package:twitter_flutter/screens/profile/timeline_util_screens/postTweet.dart';
 import 'package:twitter_flutter/utils/Web%20Services/tweets_management_requests.dart';
@@ -60,7 +61,6 @@ import 'package:twitter_flutter/screens/profile/pre_home_page.dart';
 import 'package:twitter_flutter/screens/profile/search_page.dart';
 import 'package:twitter_flutter/screens/profile/search_page2.dart';
 import 'package:twitter_flutter/screens/profile/notification_page.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -195,9 +195,11 @@ class _TwitterState extends State<Twitter> {
 
           PostTweet.route: (context) => const PostTweet(),
 
-          TapTweet.route : (context) => const TapTweet(),
+          TapTweet.route: (context) => const TapTweet(),
 
           VisitedUserProfile.route: (context) => const VisitedUserProfile(),
+
+          PostReply.route: (context) => const PostReply(),
         },
       ),
     );
@@ -212,6 +214,7 @@ class _TwitterState extends State<Twitter> {
     likedTweetsTabCubit.close();
     tweet_Cubit.close();
     mediaTweetsTabCubit.close();
+    followmanagementCubit.close();
     forgetPasswordBloc.close();
     super.dispose();
   }

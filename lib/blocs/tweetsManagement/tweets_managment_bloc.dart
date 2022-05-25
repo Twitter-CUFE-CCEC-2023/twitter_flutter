@@ -17,6 +17,7 @@ class TweetsManagementBloc
     on<LikeButtonPressed>(_onLikeButtonPressed);
     on<DeleteTweetButtonPressed>(_onDeleteTweetButtonPressed);
     on<RetweetButtonPressed>(_onRetweetButtonPressed);
+    on<PostReplayButtonPressed>(_onReplayTweetButtonPressed);
   }
 
   void _onPostTweetButtonPressed(PostTweetButtonPressed event,
@@ -26,6 +27,24 @@ class TweetsManagementBloc
       var tweets = await tweetsManagementRepository.postTweet(
           access_token: event.access_token,
           content: event.tweet_content,
+          media: event.media);
+
+      emit(SuccessPostingTweet(
+          message: "Tweet posted successfully", tweet: tweets));
+    } on Exception catch (e) {
+      emit(FailurePostingTweet(
+          errorMessage: e.toString().replaceAll("Exception: ", "")));
+    }
+  }
+
+  void _onReplayTweetButtonPressed(PostReplayButtonPressed event,
+      Emitter<TweetsManagementStates> emit) async {
+    emit(TweetsLoadingState());
+    try {
+      var tweets = await tweetsManagementRepository.postReplay(
+          access_token: event.access_token,
+          content: event.tweet_content,
+          replay_id: event.Replay_id,
           media: event.media);
 
       emit(SuccessPostingTweet(
