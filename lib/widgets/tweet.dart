@@ -70,7 +70,8 @@ class _TweetWidgetState extends State<TweetWidget> {
                           padding: const EdgeInsets.fromLTRB(0, 8, 13, 0),
                           child: tweetMedia(widget.tweetData.media,
                               screenWidth: screenWidth,
-                              screenHeight: screenHeight,gif: widget.tweetData.gif)),
+                              screenHeight: screenHeight,
+                              gif: widget.tweetData.gif)),
                       tweetButtons(
                         like_count: widget.tweetData.likes_count,
                         commentCount: widget.tweetData.quotes_count,
@@ -132,9 +133,15 @@ class _TweetWidgetState extends State<TweetWidget> {
   }) {
     return Row(
       children: <Widget>[
+        //replies
         LikeButton(
           animationDuration: const Duration(milliseconds: 0),
-          likeCount: commentCount,
+          likeCount: widget.tweetData.replies_count,
+          onTap: (f) {
+            Navigator.pushNamed(context, "/PostReply",
+                arguments: widget.tweetData.id);
+            return Future.value();
+          },
           likeBuilder: (bool isLiked) {
             return Icon(
               FontAwesomeIcons.comment,
@@ -358,13 +365,14 @@ class _TweetWidgetState extends State<TweetWidget> {
   }
 
   Widget tweetMedia(List<String> media,
-      {required double screenWidth, required double screenHeight , String? gif}) {
+      {required double screenWidth,
+      required double screenHeight,
+      String? gif}) {
     double margin = 47; //52.6
     double screenHeightMultiplier = screenHeight * 0.205;
 
     if (media.isEmpty) {
       return Container();
-
     } else if (media.length == 1) {
       return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(0.015 * screenHeight)),
